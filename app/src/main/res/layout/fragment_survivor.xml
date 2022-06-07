@@ -1,24 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/survivor_rv"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/hor_0.03_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.03" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/hor_0.47_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.47" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.05_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.95_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/soon_birth_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="올해 생일이 지나지 않은 캐릭터들이예요 :)"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.95_guideline"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/hor_0.03_guideline" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/soon_birth_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@+id/hor_0.47_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.95_guideline"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/soon_birth_tv" />
+
+        <TextView
+            android:id="@+id/al_birth_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="올해 생일이 지난 캐릭터들이예요 :)"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.95_guideline"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/hor_0.47_guideline" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/after_birth_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.95_guideline"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/al_birth_tv"
+            app:layout_constraintVertical_bias="0.0" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

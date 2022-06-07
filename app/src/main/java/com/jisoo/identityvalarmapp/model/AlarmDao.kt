@@ -30,4 +30,6 @@ interface AlarmDao {
 
     @Query("SELECT * FROM CharacInfo WHERE category == 1")
     fun getHunterDataList() : LiveData<List<CharacInfo>>
+
+
 }

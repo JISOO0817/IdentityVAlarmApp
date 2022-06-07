@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 
 android {
     compileSdk 31
@@ -62,4 +63,14 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.4.0'
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
 
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    def lombok_ver = "1.18.16"
+    implementation "org.projectlombok:lombok:$lombok_ver"
+    annotationProcessor "org.projectlombok:lombok:$lombok_ver"
 }

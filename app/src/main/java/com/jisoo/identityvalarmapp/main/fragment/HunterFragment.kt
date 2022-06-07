@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jisoo.identityvalarmapp.databinding.FragmentHunterBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
-import com.jisoo.identityvalarmapp.main.OnToggleCallback
+import com.jisoo.identityvalarmapp.main.OnClickCallback
 import com.jisoo.identityvalarmapp.model.CharacInfo
 
-class HunterFragment : Fragment(), OnToggleCallback {
+class HunterFragment : Fragment(), OnClickCallback {
 
     private lateinit var binding : FragmentHunterBinding
     private lateinit var adapter: ListAdapter
@@ -30,9 +30,9 @@ class HunterFragment : Fragment(), OnToggleCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ListAdapter()
-        adapter.addOnToggle(this)
-        binding.huntorRv.adapter  = adapter
+        adapter = ListAdapter(context = requireContext())
+        adapter.changeOnOffMode(this)
+        binding.hunterRv.adapter  = adapter
 
         model.hunList.observe(viewLifecycleOwner, {
             adapter.setData(it)
@@ -40,12 +40,13 @@ class HunterFragment : Fragment(), OnToggleCallback {
 
     }
 
-    override fun onToggle(info: CharacInfo) {
+    override fun onViewClick(info: CharacInfo) {
         model.update(info)
-        if(info.onoff) {
+        if (info.onoff) {
             info.executionAlarm(requireContext())
         } else {
             info.cancelAlarm(requireContext())
         }
     }
+
 }

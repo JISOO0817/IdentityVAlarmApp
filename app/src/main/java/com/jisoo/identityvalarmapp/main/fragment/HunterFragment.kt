@@ -30,8 +30,7 @@ class HunterFragment : Fragment(), OnClickCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ListAdapter(context = requireContext())
-        adapter.changeOnOffMode(this)
+        adapter = ListAdapter(requireContext())
         binding.hunterRv.adapter  = adapter
 
         model.hunList.observe(viewLifecycleOwner, {

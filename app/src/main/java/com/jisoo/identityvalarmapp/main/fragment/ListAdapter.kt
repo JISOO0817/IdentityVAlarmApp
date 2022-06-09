@@ -14,7 +14,7 @@ import com.jisoo.identityvalarmapp.databinding.ItemListBinding
 import com.jisoo.identityvalarmapp.main.OnClickCallback
 import com.jisoo.identityvalarmapp.model.CharacInfo
 
-class ListAdapter(private val context: Context) : RecyclerView.Adapter<ListAdapter.HunViewHolder>(){
+class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunViewHolder>(){
 
     private var list = ArrayList<CharacInfo>()
     private var onClickListener : OnClickCallback ?= null
@@ -35,55 +35,47 @@ class ListAdapter(private val context: Context) : RecyclerView.Adapter<ListAdapt
         return list.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(it: List<CharacInfo>) {
         list = it as ArrayList<CharacInfo>
         notifyDataSetChanged()
     }
 
-    fun changeOnOffMode(onClickCallback: OnClickCallback) {
+    fun onClickItem(onClickCallback: OnClickCallback) {
         this.onClickListener = onClickCallback
     }
 
-    //TODO: inner class 빼기
-    inner class HunViewHolder(var binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class HunViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root){
 
         @SuppressLint("ResourceAsColor")
         fun bind(info: CharacInfo) {
-            if(info.onoff) {
-                binding.constraint.alpha = 1f
-                binding.img.alpha = 1f
-                binding.constraint.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.white
-                ))
-            } else {
-                binding.constraint.alpha = 0.5f
-                binding.img.alpha = 0.5f
-                binding.constraint.setBackgroundColor(ContextCompat.getColor(context,R.color.gray))
-            }
+//            info.executionAlarm(context)
+//            if (info.onoff) {
+//                binding.constraint.alpha = 1f
+//                binding.img.alpha = 1f
+//
+//                binding.constraint.setBackgroundColor(
+//                    ContextCompat.getColor(
+//                        context,
+//                        R.color.white
+//                    )
+//                )
+//            } else {
+//                binding.constraint.alpha = 0.5f
+//                binding.img.alpha = 0.5f
+//                binding.constraint.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+//            }
 
-//            binding.jobTv.text = info.job
-//            binding.birthTv.text = info.birth
+//            binding.img.setBackgroundResource(info.img)
+
             Glide.with(context)
-                    .load(list[adapterPosition].img)
-                    .into(binding.img)
+                .load(info.img)
+                .into(binding.img)
 
             binding.testlayout.setOnClickListener {
-                if(info.onoff) {
-                    info.onoff = false
-                    onClickListener?.onViewClick(info)
-
-                } else {
-                    info.onoff = true
-                    onClickListener?.onViewClick(info)
-
-                }
+                onClickListener?.onViewClick(list[adapterPosition])
             }
         }
-
-        override fun onClick(p0: View?) {
-            onClickListener?.onViewClick(list[adapterPosition])
-        }
-
 
     }
 }

@@ -1,5 +1,6 @@
 package com.jisoo.identityvalarmapp.main
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.core.text.isDigitsOnly
@@ -10,24 +11,28 @@ import androidx.lifecycle.viewModelScope
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainViewModel(application: Application) : AndroidViewModel(application){
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var repository : AlarmRepository = AlarmRepository(application)
-    var surList : LiveData<List<CharacInfo>> = repository.surList
+    private var repository: AlarmRepository = AlarmRepository(application)
+    var surList: LiveData<List<CharacInfo>> = repository.surList
     var hunList: LiveData<List<CharacInfo>> = repository.hunList
 
+    private val _todaySurList = MutableLiveData<List<CharacInfo>>()
+    val todaySurList: LiveData<List<CharacInfo>>
+        get() = _todaySurList
+
     private val _beforeSurList = MutableLiveData<List<CharacInfo>>()
-    val beforeSurList : LiveData<List<CharacInfo>>
+    val beforeSurList: LiveData<List<CharacInfo>>
         get() = _beforeSurList
 
-    private val _afterSurList = MutableLiveData<List<CharacInfo>>()
-    val afterSurList : LiveData<List<CharacInfo>>
-        get() = _afterSurList
+    private val _passedSurList = MutableLiveData<List<CharacInfo>>()
+    val passedSurList: LiveData<List<CharacInfo>>
+        get() = _passedSurList
 
 
     private val _checkClicked = MutableLiveData<Boolean>()
@@ -39,47 +44,50 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
         _checkClicked.value = false
     }
 
-
-    //TODO: 생존자 리스트에서 생일이 지난 캐릭터와 지나지 않은 캐릭터를 구분하여 리사이클러뷰에 담아주기. (새로 생성)
-
-    fun init() {
-        Log.d("jjs","생존자 리스트 사이즈:${surList.value!!.size}")
-        checkBirthDayPassed()
-    }
-
+    @SuppressLint("SimpleDateFormat")
     fun checkBirthDayPassed() {
-        val afterList: ArrayList<CharacInfo> = ArrayList()
+        val passedList: ArrayList<CharacInfo> = ArrayList()
         val beforeList: ArrayList<CharacInfo> = ArrayList()
-        for( charac in surList.value!!) {
+        val todayList: ArrayList<CharacInfo> = ArrayList()
 
-            val month = charac.birth.substring(0 until 2).toInt()
-            val day = charac.birth.substring(3 until 5).toInt()
-            val checkNumBol = month.toString().isDigitsOnly()
+        val systemDate = System.currentTimeMillis()
+        val mDate = Date(systemDate)
+        val simpleDate = SimpleDateFormat("MM-dd")
+        val getDate = simpleDate.format(mDate)
 
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = System.currentTimeMillis()
-            calendar.set(Calendar.YEAR,calendar[Calendar.YEAR])
+        val sysMonth = getDate.substring(0 until 2).toInt()
+        val sysDay = getDate.substring(3 until 5).toInt()
 
-            if(checkNumBol) {
-                calendar.set(Calendar.MONTH,month-1)
+        for (charac in surList.value!!) {
+
+            val birthMonth = charac.birth.substring(0 until 2).toInt()
+            val bDay = charac.birth.substring(3 until 5).toInt()
+
+            when {
+                birthMonth < sysMonth -> {
+                    passedList.add(charac)
+                }
+                birthMonth == sysMonth -> {
+                    when {
+                        bDay < sysDay -> {
+                            passedList.add(charac)
+                        }
+                        bDay == sysDay -> {
+                            todayList.add(charac)
+                        }
+                        else -> {
+                            beforeList.add(charac)
+                        }
+                    }
+                }
+                else -> {
+                    beforeList.add(charac)
+                }
             }
-
-            calendar.set(Calendar.DAY_OF_MONTH,day)
-            calendar.set(Calendar.HOUR_OF_DAY,24)
-            calendar.set(Calendar.MINUTE,0)
-            calendar.set(Calendar.SECOND,0)
-            calendar.set(Calendar.MILLISECOND,0)
-
-            if(calendar.timeInMillis < System.currentTimeMillis()) {
-                afterList.add(charac)
-                calendar.set(Calendar.YEAR,calendar.get(Calendar.YEAR) + 1)
-            } else {
-                beforeList.add(charac)
-            }
-            Log.d("jjs","character : ${charac.job}, birth : ${charac.birth}")
         }
 
-        _afterSurList.value = afterList
+        _todaySurList.value = todayList
+        _passedSurList.value = passedList
         _beforeSurList.value = beforeList
     }
 

@@ -38,8 +38,6 @@ class AlarmService : Service() {
             .setContentIntent(pendingIntent)
             .build()
 
-        Log.d("jjs","의 생일입니다.")
-
         startForeground(1,notification)
         return START_STICKY
 

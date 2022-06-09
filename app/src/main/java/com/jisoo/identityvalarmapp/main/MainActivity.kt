@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayoutMediator
@@ -50,6 +51,11 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabs, binding.viewPager) {tab, position ->
             tab.text = tabTextList[position]
         }.attach()
+
+        for (i in 0..1) {
+            val textView = LayoutInflater.from(this).inflate(R.layout.tab_title,null) as TextView
+                binding.tabs.getTabAt(i)?.customView = textView
+        }
     }
 
     fun initDialog() {

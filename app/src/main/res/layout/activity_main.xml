@@ -5,6 +5,7 @@
     <data>
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,11 +19,11 @@
             app:layout_constraintGuide_percent="0.02"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/hor_12_guideline"
+            android:id="@+id/hor_10_guideline"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.12"/>
+            app:layout_constraintGuide_percent="0.10"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/hor_14_guideline"
@@ -45,17 +46,36 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.98"/>
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.1_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.9_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/tab_background"
+            app:layout_constraintBottom_toTopOf="@id/hor_10_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.9_guideline"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.1_guideline"
             app:layout_constraintTop_toBottomOf="@+id/hor_02_guideline"
-            app:layout_constraintBottom_toTopOf="@id/hor_12_guideline" />
+            app:layout_constraintVertical_bias="1.0"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

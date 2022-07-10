@@ -5,6 +5,7 @@
     android:gravity="center"
     android:padding="16dp"
     android:id="@android:id/text1"
+    android:textSize="15dp"
     android:background="@drawable/tab_background_selector"
     android:textColor="@drawable/tab_text_selector">
 

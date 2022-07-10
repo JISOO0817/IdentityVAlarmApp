@@ -1,115 +1,256 @@
 package com.jisoo.identityvalarmapp.main
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.jisoo.identityvalarmapp.R
+import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.databinding.ActivityMainBinding
-import com.jisoo.identityvalarmapp.databinding.DialogPopupBinding
+import com.jisoo.identityvalarmapp.databinding.DialogNeedUpdateBinding
+import com.jisoo.identityvalarmapp.util.Const.Companion.DEFAULT_TIME
+import com.jisoo.identityvalarmapp.util.Const.Companion.FIREBASE_VERSION
+import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.DialogSize
-import com.jisoo.identityvalarmapp.util.dialog.PopupDialog
-import java.text.SimpleDateFormat
-import java.util.*
+import com.jisoo.identityvalarmapp.util.dialog.Margin
+import com.jisoo.identityvalarmapp.util.dialog.NeedUpdateDialog
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
-    private lateinit var popupBinding: DialogPopupBinding
-    private lateinit var popupDialog: PopupDialog
 
-    private lateinit var sharedPref : SharedPreferences
+    private lateinit var needUpdateBinding: DialogNeedUpdateBinding
+    private lateinit var needUpdateDialog: NeedUpdateDialog
 
-    private val viewModel : MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.loadingTheme)
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_IdentityVAlarmApp)
 
-        initBinding()
-        initDialog()
-        initObserver()
-        checkExplPopup()
+        setUpBinding()
+        setUpView()
+        setUpObserver()
+        checkPreferencesTime()
+        getFirebaseAppVersion()
     }
 
-    fun initBinding() {
+    fun setUpBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        popupBinding = DataBindingUtil.inflate(LayoutInflater.from(applicationContext), R.layout.dialog_popup, null, false)
-        popupBinding.viewModel = viewModel
-        popupBinding.lifecycleOwner = this
-
         binding.viewPager.adapter = FragmentPagerAdapter(this)
 
-        val tabTextList = listOf("생존자","감시자")
+        needUpdateBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this),
+            R.layout.dialog_need_update,
+            null,
+            false
+        )
 
-        TabLayoutMediator(binding.tabs, binding.viewPager) {tab, position ->
+        needUpdateDialog = NeedUpdateDialog(this,needUpdateBinding,this.viewModel)
+        needUpdateBinding.viewModel = viewModel
+        needUpdateBinding.lifecycleOwner = this
+
+    }
+
+    fun setUpView() {
+        val tabTextList = listOf(
+            resources.getString(R.string.main_activity_first_tab),
+            resources.getString(R.string.main_activity_second_tab)
+        )
+
+
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()
 
-        for (i in 0..1) {
-            val textView = LayoutInflater.from(this).inflate(R.layout.tab_title,null) as TextView
-                binding.tabs.getTabAt(i)?.customView = textView
+        for (i in 0..2) {
+            val textView = LayoutInflater.from(this).inflate(R.layout.tab_title, null) as TextView
+            binding.tabs.getTabAt(i)?.customView = textView
         }
     }
 
-    fun initDialog() {
-        popupDialog = PopupDialog(this,popupBinding)
+    fun setUpObserver() {
+        viewModel.characList.observe(this, {
+            if(it.isNotEmpty()){
+                viewModel.lunaList2SolarList(it)
+            }
+        })
 
-    }
+        viewModel.sortedSolarList.observe(this, {
+            viewModel.checkAlarm(this, it)
+        })
 
-    @SuppressLint("SimpleDateFormat")
-    fun checkExplPopup() {
-
-        val stPreferences = "Day"
-        val strDate = "0"
-
-        val currentTime = System.currentTimeMillis()
-        val todayDate = Date(currentTime)
-        val sdFormat = SimpleDateFormat("dd")
-        val strSDFormatDay = sdFormat.format(todayDate)
-
-        stopWatchingTodayState(stPreferences,strDate,strSDFormatDay)
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun stopWatchingTodayState(stPreferences: String, strDate: String, strSDFormatDay: String,) {
-
-        sharedPref = getSharedPreferences("todayPopup", Context.MODE_PRIVATE)
-        val strPreferencesDay = sharedPref.getString(stPreferences,strDate)
-
-        if(strSDFormatDay.toInt() - strPreferencesDay!!.toInt() != 0) {
-            Log.d("jjs","strSDFormatDay:${strSDFormatDay}"+"strPreferencesDay:${strPreferencesDay}")
-            showPopupDialog()
-        }
-
-    }
-
-    fun initObserver() {
-        viewModel.checkClicked.observe(this, {
+        viewModel.onNeedUpdateConfirmBtnClicked.observe(this, {
             if(it == true) {
+                goToUpdate()
+                dismissUpdateDialog()
+            }
+        })
 
-                val currentTime = System.currentTimeMillis()
-                val todayDate = Date(currentTime)
-                val sdFormat = SimpleDateFormat("dd")
-                val strSDFormatDay = sdFormat.format(todayDate)
-                //sharedpreference 에 저장 (오늘하루안보기)
-                sharedPref.edit().run {
-                    putString("Day",strSDFormatDay)
-                    commit()
-                }
-                popupDialog.dismiss()
+        viewModel.toastFlag.observe(this, {
+            if(it == true) {
+                showFinishToast()
+            }
+
+        })
+
+        viewModel.finishFlag.observe(this, {
+            if( it == true) {
+                finish()
             }
         })
     }
 
-    private fun showPopupDialog() {
-        popupDialog.show()
-        DialogSize.initDialogLayout(popupDialog,this)
+    override fun onResume() {
+        super.onResume()
+        getFirebaseAppVersion()
     }
+
+    private fun checkPreferencesTime() {
+        if (TextUtils.equals("", App.prefs.getTime(TIME_SP, ""))) {
+            App.prefs.setTime(TIME_SP, DEFAULT_TIME)
+            viewModel.setTime("13", "0")
+        }
+    }
+
+    /**
+     * firebase remote config 버전 가져오기기
+     * **/
+    private fun getFirebaseAppVersion() {
+        val myAppVersion = packageManager.getPackageInfo(packageName, 0).versionName
+
+        val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(0)
+            .build()
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings)
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+            .addOnCompleteListener { task ->
+                firebaseRemoteConfig.fetchAndActivate()
+                if (task.isSuccessful) {
+                    val firebase = firebaseRemoteConfig.getString(FIREBASE_VERSION)
+                    if(checkNeedUpdate(myAppVersion,firebase)) {
+                        showNeedUpdateDialog()
+                    } else {
+                    }
+                } else {
+                    Log.d("version", "fail")
+                }
+            }
+    }
+
+    /**
+     * 버전비교
+     * **/
+    private fun checkNeedUpdate(currVersion: String, newVersion: String): Boolean {
+        val currVersionSplit: Array<String> = currVersion.split(".").toTypedArray()
+        val newVersionSplit: Array<String> = newVersion.split(".").toTypedArray()
+
+        val currMajorVer = currVersionSplit[0].toInt()
+        val currMinorVer = currVersionSplit[1].toInt()
+        val currPointVer = currVersionSplit[2].toInt()
+        val newMajorVer = newVersionSplit[0].toInt()
+        val newMinorVer = newVersionSplit[1].toInt()
+        val newPointVer = newVersionSplit[2].toInt()
+
+        var isNeededTobeUpdate = false
+        if (currMajorVer < newMajorVer) isNeededTobeUpdate = true
+        if (currMajorVer == newMajorVer && currMinorVer < newMinorVer) isNeededTobeUpdate = true
+        if (currMajorVer == newMajorVer && currMinorVer == newMinorVer && currPointVer < newPointVer) isNeededTobeUpdate =
+            true
+
+        return isNeededTobeUpdate
+    }
+
+    private fun showNeedUpdateDialog() {
+        needUpdateDialog.show()
+        DialogSize.initDialogLayout(needUpdateDialog, this)
+
+        needUpdateDialog.setFontSize(16f, 14f, 14f)
+
+        needUpdateDialog.setMargin(
+            setTypedValue(16f, 0f, 16f, 16f),
+            setTypedValue(12f, 0f, 0f, 0f)
+        )
+
+        needUpdateDialog.setBtnSize(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(44f).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        )
+    }
+
+    private fun goToUpdate() {
+        val url = "market://details?id=" + "com.netease.idv.googleplay"
+        val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(playIntent)
+    }
+
+
+    private fun dismissUpdateDialog() {
+        if(needUpdateDialog.isShowing) {
+            needUpdateDialog.dismiss()
+        }
+    }
+
+    private fun setTypedValue(
+        topMargin: Float,
+        bottomMargin: Float,
+        leftMargin: Float,
+        rightMargin: Float
+    ): Margin {
+        return Margin(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(topMargin).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt(),
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(bottomMargin).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt(),
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(leftMargin).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt(),
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(rightMargin).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        )
+    }
+
+    private fun getConvertDpByRes(dpSize: Float): Float {
+        val weight: Float
+        val dm = DisplayMetrics()
+        this.windowManager.defaultDisplay.getMetrics(dm)
+        val width = dm.widthPixels
+        val wi = width.toDouble() / dm.xdpi.toDouble()
+        weight = (wi / 2.86817851).toFloat()
+        return dpSize * weight
+    }
+
+    private fun showFinishToast() {
+        Toast.makeText(this, R.string.main_activity_finish_txt,Toast.LENGTH_SHORT).show()
+    }
+
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jisoo.identityvalarmapp.main.MainViewModel" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_background">
+
+        <TextView
+            android:id="@+id/warning_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/noto_sans_cjk_kr_bold"
+            android:textColor="@color/black"
+            android:includeFontPadding="false"
+            android:text="@string/dialog_alarm_title_txt"/>
+
+        <TextView
+            android:id="@+id/warning_subtitle_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/warning_title_tv"
+            app:layout_constraintStart_toStartOf="@+id/warning_title_tv"
+            app:layout_constraintEnd_toEndOf="@+id/warning_title_tv"
+            android:fontFamily="@font/noto_sans_cjk_kr_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/gray_45"
+            android:text="@string/dialog_onoff_info_txt"/>
+
+        <View
+            android:id="@+id/margin_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/warning_subtitle_tv"
+            app:layout_constraintDimensionRatio="h,364:8"/>
+
+        <TextView
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/margin_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/noto_sans_cjk_kr_medium"
+            android:includeFontPadding="false"
+            android:textColor="@color/gray_45"
+            android:text="@string/common_close"
+            android:background="@drawable/dialog_all_round_bg"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="@{() -> viewModel.onWarningDialogClosetBtnClicked()}"
+            android:gravity="center"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

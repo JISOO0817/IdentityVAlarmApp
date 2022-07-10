@@ -1,3 +1,73 @@
 <resources>
-    <string name="app_name">IdentityVAlarmApp</string>
+    <string name="app_name">생알</string>
+    <string name="app_channelId">com.jisoo.identityvalarmapp</string>
+    <string name="app_channelName">백그라운드 서비스(알림을 끄는 경우 알람이 울리지 않아요!)</string>
+
+    <string name="identityv_Name">com.netease.idv.googleplay</string>
+    <string name="identityv_MarketName">market://details?id=</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          common                                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="common_close">닫기</string>
+    <string name="common_confirm">확인</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Service                                                          -->
+    <!-- =================================================================================================================-->
+    <string name="service_noti_title_txt">오늘은 \'%s\'의 생일이에요!</string>
+    <string name="service_noti_subtitle_txt">알람을 누르면 제5인격 앱으로 이동합니다 :)</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Main Activity                                                           -->
+    <!-- =================================================================================================================-->
+    <string name="main_activity_first_tab">생일</string>
+    <string name="main_activity_second_tab">설정</string>
+    <string name="main_activity_finish_txt">\'뒤로\'버튼을 한 번 더 누르시면 앱이 종료됩니다.</string>
+
+
+    <!-- =================================================================================================================-->
+    <!--                                          Birth Fragment                                                          -->
+    <!-- =================================================================================================================-->
+
+
+
+    <!-- =================================================================================================================-->
+    <!--                                          Setting Fragment                                                        -->
+    <!-- =================================================================================================================-->
+    <string name="fragment_setting_alarm_title_txt">알람</string>
+    <string name="fragment_setting_alarm_onoff_txt">알람ON/OFF</string>
+    <string name="fragment_setting_alarm_on_txt">(알람ON)</string>
+    <string name="fragment_setting_alarm_off_txt">(알람OFF)</string>
+    <string name="fragment_setting_alarm_time_edit_txt">알람 시간 변경</string>
+    <string name="fragment_setting_app_info_txt">앱 정보</string>
+    <string name="fragment_setting_verion_info_txt">버전 정보</string>
+    <string name="fragment_setting_open_source_txt">오픈 소스 라이선스</string>
+    <string name="fragment_setting_etc_txt">기타</string>
+    <string name="fragment_setting_review_txt">리뷰 남기기</string>
+    <string name="fragment_setting_feedback_mail_txt">피드백 메일 보내기</string>
+    <string name="fragment_setting_email_add_txt">dkadnsk00@gmail.com</string>
+    <string name="fragment_setting_email_feedback_info_txt">[생알] 피드백 메일</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Alarm Time Edit                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_alarm_title_txt">알람 시간 변경</string>
+    <string name="dialog_alarm_edit_info_txt">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog On Off Warning                                                -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_onoff_title_txt">알람 시간 변경</string>
+    <string name="dialog_onoff_info_txt">알람이 켜진(ON)상태에서만 시간을 변경할 수 있어요.\n알람을 켠 후 변경해주세요 :)</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Need Update                                                      -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_need_update_title_txt">업데이트 안내</string>
+    <string name="dialog_need_update_info_txt">최신버전으로의 업데이트가 필요해요.\n보다 나은 서비스를 위해 앱을 업데이트 해주세요 :)</string>
+    <string name="dialog_need_update_go_update_txt">업데이트 하기</string>
+
+
+
 </resources>

@@ -23,8 +23,7 @@
             android:text="오늘하루그만보기"
             android:fontFamily="@font/noto_sans_cjk_kr_bold"
             android:textColor="@color/black"
-            android:includeFontPadding="false"
-            android:onClick="@{() -> viewModel.onCheckBoxClicked()}"/>
+            android:includeFontPadding="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,28 +2,20 @@ package com.jisoo.identityvalarmapp.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import java.util.*
 
 class AlarmRepository(application: Application) {
 
     private var alarmDao: AlarmDao
-    var surList: LiveData<List<CharacInfo>>
-    var hunList: LiveData<List<CharacInfo>>
+    var characList: LiveData<List<CharacInfo>>
 
     init {
         this.alarmDao = AlarmDatabase.getInstance(application).alarmDao()
-        this.surList = alarmDao.getSurvivorDataList()
-        this.hunList = alarmDao.getHunterDataList()
+        characList = alarmDao.getAllData()
     }
 
-    suspend fun insert(info: CharacInfo) {
-        alarmDao.insert(info)
+    fun getCharacList(callback: (List<CharacInfo>) -> Unit) {
+        callback(alarmDao.getAllDataList())
     }
 
-    suspend fun update(info: CharacInfo) {
-        alarmDao.update(info)
-    }
-
-    suspend fun delete(info: CharacInfo) {
-        alarmDao.delete(info)
-    }
 }

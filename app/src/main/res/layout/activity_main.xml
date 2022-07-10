@@ -63,15 +63,15 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/tab_background"
             app:layout_constraintBottom_toTopOf="@id/hor_10_guideline"
             app:layout_constraintEnd_toStartOf="@+id/ver_0.9_guideline"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ver_0.1_guideline"
             app:layout_constraintTop_toBottomOf="@+id/hor_02_guideline"
-            app:layout_constraintVertical_bias="1.0"
             app:tabGravity="fill"
+            app:tabTextAppearance="@style/TabLayoutTextSize"
             app:tabIndicatorHeight="0dp"
             app:tabMaxWidth="0dp"
             app:tabMode="fixed"
@@ -84,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabs"
-            app:layout_constraintBottom_toTopOf="@+id/hor_98_guideline"/>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

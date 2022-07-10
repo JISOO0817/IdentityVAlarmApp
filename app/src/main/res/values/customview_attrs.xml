@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomTitleView">
+        <attr name="titleName" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomSubTitleView">
+        <attr name="subTitleName" format="string"/>
+        <attr name="subText" format="string"/>
+        <attr name="subExist" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBirthDayView">
+        <attr name="monthText" format="string"/>
+    </declare-styleable>
+
+</resources>

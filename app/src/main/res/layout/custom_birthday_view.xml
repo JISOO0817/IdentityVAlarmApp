@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.05_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ver_0.95_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
+
+        <View
+            android:id="@+id/first_empty_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="h,360:8"/>
+
+        <TextView
+            android:id="@+id/month_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/first_empty_view"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            tools:text="12월"
+            android:fontFamily="@font/noto_sans_cjk_kr_bold"
+            android:includeFontPadding="false"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/birth_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintStart_toEndOf="@+id/ver_0.05_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/ver_0.95_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/month_tv"/>
+
+        <View
+            android:id="@+id/last_empty_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birth_rv"
+            app:layout_constraintDimensionRatio="h,360:8"
+            android:background="@color/white"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

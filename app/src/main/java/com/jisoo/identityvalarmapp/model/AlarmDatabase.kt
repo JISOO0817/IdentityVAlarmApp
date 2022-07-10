@@ -14,16 +14,16 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
 
-@Database(entities = [CharacInfo::class], version = 2, exportSchema = false)
+@Database(entities = [CharacInfo::class],version = 1,exportSchema = false)
 
 /**
  *
  * 데이터베이스를 보유하고 앱의 영구 데이터와의 기본 연결을 위한
  * 기본 액세스 포인트 역할을 함함 * */
-
 abstract class AlarmDatabase : RoomDatabase() {
 
     abstract fun alarmDao(): AlarmDao
+//    abstract fun timeDao(): TimeDao
 
     /**
      * 데이터베이스와 연결된 DAO 인스턴스를 앱에 제공함
@@ -32,12 +32,11 @@ abstract class AlarmDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: AlarmDatabase? = null
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("UPDATE CharacInfo SET birth = '09월09일' WHERE birth= '05월10일'")
-            }
+//        val MIGRATION_1_2 = object : Migration(1, 2) {
+//            override fun migrate(database: SupportSQLiteDatabase) {
+//                database.execSQL("UPDATE CharacInfo SET birth = '09월09일' WHERE birth= '05월10일'")
+//            }
 
-        }
 
         fun getInstance(context: Context): AlarmDatabase {
             if (INSTANCE == null) {
@@ -48,55 +47,77 @@ abstract class AlarmDatabase : RoomDatabase() {
                         super.onCreate(db)
                         initInfo(context)
                     }
-                }).addMigrations(MIGRATION_1_2)
-                    .build()
-//                addMigrations(MIGRATION_1_2)  값 변경시 버전도 올려주어야함
-
+                }).build()
             }
 
             return INSTANCE as AlarmDatabase
         }
 
+
         fun initInfo(context: Context) {
             CoroutineScope(Dispatchers.IO).launch {
-                for (data in TEST_DATA) {
+                for (data in CHARACTER_DATA) {
                     getInstance(context).alarmDao().insert(data)
                 }
+
+//                for (time in TIME_DATA) {
+//                    getInstance(context).timeDao().insert(time)
+//                }
             }
         }
     }
-
 }
 
-private val TEST_DATA = arrayListOf(
+//private val TIME_DATA = arrayListOf(
+//    Time(1,13,0)
+//)
 
-    CharacInfo(1, 0, R.drawable.enchantress, "주술사", "01월03일", true),
-    CharacInfo(2, 0, R.drawable.lawyer, "변호사", "01월12일", true),
-    CharacInfo(3, 0, R.drawable.eye, "맹인", "01월13일", true),
-    CharacInfo(4, 0, R.drawable.priestess, "샤먼", "02월01일", true),
-    CharacInfo(5,0, R.drawable.gravekeeper,"묘지기","02월13일",true),
-    CharacInfo(6,0,R.drawable.barmaid,"바텐더","02월14일",true),
-    CharacInfo(7, 0, R.drawable.explorer, "모험가", "03월01일", true),
-    CharacInfo(8, 0, R.drawable.doctor, "의사", "03월17일", true),
-    CharacInfo(9, 0, R.drawable.prospector, "탐사원", "03월19일", true),
-    CharacInfo(10, 0, R.drawable.coordinator, "공군", "04월03일", true),
-    CharacInfo(11, 0, R.drawable.wildling, "야만인", "04월30일", true),
-    CharacInfo(12, 0, R.drawable.thief, "도둑", "05월07일", true),
-    CharacInfo(13, 0, R.drawable.embalmer, "납관사", "05월11일", true),
-    CharacInfo(14, 0, R.drawable.forward, "포워드", "05월15일", true),
-    CharacInfo(15, 0, R.drawable.acrobat, "곡예사", "06월01일", true),
-    CharacInfo(16, 0, R.drawable.dancer, "무희", "06월09일", true),
-    CharacInfo(17, 0, R.drawable.magician, "마술사", "07월04일", true),
-    CharacInfo(18,0, R.drawable.prisoner,"죄수","07월10일",true),
-    CharacInfo(19, 0, R.drawable.mercenary, "용병", "07월23일", true),
-    CharacInfo(20, 0, R.drawable.perfumer, "조향사", "08월25일", true),
-    CharacInfo(21, 0, R.drawable.mechanic, "기계공", "09월13일", true),
-    CharacInfo(22, 0, R.drawable.first_officer, "항해사", "09월24일", true),
-    CharacInfo(23, 0, R.drawable.seer, "선지자", "10월31일", true),
-    CharacInfo(24,0,R.drawable.lucky_guy,"행운아","11월22일",true),
-    CharacInfo(25, 0, R.drawable.gardner, "정원사", "12월21일", true),
-    CharacInfo(26,0, R.drawable.entomologis,"곤충학자","12월22일",true),
-    CharacInfo(27,0,R.drawable.postman,"우편배달부","12월25일",true),
-    CharacInfo(28, 0, R.drawable.cowboy, "카우보이", "12월27일", true),
+private val CHARACTER_DATA = arrayListOf(
+    CharacInfo(1, 0, R.drawable.enchantress, "주술사", "0103"),
+    CharacInfo(2, 0, R.drawable.lawyer, "변호사", "0112"),
+    CharacInfo(3, 0, R.drawable.eye, "맹인", "0113"),
+    CharacInfo(4, 0, R.drawable.priestess, "샤먼", "0201"),
+    CharacInfo(5, 0, R.drawable.gravekeeper, "묘지기", "0213"),
+    CharacInfo(6, 0, R.drawable.barmaid, "바텐더", "0214"),
+    CharacInfo(7, 0, R.drawable.explorer, "모험가", "0301"),
+    CharacInfo(8, 0, R.drawable.doctor, "의사", "0317"),
+    CharacInfo(9, 0, R.drawable.prospector, "탐사원", "0319"),
+    CharacInfo(10, 0, R.drawable.coordinator, "공군", "0403"),
+    CharacInfo(11, 0, R.drawable.wildling, "야만인", "0430"),
+    CharacInfo(12, 0, R.drawable.thief, "도둑", "0507"),
+    CharacInfo(13, 0, R.drawable.embalmer, "납관사", "0511"),
+    CharacInfo(14, 0, R.drawable.forward, "포워드", "0515"),
+    CharacInfo(15, 0, R.drawable.acrobat, "곡예사", "0601"),
+    CharacInfo(16, 0, R.drawable.dancer, "무희", "0609"),
+    CharacInfo(17, 0, R.drawable.magician, "마술사", "0704"),
+    CharacInfo(18, 0, R.drawable.prisoner, "죄수", "0710"),
+    CharacInfo(19, 0, R.drawable.mercenary, "용병", "0723"),
+    CharacInfo(20, 0, R.drawable.perfumer, "조향사", "0825"),
+    CharacInfo(21, 0, R.drawable.mechanic, "기계공", "0913"),
+    CharacInfo(22, 0, R.drawable.first_officer, "항해사", "0924"),
+    CharacInfo(23, 0, R.drawable.seer, "선지자", "1031"),
+    CharacInfo(24, 0, R.drawable.lucky_guy, "행운아", "1122"),
+    CharacInfo(25, 0, R.drawable.gardner, "정원사", "1221"),
+    CharacInfo(26, 0, R.drawable.entomologis, "곤충학자", "1222"),
+    CharacInfo(27, 0, R.drawable.postman, "우편배달부", "1225"),
+    CharacInfo(28, 0, R.drawable.cowboy, "카우보이", "1227"),
 
+    CharacInfo(100, 1, R.drawable.spider, "거미", "0102"),
+    CharacInfo(101, 1, R.drawable.haster, "하스터", "0124"),
+    CharacInfo(102, 1, R.drawable.michiko, "미치코", "0218"),
+    CharacInfo(103, 1, R.drawable.photo, "사진사", "0311"),
+    CharacInfo(104, 1, R.drawable.ulbo, "울보", "0425"),
+    CharacInfo(105, 1, R.drawable.noru, "사냥터지기", "0521"),
+    CharacInfo(106, 1, R.drawable.umbrella, "우산의영혼", "0715"),
+    CharacInfo(107, 1, R.drawable.rhkdeo, "광대", "0804"),
+    CharacInfo(108, 1, R.drawable.ripper, "리퍼", "0807"),
+    CharacInfo(109, 1, R.drawable.bongbog, "수위 26호", "0808"),
+    CharacInfo(110, 1, R.drawable.sado, "'사도'", "0811"),
+    CharacInfo(111, 1, R.drawable.kkumma, "꿈의 마녀", "1002"),
+    CharacInfo(112, 1, R.drawable.byeall, "바이올리니스트", "1027"),
+    CharacInfo(113, 1, R.drawable.mari, "블러디 퀸", "1102"),
+    CharacInfo(114, 1, R.drawable.domabaem, "재앙의 도마뱀", "1113"),
+    CharacInfo(115, 1, R.drawable.jogak, "조각가", "1117"),
+    CharacInfo(116, 1, R.drawable.halbae, "광기의 눈", "1127"),
+    CharacInfo(117, 1, R.drawable.gong, "공장장", "1221")
 )

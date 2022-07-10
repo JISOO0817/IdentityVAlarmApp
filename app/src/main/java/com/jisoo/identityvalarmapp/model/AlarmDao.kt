@@ -12,7 +12,6 @@ interface AlarmDao {
      * 메서드를 제공함
      * */
 
-
     @Insert
     suspend fun insert(info: CharacInfo)
 
@@ -22,14 +21,19 @@ interface AlarmDao {
     @Delete
     suspend fun delete(info: CharacInfo)
 
-    @Query("SELECT * FROM CharacInfo")
+    @Query("SELECT * FROM CharacInfo ORDER BY BIRTH ASC")
     fun getAllData() : LiveData<List<CharacInfo>>
 
-    @Query("SELECT * FROM CharacInfo WHERE category == 0")
-    fun getSurvivorDataList() : LiveData<List<CharacInfo>>
+    @Query("SELECT * FROM CharacInfo ORDER BY BIRTH ASC")
+    fun getAllDataList() : List<CharacInfo>
 
-    @Query("SELECT * FROM CharacInfo WHERE category == 1")
-    fun getHunterDataList() : LiveData<List<CharacInfo>>
+//    @Query("SELECT * FROM CharacInfo WHERE category == 0")
+//    fun getSurvivorDataList() : LiveData<List<CharacInfo>>
+//
+//    @Query("SELECT * FROM CharacInfo WHERE category == 1")
+//    fun getHunterDataList() : LiveData<List<CharacInfo>>
 
+//    @Query("SELECT * FROM CharacInfo")
+//    fun getAllServiceData() : List<CharacInfo>
 
 }

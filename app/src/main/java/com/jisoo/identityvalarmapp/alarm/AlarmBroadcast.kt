@@ -23,11 +23,6 @@ class AlarmBroadcast : BroadcastReceiver() {
         serviceIntent.putExtra(UID_KEY,uid)
         serviceIntent.putExtra(JOB_KEY,job)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context?.startForegroundService(serviceIntent)
-        } else {
-            context?.startService(serviceIntent)
-        }
-
+        context?.startForegroundService(serviceIntent)
     }
 }

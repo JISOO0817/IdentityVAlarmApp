@@ -1,6 +1,7 @@
 package com.jisoo.identityvalarmapp.main.charac_fragment
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,7 @@ class SurvivorFragment : Fragment(){
     private fun setUpView() {
         initAdapter()
         initManager()
+
     }
 
     private fun setUpObserver() {
@@ -175,6 +177,16 @@ class SurvivorFragment : Fragment(){
             decAdapter.setData(decSurList)
         }
 
+    }
+
+    private fun getConvertDpByRes(dpSize: Float): Float {
+        val weight: Float
+        val dm = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(dm)
+        val width = dm.widthPixels
+        val wi = width.toDouble() / dm.xdpi.toDouble()
+        weight = (wi / 2.86817851).toFloat()
+        return dpSize * weight
     }
 
     override fun onDestroyView() {

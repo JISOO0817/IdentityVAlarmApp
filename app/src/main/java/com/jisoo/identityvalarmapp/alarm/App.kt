@@ -25,20 +25,19 @@ class App : Application() {
     }
 
     private fun createChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(ID, "Alarm Service",NotificationManager.IMPORTANCE_HIGH)
+        val channel = NotificationChannel(ID, "Alarm Service", NotificationManager.IMPORTANCE_LOW)
 
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-        }
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
+
     }
 
     class PrefsManager(context: Context) {
-//        private val popupPrefs = context.getSharedPreferences("pop_up",Context.MODE_PRIVATE)
-        private val switchPrefs = context.getSharedPreferences(SWITCH_SP,Context.MODE_PRIVATE)
-        private val timePrefs = context.getSharedPreferences(TIME_SP,Context.MODE_PRIVATE)
+        //        private val popupPrefs = context.getSharedPreferences("pop_up",Context.MODE_PRIVATE)
+        private val switchPrefs = context.getSharedPreferences(SWITCH_SP, Context.MODE_PRIVATE)
+        private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
 
-//        fun setString(key: String, value: String) {
+        //        fun setString(key: String, value: String) {
 //            popupPrefs.edit().putString(key, value).apply()
 //        }
 //
@@ -47,11 +46,11 @@ class App : Application() {
 //        }
 //
         fun setBoolean(key: String, value: Boolean) {
-            switchPrefs.edit().putBoolean(key,value).apply()
+            switchPrefs.edit().putBoolean(key, value).apply()
         }
 
-        fun getBoolean(key: String, defValue: Boolean) : Boolean {
-            return switchPrefs.getBoolean(key,defValue)
+        fun getBoolean(key: String, defValue: Boolean): Boolean {
+            return switchPrefs.getBoolean(key, defValue)
         }
 
         fun setTime(key: String, value: String) {
@@ -59,12 +58,12 @@ class App : Application() {
         }
 
         fun getTime(key: String, defValue: String): String {
-            return timePrefs.getString(key,defValue).toString()
+            return timePrefs.getString(key, defValue).toString()
         }
 
-        fun checkPreferencesStatus() : Boolean {
+        fun checkPreferencesStatus(): Boolean {
             var status = false
-            if(switchPrefs.getBoolean(SWITCH_SP,true)) {
+            if (switchPrefs.getBoolean(SWITCH_SP, true)) {
                 status = true
             }
 

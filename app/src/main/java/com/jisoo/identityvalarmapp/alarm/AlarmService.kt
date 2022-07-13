@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
+
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -19,7 +19,7 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
 import kotlinx.coroutines.*
-import java.lang.Exception
+
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -42,7 +42,9 @@ class AlarmService : Service() {
         val jobText = String.format(res.getString(R.string.service_noti_title_txt), "$job")
 
         checkIsInstalled()
+        checkSwitchStatus(uid)
         Log.d("noti", "is installed: ${checkIsInstalled()}}")
+
 
         /**
          * 알람 누르면
@@ -50,21 +52,11 @@ class AlarmService : Service() {
         if (!checkIsInstalled()) {
             //마켓
             val playIntent: Intent
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val url = resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
-                playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            } else {
-                Log.d("sdk24","catch 호출")
-                playIntent = Intent(Intent.ACTION_VIEW)
-                playIntent.data = (Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.identityv_Name)))
-            }
-
+            val url = resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
+            playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pendingIntent = PendingIntent.getActivity(this, uid, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-//            val url = resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
-//            val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//            playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         } else {
             //앱열기
             val goIntent = packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
@@ -73,37 +65,19 @@ class AlarmService : Service() {
             pendingIntent = PendingIntent.getActivity(this, uid, goIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-
-//        try{
-//            Log.d("noti","try호출")
-//            val goIntent = packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
-//            goIntent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(goIntent)
-//            pendingIntent = PendingIntent.getActivity(this, uid, goIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-//        } catch (e: Exception) {
-//            Log.d("noti","catch 호출")
-//            val url = resources.getString(R.string.identityv_MarketName)+resources.getString(R.string.identityv_Name)
-//            val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//            playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(playIntent)
-//            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-//        }
-
         /**
          * 채널생성
          * **/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
+        val channel =
+            NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_LOW
+            )
 
-            val channelManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            channelManager.createNotificationChannel(channel)
-        }
+        val channelManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        channelManager.createNotificationChannel(channel)
 
         /**
          * 생일알람
@@ -151,16 +125,20 @@ class AlarmService : Service() {
         }
     }
 
+    private fun checkSwitchStatus(uid: Int) {
+        if (!App.prefs.checkPreferencesStatus()) {
+            removeAlarmManager(uid)
+        } else {
+            return
+        }
+    }
+
     /**
      * 노티 아이콘
      * **/
     // 작은 아이콘은 롤리팝 및 상위 안드로이드 버전에서 벡터 아이콘을 써야함
     private fun versionCheck(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            R.drawable.svg_img
-        } else {
-            R.drawable.app_icon_ver2
-        }
+        return R.drawable.svg_img
     }
 
     private fun managementAlarm(uid: Int, alarmList: List<CharacInfo>) {
@@ -186,15 +164,11 @@ class AlarmService : Service() {
 
         val alarmManager: AlarmManager =
             applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent2
-            )
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent2)
-        }
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent2
+        )
         Log.d("samsung", "새로 등록된 알람 $Cjob")
 
         removeAlarmManager(uid)

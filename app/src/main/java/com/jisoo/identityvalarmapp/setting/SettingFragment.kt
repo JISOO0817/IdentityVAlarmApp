@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import com.jisoo.identityvalarmapp.BuildConfig
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
+import com.jisoo.identityvalarmapp.databinding.DialogLicenseBinding
 import com.jisoo.identityvalarmapp.databinding.DialogOnoffWarningBinding
 import com.jisoo.identityvalarmapp.databinding.DialogTimeeditBinding
 import com.jisoo.identityvalarmapp.databinding.FragmentSettingBinding
@@ -23,17 +24,13 @@ import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.CharacInfo
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
-import com.jisoo.identityvalarmapp.util.dialog.DialogSize
-import com.jisoo.identityvalarmapp.util.dialog.Margin
-import com.jisoo.identityvalarmapp.util.dialog.OnOffWarningDialog
-import com.jisoo.identityvalarmapp.util.dialog.TimeEditDialog
+import com.jisoo.identityvalarmapp.util.dialog.*
 import java.lang.Exception
 import kotlin.math.roundToInt
 
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
-
     /**
      * 액티비티와 뷰모델을 공유
      * */
@@ -44,6 +41,9 @@ class SettingFragment : Fragment() {
 
     private lateinit var warningBinding: DialogOnoffWarningBinding
     private lateinit var warningDialog: OnOffWarningDialog
+
+    private lateinit var licenseBinding: DialogLicenseBinding
+    private lateinit var licenseDialog: LicenseDialog
 
     var hour: Int? = null
     var minute: Int? = null
@@ -64,6 +64,11 @@ class SettingFragment : Fragment() {
         warningBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.dialog_onoff_warning, container, false
+        )
+
+        licenseBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.dialog_license, container, false
         )
 
         setUpBinding()
@@ -88,6 +93,8 @@ class SettingFragment : Fragment() {
         warningBinding.viewModel = model
         warningBinding.lifecycleOwner = viewLifecycleOwner
 
+        licenseDialog = LicenseDialog(requireActivity(), licenseBinding)
+        licenseBinding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun setUpView() {
@@ -136,7 +143,7 @@ class SettingFragment : Fragment() {
 
         model.onCloseBtnClicked.observe(viewLifecycleOwner, {
             if (it == true) {
-                dismissDialog()
+                dismissTimeEditDialog()
             }
         })
 
@@ -156,6 +163,12 @@ class SettingFragment : Fragment() {
         model.onWarningClostBtnCLicked.observe(viewLifecycleOwner, {
             if (it == true) {
                 dismissWarningDialog()
+            }
+        })
+
+        model.onLicenseBtnClicked.observe(viewLifecycleOwner, {
+            if (it == true) {
+                showLicenseDialog()
             }
         })
     }
@@ -221,7 +234,7 @@ class SettingFragment : Fragment() {
         return "$hour : $minute"
     }
 
-    private fun dismissDialog() {
+    private fun dismissTimeEditDialog() {
         if (timeEditDialog.isShowing) {
             timeEditDialog.dismiss()
         }
@@ -274,18 +287,23 @@ class SettingFragment : Fragment() {
     }
 
     private fun goPlayStore() {
-        val url = resources.getString(R.string.identityv_MarketName)+resources.getString(R.string.identityv_Name)
+        val url = resources.getString(R.string.identityv_MarketName)+resources.getString(R.string.app_channelId)
         try {
             val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(playIntent)
         }catch (e: Exception) {
             val webIntent = Intent(Intent.ACTION_VIEW)
-            webIntent.data = (Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.identityv_Name)))
+            webIntent.data = (Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.app_channelId)))
             if (webIntent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(webIntent)
             }
         }
+    }
+
+    private fun showLicenseDialog() {
+        licenseDialog.show()
+        DialogSize.initDialogLayout(licenseDialog, requireActivity())
     }
 
     private fun setTypedValue(

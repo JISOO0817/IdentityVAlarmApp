@@ -15,6 +15,7 @@ import androidx.room.PrimaryKey
 import com.jisoo.identityvalarmapp.alarm.AlarmBroadcast
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
+import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -62,7 +63,7 @@ data class CharacInfo(
             calendar.set(Calendar.MONTH,month-1)
         }
 
-        val prefsTime = App.prefs.getTime("time","")
+        val prefsTime = App.prefs.getTime(TIME_SP,"")
         val arr = prefsTime.split(" : ")
 
         val hour = arr[0].toInt()
@@ -82,11 +83,7 @@ data class CharacInfo(
         /**
          * 버전에 따른 Doze 모드 구분
          * **/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
-        }
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
     }
 
     fun removeAlarmManager(context: Context, removeUid: Int) {

@@ -2,8 +2,10 @@ package com.jisoo.identityvalarmapp.util.customview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.jisoo.identityvalarmapp.R
@@ -57,6 +59,9 @@ class CustomSubTitleView @JvmOverloads constructor(
             }
         }
 
+        bind.subtitleTv.textSize = getConvertDpByRes(13f)
+        bind.subTv.textSize = getConvertDpByRes(13f)
+
     }
 
     fun setTitle(text: String) {
@@ -65,6 +70,17 @@ class CustomSubTitleView @JvmOverloads constructor(
 
     fun setSubText(text: String) {
         bind.subTv.text = text
+    }
+
+    private fun getConvertDpByRes(dpSize: Float): Float {
+        val manager = context.getSystemService(WindowManager::class.java)
+        val weight: Float
+        val dm = DisplayMetrics()
+        manager.defaultDisplay.getMetrics(dm)
+        val width = dm.widthPixels
+        val wi = width.toDouble() / dm.xdpi.toDouble()
+        weight = (wi / 2.86817851).toFloat()
+        return dpSize * weight
     }
 
 

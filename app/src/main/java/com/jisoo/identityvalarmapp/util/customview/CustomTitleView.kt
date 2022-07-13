@@ -2,7 +2,9 @@ package com.jisoo.identityvalarmapp.util.customview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.jisoo.identityvalarmapp.R
@@ -43,11 +45,22 @@ class CustomTitleView @JvmOverloads constructor(
             }
         }
 
+        bind.titleTv.textSize = getConvertDpByRes(15f)
+
     }
 
     fun setTitle(text: String) {
         bind.titleTv.text = text
     }
 
-
+    private fun getConvertDpByRes(dpSize: Float): Float {
+        val manager = context.getSystemService(WindowManager::class.java)
+        val weight: Float
+        val dm = DisplayMetrics()
+        manager.defaultDisplay.getMetrics(dm)
+        val width = dm.widthPixels
+        val wi = width.toDouble() / dm.xdpi.toDouble()
+        weight = (wi / 2.86817851).toFloat()
+        return dpSize * weight
+    }
 }

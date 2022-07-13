@@ -49,4 +49,13 @@ object DialogSize {
         lp.width = (width * 0.8f).toInt()
         dialog.window!!.attributes = lp
     }
+
+    fun initDialogLayout(dialog: LicenseDialog, context: Context) {
+        val dm = context.resources.displayMetrics
+        val width = dm.widthPixels
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = (width * 0.8f).toInt()
+        dialog.window!!.attributes = lp
+    }
 }

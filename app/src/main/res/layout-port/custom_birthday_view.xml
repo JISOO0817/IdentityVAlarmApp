@@ -42,7 +42,6 @@
             android:fontFamily="@font/noto_sans_cjk_kr_bold"
             android:includeFontPadding="false"
             android:gravity="left"
-            android:textSize="15dp"
             android:textColor="@color/black"
             android:textStyle="bold"/>
 

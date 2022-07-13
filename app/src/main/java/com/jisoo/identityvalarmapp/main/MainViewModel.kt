@@ -60,6 +60,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _onNeedUpdateConfirmBtnClicked = MutableLiveData<Boolean>()
     val onNeedUpdateConfirmBtnClicked: LiveData<Boolean> = _onNeedUpdateConfirmBtnClicked
 
+    private val _onLicenseBtnClicked = MutableLiveData<Boolean>()
+    val onLicenseBtnClicked: LiveData<Boolean> = _onLicenseBtnClicked
+
     private val _timeSet = MutableLiveData<Boolean>()
     val timeSet: LiveData<Boolean> = _timeSet
 
@@ -82,6 +85,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _onWarningCloseBtnClicked.value = false
         _onNeedUpdateConfirmBtnClicked.value = false
         _onConfirmBtnClicked.value = false
+        _onLicenseBtnClicked.value = false
         _timeSet.value = false
         _finishFlag.value = false
         _toastFlag.value = false
@@ -171,7 +175,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (nowMonth == 12 && nowDay >= 25) {
             sortedList.add(resultList[0])
         } else {
-            //TODO 자꾸 IndexOutOfBoundsException 에러남 (맨 초기) resultList size 0
             val day1 = resultList[0].birth.substring(2 until 4).toInt()
             val day2 = resultList[1].birth.substring(2 until 4).toInt()
 
@@ -213,6 +216,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onNeedUpdateDialogConfirmBtnClicked() {
         _onNeedUpdateConfirmBtnClicked.value = true
+    }
+
+    fun onLicenseBtnClicked() {
+        _onLicenseBtnClicked.value = true
     }
 
     fun setTime(hour: String?, minute: String?) {

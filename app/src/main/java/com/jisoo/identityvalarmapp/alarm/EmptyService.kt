@@ -38,23 +38,17 @@ class EmptyService : Service() {
          * 시스템 알람창 (기본)
          * **/
         val builder: Notification.Builder =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Notification.Builder(this, CHANNEL_ID)
-            } else {
-                Notification.Builder(this)
-            }
+            Notification.Builder(this, CHANNEL_ID)
 
         /**
          * 채널생성
          * **/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+        val channel =
+            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
 
-            val channelManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            channelManager.createNotificationChannel(channel)
-        }
+        val channelManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        channelManager.createNotificationChannel(channel)
 
         startForeground(100, builder.build())
 

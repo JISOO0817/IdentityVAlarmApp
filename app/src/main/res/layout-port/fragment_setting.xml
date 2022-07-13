@@ -87,7 +87,8 @@
             app:layout_constraintTop_toBottomOf="@+id/version_info_view"
             app:layout_constraintDimensionRatio="h,360:44"
             android:foreground="?attr/selectableItemBackground"
-            app:subTitleName="@string/fragment_setting_open_source_txt"/>
+            app:subTitleName="@string/fragment_setting_open_source_txt"
+            android:onClick="@{()->viewModel.onLicenseBtnClicked()}"/>
 
         <View
             android:id="@+id/second_empty_view"

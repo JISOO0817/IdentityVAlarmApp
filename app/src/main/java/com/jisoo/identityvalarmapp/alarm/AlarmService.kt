@@ -88,8 +88,6 @@ class AlarmService : Service() {
             .setAutoCancel(true)
             .setSmallIcon(versionCheck())
             .setContentIntent(pendingIntent)
-            .setDefaults(Notification.DEFAULT_VIBRATE)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
 

@@ -102,7 +102,7 @@ data class CharacInfo(
             context,
             removeUid,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            checkVersionFlags()
         )
         alarmManager.cancel(amPendingIntent)
     }

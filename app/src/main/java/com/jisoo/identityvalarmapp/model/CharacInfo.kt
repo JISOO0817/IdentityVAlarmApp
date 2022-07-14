@@ -46,7 +46,7 @@ data class CharacInfo(
 
         Log.d("jjs","uid:${uid},job:${job}")
 
-        val pendingIntent = PendingIntent.getBroadcast(context, uid,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(context, uid,intent,checkVersionFlags())
 
         val month = birth.substring(0 until 2).toInt()
         val day = birth.substring(2 until 4).toInt()
@@ -84,6 +84,14 @@ data class CharacInfo(
          * 버전에 따른 Doze 모드 구분
          * **/
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
+    }
+
+    private fun checkVersionFlags() : Int {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
     }
 
     fun removeAlarmManager(context: Context, removeUid: Int) {

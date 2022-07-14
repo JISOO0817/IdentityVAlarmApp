@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 
 import android.os.IBinder
 import android.util.Log
@@ -55,14 +56,14 @@ class AlarmService : Service() {
             val url = resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
             playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, checkVersionFlags())
 
         } else {
             //앱열기
             val goIntent = packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
             goIntent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(goIntent)
-            pendingIntent = PendingIntent.getActivity(this, uid, goIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            pendingIntent = PendingIntent.getActivity(this, uid, goIntent, checkVersionFlags())
         }
 
         /**
@@ -107,6 +108,18 @@ class AlarmService : Service() {
         }
         return START_STICKY
     }
+
+    /**
+     * 버전 s 이상인경우 FLAG_MUTABLE 또는 FLAG_IMMUTABLE 이 필수이기 때문에 버전분기로 나눠줌
+     * **/
+    private fun checkVersionFlags() : Int {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+    }
+
 
     /**
      * 제5인격 앱 설치여부 체크
@@ -157,7 +170,7 @@ class AlarmService : Service() {
             this,
             Cuid.toInt(),
             intent2,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            checkVersionFlags()
         )
 
         val alarmManager: AlarmManager =
@@ -255,7 +268,7 @@ class AlarmService : Service() {
             applicationContext,
             removeUid,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            checkVersionFlags()
         )
         alarmManager.cancel(amPendingIntent)
     }

@@ -33,18 +33,10 @@ class App : Application() {
     }
 
     class PrefsManager(context: Context) {
-        //        private val popupPrefs = context.getSharedPreferences("pop_up",Context.MODE_PRIVATE)
         private val switchPrefs = context.getSharedPreferences(SWITCH_SP, Context.MODE_PRIVATE)
         private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
 
-        //        fun setString(key: String, value: String) {
-//            popupPrefs.edit().putString(key, value).apply()
-//        }
-//
-//        fun getString(key: String, defValue: String) : String {
-//            return popupPrefs.getString(key,defValue).toString()
-//        }
-//
+
         fun setBoolean(key: String, value: Boolean) {
             switchPrefs.edit().putBoolean(key, value).apply()
         }
@@ -69,15 +61,6 @@ class App : Application() {
 
             return status
         }
-
-//        fun checkExistTimePrefs() : Boolean {
-//            var status = false
-//            if(existTimePrefs.getBoolean(TIME_SP,true)) {
-//                status = true
-//            }
-//
-//            return status
-//        }
 
     }
 

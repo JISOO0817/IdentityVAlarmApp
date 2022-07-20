@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Build
 
 import android.os.IBinder
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.text.isDigitsOnly
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import com.jisoo.identityvalarmapp.util.CalendarHelper
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_NAME
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
@@ -153,7 +155,20 @@ class AlarmService : Service() {
     }
 
     private fun managementAlarm(uid: Int, alarmList: List<CharacInfo>) {
-        val sortedList = getNearestBirthday(alarmList)
+        val returnList: ArrayList<CharacInfo> = arrayListOf()
+        val now = Calendar.getInstance()
+        val nowYear = now.get(Calendar.YEAR).toString()
+        for (i in alarmList) {
+            if (TextUtils.equals(i.job, "우산의영혼")) {
+                val calendarHelper = CalendarHelper()
+                val characBirth =
+                    calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
+                returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
+            } else {
+                returnList.add(i)
+            }
+        }
+        val sortedList = getNearestBirthday(returnList)
 
         val calendar = setCalendarInfo(sortedList)
 
@@ -186,6 +201,8 @@ class AlarmService : Service() {
     }
 
     private fun getNearestBirthday(alarmList: List<CharacInfo>): List<CharacInfo> {
+        Log.d("samsung","alarmService : 받아온 알람 리스트 = ${alarmList}")
+
         val now = Calendar.getInstance()
         val nowMonth = now.get(Calendar.MONTH) + 1
         val nowDay = now.get(Calendar.DAY_OF_MONTH)
@@ -217,6 +234,8 @@ class AlarmService : Service() {
             } else {
                 sortedList.add(resultList[0])
             }
+
+            Log.d("samsung","alarmService : 가장 가까운 알람 = ${sortedList}")
         }
 
         return sortedList
@@ -283,7 +302,8 @@ class AlarmService : Service() {
     override fun onDestroy() {
         super.onDestroy()
 //        val reviveIntent = Intent()
-//        reviveIntent.flags =
+//        reviveIntent.action = "ACTION.RESTART.AlarmService"
+//        sendBroadcast(reviveIntent)
     }
 
 }

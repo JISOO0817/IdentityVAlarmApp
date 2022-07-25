@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.jisoo.identityvalarmapp.generated.callback.OnClickListener
 import com.jisoo.identityvalarmapp.util.customview.CustomOnOffView
 
 object BindingAdapter {

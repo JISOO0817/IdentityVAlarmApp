@@ -1,10 +1,6 @@
 package com.jisoo.identityvalarmapp.main
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
-import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,10 +8,6 @@ import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
-import com.jisoo.identityvalarmapp.util.CalendarHelper
-
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: AlarmRepository = AlarmRepository(application)
@@ -52,7 +44,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val onCloseBtnClicked: LiveData<Boolean> = _onCloseBtnClicked
 
     private val _onConfirmBtnClicked = MutableLiveData<Boolean>()
-    val onConfirmBtnClicked: LiveData<Boolean> =  _onConfirmBtnClicked
+    val onConfirmBtnClicked: LiveData<Boolean> = _onConfirmBtnClicked
 
     private val _onWarningCloseBtnClicked = MutableLiveData<Boolean>()
     val onWarningClostBtnCLicked: LiveData<Boolean> = _onWarningCloseBtnClicked
@@ -89,7 +81,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _timeSet.value = false
         _finishFlag.value = false
         _toastFlag.value = false
-        _appVer.value = application.packageManager.getPackageInfo(application.packageName, 0).versionName
+        _appVer.value =
+            application.packageManager.getPackageInfo(application.packageName, 0).versionName
 
         initSwitchStatusText()
     }
@@ -115,80 +108,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /**
-     * 캐릭터 '우산' 의 경우 생일이 음력이므로,
-     * 양력으로 변환하여 다시 리스트에 넣어줌
-     * **/
-    fun lunaList2SolarList(list: List<CharacInfo>) {
-        val calendarHelper = CalendarHelper()
-        val returnList: ArrayList<CharacInfo> = arrayListOf()
-
-        val now = Calendar.getInstance()
-        val nowYear = now.get(Calendar.YEAR).toString()
-        for (i in list) {
-            if (TextUtils.equals(i.job, "우산의영혼")) {
-                val characBirth = calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
-                returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
-            } else {
-                returnList.add(i)
-            }
-        }
-        _sortedSolarList.value = returnList.sortedBy(CharacInfo::birth)
-    }
-
-    fun checkAlarm(context: Context, list: List<CharacInfo>) {
-        if (!App.prefs.checkPreferencesStatus()) {
-            return
-        }
-
-        val closestCharacter: List<CharacInfo> = getClossetCharacList(list)
-        for (c_list in closestCharacter) {
-            c_list.executionAlarm(context, c_list.uid.toInt(), c_list.job)
-            Log.d("toggle", "turnOnTheAlarm 등록된 알람매니저 정보 :${c_list.job}, ${c_list.uid}")
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun getClossetCharacList(list: List<CharacInfo>): List<CharacInfo> {
-        val sortedList: ArrayList<CharacInfo> = ArrayList()
-        val now = Calendar.getInstance()
-        val nowMonth = now.get(Calendar.MONTH) + 1
-        val nowDay = now.get(Calendar.DAY_OF_MONTH)
-        var resultValue = nowMonth * 100 + nowDay
-
-        val resultList: ArrayList<CharacInfo> = ArrayList()
-
-        if (nowMonth == 12 && nowDay >= 27) {
-            resultValue = 0
-        }
-
-        Log.d("test","받아온 list 값:${list}")
-
-        for (bi in list) {
-            if (bi.birth.toInt() > resultValue) {
-                resultList.add(bi)
-            }
-        }
-
-        Log.d("test","resultList[0]:${resultList[0].job}")
-
-        if (nowMonth == 12 && nowDay >= 25) {
-            sortedList.add(resultList[0])
-        } else {
-            val day1 = resultList[0].birth.substring(2 until 4).toInt()
-            val day2 = resultList[1].birth.substring(2 until 4).toInt()
-
-            if (day1 == day2) {
-                sortedList.add(resultList[0])
-                sortedList.add(resultList[1])
-            } else {
-                sortedList.add(resultList[0])
-            }
-        }
-
-        return sortedList
-    }
-
+//    /**
+//     * 캐릭터 '우산' 의 경우 생일이 음력이므로,
+//     * 양력으로 변환하여 다시 리스트에 넣어줌
+//     * **/
+//    fun lunaList2SolarList(list: List<CharacInfo>) {
+//        val calendarHelper = CalendarHelper()
+//        val returnList: ArrayList<CharacInfo> = arrayListOf()
+//
+//        val now = Calendar.getInstance()
+//        val nowYear = now.get(Calendar.YEAR).toString()
+//        for (i in list) {
+//            if (TextUtils.equals(i.job, "우산의영혼")) {
+//                val characBirth = calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
+//                returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
+//            } else {
+//                returnList.add(i)
+//            }
+//        }
+//        _sortedSolarList.value = returnList.sortedBy(CharacInfo::birth)
+//    }
 
     fun writeAReview() {
         _reviewClicked.value = true
@@ -231,8 +170,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun onBackPressedMethod() {
         if (System.currentTimeMillis() > backPressedTime + 2000) {
             backPressedTime = System.currentTimeMillis()
-            _toastFlag.value =true
-            _finishFlag.value =false
+            _toastFlag.value = true
+            _finishFlag.value = false
             return
         }
         if (System.currentTimeMillis() <= backPressedTime + 2000) {

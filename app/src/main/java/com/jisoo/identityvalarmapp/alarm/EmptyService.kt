@@ -26,7 +26,8 @@ import kotlin.coroutines.coroutineContext
 class EmptyService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.d("jjs", "EmptyService onStartCommand 호출")
+
+        Log.d("tttttt", "EmptyService onStartCommand 호출")
 
         /**
          * BroadcastReceiver 로 부터 받은 데이터

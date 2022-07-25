@@ -1,8 +1,6 @@
 package com.jisoo.identityvalarmapp.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,12 +20,10 @@ import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.databinding.ActivityMainBinding
 import com.jisoo.identityvalarmapp.databinding.DialogNeedUpdateBinding
+import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.util.Const.Companion.DEFAULT_TIME
-import com.jisoo.identityvalarmapp.util.Const.Companion.DEVICE
 import com.jisoo.identityvalarmapp.util.Const.Companion.FIREBASE_VERSION
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
-import com.jisoo.identityvalarmapp.util.Const.Companion.TYPE_MOBILE
-import com.jisoo.identityvalarmapp.util.Const.Companion.TYPE_TABLET
 import com.jisoo.identityvalarmapp.util.dialog.DialogSize
 import com.jisoo.identityvalarmapp.util.dialog.Margin
 import com.jisoo.identityvalarmapp.util.dialog.NeedUpdateDialog
@@ -38,15 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var needUpdateBinding: DialogNeedUpdateBinding
     private lateinit var needUpdateDialog: NeedUpdateDialog
-
+    private val runFunc = AlarmRunFunction(this)
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.loadingTheme)
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_IdentityVAlarmApp)
-
-//        divisionDevice()
 
         setUpBinding()
         setUpView()
@@ -55,34 +49,6 @@ class MainActivity : AppCompatActivity() {
         getFirebaseAppVersion()
     }
 
-//    /**
-//     * 휴대폰과 태블릿으로 분류
-//     * 휴대폰 -> 세로모드
-//     * 태블릿 -> 가로모드
-//     * **/
-//    @SuppressLint("SourceLockedOrientationActivity")
-//    fun divisionDevice() {
-//
-//        val portrait_width_pixel = Math.min(this.getResources().getDisplayMetrics().widthPixels, this.getResources().getDisplayMetrics().heightPixels)
-//        val portrait_height_pixel = Math.max(this.getResources().getDisplayMetrics().widthPixels, this.getResources().getDisplayMetrics().heightPixels)
-//        val dots_per_virtual_inch = this.getResources().getDisplayMetrics().densityDpi
-//        val virtual_width_inch = portrait_width_pixel/dots_per_virtual_inch
-//        val virtual_height_inch = portrait_height_pixel/dots_per_virtual_inch
-//        val virtual_diagonal_inch = Math.sqrt(Math.pow(virtual_width_inch.toDouble(), 2.0) + Math.pow(virtual_height_inch.toDouble(), 2.0))
-//
-//        if (virtual_diagonal_inch < 7) {
-//            //is phone
-//            // 화면 세로로 고정
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//            DEVICE = TYPE_MOBILE
-//        } else {
-//            //is tablet
-//            // 화면 가로로 고정
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//            DEVICE = TYPE_TABLET
-//        }
-//
-//    }
 
     fun setUpBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -95,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             false
         )
 
-        needUpdateDialog = NeedUpdateDialog(this,needUpdateBinding,this.viewModel)
+        needUpdateDialog = NeedUpdateDialog(this, needUpdateBinding, this.viewModel)
         needUpdateBinding.viewModel = viewModel
         needUpdateBinding.lifecycleOwner = this
 
@@ -106,7 +72,6 @@ class MainActivity : AppCompatActivity() {
             resources.getString(R.string.main_activity_first_tab),
             resources.getString(R.string.main_activity_second_tab)
         )
-
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = tabTextList[position]
@@ -121,31 +86,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpObserver() {
         viewModel.characList.observe(this, {
-            if(it.isNotEmpty()){
-                viewModel.lunaList2SolarList(it)
+            if (it.isNotEmpty()) {
+                runFunc.checkAlarm(it)
             }
         })
 
-        viewModel.sortedSolarList.observe(this, {
-            viewModel.checkAlarm(this, it)
-        })
-
         viewModel.onNeedUpdateConfirmBtnClicked.observe(this, {
-            if(it == true) {
+            if (it == true) {
                 goToUpdate()
                 dismissUpdateDialog()
             }
         })
 
         viewModel.toastFlag.observe(this, {
-            if(it == true) {
+            if (it == true) {
                 showFinishToast()
             }
-
         })
 
         viewModel.finishFlag.observe(this, {
-            if( it == true) {
+            if (it == true) {
                 finish()
             }
         })
@@ -167,8 +127,11 @@ class MainActivity : AppCompatActivity() {
      * firebase remote config 버전 가져오기기
      * **/
     private fun getFirebaseAppVersion() {
+
+        Log.d("version", "getFirebaseAppVersion 호출")
         val myAppVersion = packageManager.getPackageInfo(packageName, 0).versionName
 
+//        lifecycleScope.launch(Dispatchers.IO) {
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(0)
@@ -177,15 +140,17 @@ class MainActivity : AppCompatActivity() {
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
             .addOnCompleteListener { task ->
                 firebaseRemoteConfig.fetchAndActivate()
+
                 if (task.isSuccessful) {
                     val firebase = firebaseRemoteConfig.getString(FIREBASE_VERSION)
-                    if(checkNeedUpdate(myAppVersion,firebase)) {
+                    if (checkNeedUpdate(myAppVersion, firebase)) {
                         showNeedUpdateDialog()
                     }
                 } else {
                     Log.d("version", "fail")
                 }
             }
+//        }
     }
 
     /**
@@ -240,7 +205,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun dismissUpdateDialog() {
-        if(needUpdateDialog.isShowing) {
+        if (needUpdateDialog.isShowing) {
             needUpdateDialog.dismiss()
         }
     }
@@ -286,7 +251,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFinishToast() {
-        Toast.makeText(this, R.string.main_activity_finish_txt,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.main_activity_finish_txt, Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.room.ColumnInfo
@@ -33,78 +34,4 @@ data class CharacInfo(
     @ColumnInfo var img: Int,
     @ColumnInfo var job: String,
     @ColumnInfo var birth: String
-) : Parcelable {
-
-
-    @SuppressLint("SimpleDateFormat")
-    fun executionAlarm(context: Context, uid: Int, job: String) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context,AlarmBroadcast::class.java)
-
-        intent.putExtra(UID_KEY,uid.toString())
-        intent.putExtra(JOB_KEY,job)
-
-        Log.d("jjs","uid:${uid},job:${job}")
-
-        val pendingIntent = PendingIntent.getBroadcast(context, uid,intent,checkVersionFlags())
-
-        val month = birth.substring(0 until 2).toInt()
-        val day = birth.substring(2 until 4).toInt()
-
-        val now = Calendar.getInstance()
-        val nowMonth = now.get(Calendar.MONTH) + 1
-
-        val checkNumBol = month.toString().isDigitsOnly()
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-
-        if(checkNumBol) {
-            calendar.set(Calendar.MONTH,month-1)
-        }
-
-        val prefsTime = App.prefs.getTime(TIME_SP,"")
-        val arr = prefsTime.split(" : ")
-
-        val hour = arr[0].toInt()
-        val minute = arr[1].toInt()
-
-        if(nowMonth == 12 && month == 1) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
-        } else {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR])
-        }
-        calendar.set(Calendar.DAY_OF_MONTH,day)
-        calendar.set(Calendar.HOUR_OF_DAY,hour)
-        calendar.set(Calendar.MINUTE,minute)
-        calendar.set(Calendar.SECOND,0)
-        calendar.set(Calendar.MILLISECOND,0)
-
-        /**
-         * 버전에 따른 Doze 모드 구분
-         * **/
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
-    }
-
-    private fun checkVersionFlags() : Int {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-    }
-
-    fun removeAlarmManager(context: Context, removeUid: Int) {
-        val alarmManager: AlarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AlarmBroadcast::class.java)
-        val amPendingIntent = PendingIntent.getBroadcast(
-            context,
-            removeUid,
-            intent,
-            checkVersionFlags()
-        )
-        alarmManager.cancel(amPendingIntent)
-    }
-
-}
+) : Parcelable

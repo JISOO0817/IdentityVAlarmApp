@@ -21,7 +21,9 @@ import com.jisoo.identityvalarmapp.databinding.DialogOnoffWarningBinding
 import com.jisoo.identityvalarmapp.databinding.DialogTimeeditBinding
 import com.jisoo.identityvalarmapp.databinding.FragmentSettingBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
+import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.*
@@ -44,6 +46,8 @@ class SettingFragment : Fragment() {
 
     private lateinit var licenseBinding: DialogLicenseBinding
     private lateinit var licenseDialog: LicenseDialog
+
+    private lateinit var runFunc: AlarmRunFunction
 
     var hour: Int? = null
     var minute: Int? = null
@@ -74,6 +78,7 @@ class SettingFragment : Fragment() {
         setUpBinding()
         setUpView()
         setUpObserver()
+        runFunc = AlarmRunFunction(requireActivity())
 
         return binding.root
     }
@@ -104,9 +109,8 @@ class SettingFragment : Fragment() {
     }
 
     private fun setUpObserver() {
-        model.sortedSolarList.observe(viewLifecycleOwner, {
+        model.characList.observe(viewLifecycleOwner, {
             solarList = it
-            Log.d("test","solarList:${solarList}")
         })
 
         model.time.observe(viewLifecycleOwner, {
@@ -190,15 +194,17 @@ class SettingFragment : Fragment() {
     }
 
     private fun turnOffTheAlarm() {
-        val nearList: List<CharacInfo> = model.getClossetCharacList(solarList)
-        for (charac in nearList) {
-            charac.removeAlarmManager(requireActivity(), removeUid = charac.uid.toInt())
-            Log.d("toggle", "tunOffTheAlarm 삭제된 알람매니저 정보 :${charac.job}, ${charac.uid}")
+        val nearList = runFunc.getClossetCharacList(solarList)
+
+        for(i in nearList.indices) {
+            runFunc.removeAlarmManager(nearList[i].uid.toInt())
+            Log.d("tttttt","꺼진알람 :${nearList[i].job}")
         }
+
     }
 
     private fun turnOnTheAlarm() {
-        model.checkAlarm(requireActivity(), solarList)
+        runFunc.checkAlarm(solarList)
     }
 
     private fun checkOnOffStatus() {
@@ -211,7 +217,7 @@ class SettingFragment : Fragment() {
 
     private fun updateAlarmManager() {
         Log.d("toggle", "updateAlarmManager 호출")
-        model.checkAlarm(requireActivity(), solarList)
+        runFunc.checkAlarm(solarList)
     }
 
     private fun updateDBTimeInfo() {
@@ -339,7 +345,7 @@ class SettingFragment : Fragment() {
     private fun getConvertDpByRes(dpSize: Float): Float {
         val weight: Float
         val dm = DisplayMetrics()
-        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(dm)
+        requireActivity().windowManager.defaultDisplay.getMetrics(dm)
         val width = dm.widthPixels
         val wi = width.toDouble() / dm.xdpi.toDouble()
         weight = (wi / 2.86817851).toFloat()

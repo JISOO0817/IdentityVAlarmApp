@@ -4,8 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
+import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
@@ -16,7 +15,6 @@ class App : Application() {
         val ID = CHANNEL_ID
         lateinit var prefs: PrefsManager
     }
-
 
     override fun onCreate() {
         super.onCreate()
@@ -35,14 +33,18 @@ class App : Application() {
     class PrefsManager(context: Context) {
         private val switchPrefs = context.getSharedPreferences(SWITCH_SP, Context.MODE_PRIVATE)
         private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
-
+        private val characBirth = context.getSharedPreferences(BIRTH_SP, Context.MODE_PRIVATE)
 
         fun setBoolean(key: String, value: Boolean) {
             switchPrefs.edit().putBoolean(key, value).apply()
         }
 
-        fun getBoolean(key: String, defValue: Boolean): Boolean {
-            return switchPrefs.getBoolean(key, defValue)
+        fun setCharacBirth(key: String, value: String) {
+            characBirth.edit().putString(key, value).apply()
+        }
+
+        fun getCharacBirth(key: String, defValue: String): String {
+            return characBirth.getString(key, defValue).toString()
         }
 
         fun setTime(key: String, value: String) {

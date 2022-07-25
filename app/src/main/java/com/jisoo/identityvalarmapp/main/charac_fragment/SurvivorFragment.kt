@@ -12,11 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jisoo.identityvalarmapp.databinding.FragmentSurvivorBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
+import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
 
 class SurvivorFragment : Fragment(){
 
     private lateinit var binding: FragmentSurvivorBinding
+
+    private lateinit var runFunc: AlarmRunFunction
 
     private lateinit var janAdapter: ListAdapter
     private lateinit var febAdapter: ListAdapter
@@ -63,9 +66,12 @@ class SurvivorFragment : Fragment(){
     }
 
     private fun setUpObserver() {
-        model.sortedSolarList.observe(viewLifecycleOwner, {
-            sortedRvByMonth(it)
+        runFunc = AlarmRunFunction(requireActivity())
+
+        model.characList.observe(viewLifecycleOwner, {
+            sortedRvByMonth(runFunc.returnBySortingTheList(it))
         })
+
     }
 
     private fun initAdapter() {

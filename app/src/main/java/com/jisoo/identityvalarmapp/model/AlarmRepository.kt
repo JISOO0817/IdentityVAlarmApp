@@ -14,7 +14,7 @@ class AlarmRepository(application: Application) {
         characList = alarmDao.getAllData()
     }
 
-    fun getCharacList(callback: (List<CharacInfo>) -> Unit) {
+    fun getCharacList(callback: (List<CharacInfo>) -> Unit): Unit {
         callback(alarmDao.getAllDataList())
     }
 

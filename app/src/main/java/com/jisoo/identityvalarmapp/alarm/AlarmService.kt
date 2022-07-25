@@ -8,37 +8,31 @@ import android.net.Uri
 import android.os.Build
 
 import android.os.IBinder
-import android.text.TextUtils
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.text.isDigitsOnly
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.model.AlarmRepository
+import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
-import com.jisoo.identityvalarmapp.util.CalendarHelper
+import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_NAME
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
-import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
 import kotlinx.coroutines.*
 
-import java.util.*
-import kotlin.collections.ArrayList
-
 class AlarmService : Service() {
-
     private val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
-
+    private lateinit var runFunc: AlarmRunFunction
     /**
      * 안드로이드 버전 O부터 noti를 등록할 때 channel id를 등록해야함.
      * (하지 않으면 bad notification for startforeground error 발생)
      * */
-
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        Log.d("tttttt","AlarmService onStartCommand")
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
         val job = intent.getStringExtra(JOB_KEY)
-
+        runFunc = AlarmRunFunction(this)
         val pendingIntent: PendingIntent
 
         val res = resources
@@ -46,8 +40,9 @@ class AlarmService : Service() {
 
         checkIsInstalled()
         checkSwitchStatus(uid)
-        Log.d("noti", "is installed: ${checkIsInstalled()}}")
 
+
+        Log.d("tttttt","checkSwitchStatus:${checkSwitchStatus(uid)}")
 
         /**
          * 알람 누르면
@@ -55,14 +50,16 @@ class AlarmService : Service() {
         if (!checkIsInstalled()) {
             //마켓
             val playIntent: Intent
-            val url = resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
+            val url =
+                resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
             playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pendingIntent = PendingIntent.getActivity(this, uid, playIntent, checkVersionFlags())
 
         } else {
             //앱열기
-            val goIntent = packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
+            val goIntent =
+                packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
             goIntent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(goIntent)
             pendingIntent = PendingIntent.getActivity(this, uid, goIntent, checkVersionFlags())
@@ -82,6 +79,7 @@ class AlarmService : Service() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         channelManager.createNotificationChannel(channel)
 
+
         /**
          * 생일알람
          * **/
@@ -93,9 +91,15 @@ class AlarmService : Service() {
             .setContentIntent(pendingIntent)
             .build()
 
-
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(uid, birthAlarm)
+
+
+        /**
+         * 알람이 울리고 나서, 오늘 날짜를 sharedPreference 에 저장함
+         * **/
+        val resultValue = runFunc.getTodayValue()
+        App.prefs.setCharacBirth(BIRTH_SP, resultValue.toString())
 
         coroutineScope.launch {
             val repository = AlarmRepository(application)
@@ -105,23 +109,25 @@ class AlarmService : Service() {
             }
 
             withContext(Dispatchers.Main) {
-                managementAlarm(uid, list)
+//                managementAlarm(uid, list)
+                runFunc.checkAlarm(list)
+                runFunc.removeAlarmManager(uid)
             }
         }
         return START_STICKY
     }
 
+
     /**
      * 버전 s 이상인경우 FLAG_MUTABLE 또는 FLAG_IMMUTABLE 이 필수이기 때문에 버전분기로 나눠줌
      * **/
-    private fun checkVersionFlags() : Int {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    private fun checkVersionFlags(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.FLAG_MUTABLE
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
     }
-
 
     /**
      * 제5인격 앱 설치여부 체크
@@ -140,7 +146,7 @@ class AlarmService : Service() {
 
     private fun checkSwitchStatus(uid: Int) {
         if (!App.prefs.checkPreferencesStatus()) {
-            removeAlarmManager(uid)
+            runFunc.removeAlarmManager(uid)
         } else {
             return
         }
@@ -152,144 +158,6 @@ class AlarmService : Service() {
     // 작은 아이콘은 롤리팝 및 상위 안드로이드 버전에서 벡터 아이콘을 써야함
     private fun versionCheck(): Int {
         return R.drawable.svg_img
-    }
-
-    private fun managementAlarm(uid: Int, alarmList: List<CharacInfo>) {
-        val returnList: ArrayList<CharacInfo> = arrayListOf()
-        val now = Calendar.getInstance()
-        val nowYear = now.get(Calendar.YEAR).toString()
-        for (i in alarmList) {
-            if (TextUtils.equals(i.job, "우산의영혼")) {
-                val calendarHelper = CalendarHelper()
-                val characBirth =
-                    calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
-                returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
-            } else {
-                returnList.add(i)
-            }
-        }
-        val sortedList = getNearestBirthday(returnList)
-
-        val calendar = setCalendarInfo(sortedList)
-
-        val Cuid = sortedList[0].uid
-        val Cjob = sortedList[0].job
-
-        val intent2 = Intent(this, AlarmBroadcast::class.java)
-        Intent().also {
-            intent2.putExtra(UID_KEY, Cuid.toString())
-            intent2.putExtra(JOB_KEY, Cjob)
-        }
-
-        val pendingIntent2 = PendingIntent.getBroadcast(
-            this,
-            Cuid.toInt(),
-            intent2,
-            checkVersionFlags()
-        )
-
-        val alarmManager: AlarmManager =
-            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent2
-        )
-        Log.d("samsung", "새로 등록된 알람 $Cjob")
-
-        removeAlarmManager(uid)
-    }
-
-    private fun getNearestBirthday(alarmList: List<CharacInfo>): List<CharacInfo> {
-        Log.d("samsung","alarmService : 받아온 알람 리스트 = ${alarmList}")
-
-        val now = Calendar.getInstance()
-        val nowMonth = now.get(Calendar.MONTH) + 1
-        val nowDay = now.get(Calendar.DAY_OF_MONTH)
-
-        var resultValue = nowMonth * 100 + nowDay
-        val resultList: ArrayList<CharacInfo> = ArrayList()
-
-        if (nowMonth == 12 && nowDay >= 27) {
-            resultValue = 0
-        }
-
-        for (bi in alarmList) {
-            if (bi.birth.toInt() > resultValue) {
-                resultList.add(bi)
-            }
-        }
-
-        val sortedList: ArrayList<CharacInfo> = ArrayList()
-
-        if (nowMonth == 12 && nowDay >= 25) {
-            sortedList.add(resultList[0])
-        } else {
-            val day1 = resultList[0].birth.substring(2 until 4).toInt()
-            val day2 = resultList[1].birth.substring(2 until 4).toInt()
-
-            if (day1 == day2) {
-                sortedList.add(resultList[0])
-                sortedList.add(resultList[1])
-            } else {
-                sortedList.add(resultList[0])
-            }
-
-            Log.d("samsung","alarmService : 가장 가까운 알람 = ${sortedList}")
-        }
-
-        return sortedList
-    }
-
-    private fun setCalendarInfo(sortedList: List<CharacInfo>): Calendar {
-        val month = sortedList[0].birth.substring(0 until 2).toInt()
-        val day = sortedList[0].birth.substring(2 until 4).toInt()
-
-        val now = Calendar.getInstance()
-        val nowMonth = now.get(Calendar.MONTH) + 1
-
-        val checkNumBol = month.toString().isDigitsOnly()
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        if (checkNumBol) {
-            calendar.set(Calendar.MONTH, month - 1)
-        }
-
-        val prefsTime = App.prefs.getTime(TIME_SP, "")
-        val arr = prefsTime.split(" : ")
-
-        val hour = arr[0].toInt()
-        val minute = arr[1].toInt()
-
-        if (nowMonth == 12 && month == 1) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
-        } else {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR])
-        }
-        calendar.set(Calendar.DAY_OF_MONTH, day)
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar
-    }
-
-    /**
-     * 노티를 띄우고난 후 기존에 등록했던(uid비교) 알람매니저 삭제
-     * **/
-    private fun removeAlarmManager(removeUid: Int) {
-        val alarmManager: AlarmManager =
-            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(applicationContext, AlarmBroadcast::class.java)
-        val amPendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            removeUid,
-            intent,
-            checkVersionFlags()
-        )
-        alarmManager.cancel(amPendingIntent)
     }
 
     override fun onBind(p0: Intent?): IBinder? {

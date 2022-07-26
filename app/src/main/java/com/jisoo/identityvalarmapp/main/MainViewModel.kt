@@ -13,9 +13,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: AlarmRepository = AlarmRepository(application)
     var characList: LiveData<List<CharacInfo>> = repository.characList
 
-    private val _sortedSolarList = MutableLiveData<List<CharacInfo>>()
-    val sortedSolarList: LiveData<List<CharacInfo>> = _sortedSolarList
-
     private val _time = MutableLiveData<String>()
     val time: LiveData<String> = _time
 
@@ -107,27 +104,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 getApplication<Application>().resources.getString(R.string.fragment_setting_alarm_off_txt)
         }
     }
-
-//    /**
-//     * 캐릭터 '우산' 의 경우 생일이 음력이므로,
-//     * 양력으로 변환하여 다시 리스트에 넣어줌
-//     * **/
-//    fun lunaList2SolarList(list: List<CharacInfo>) {
-//        val calendarHelper = CalendarHelper()
-//        val returnList: ArrayList<CharacInfo> = arrayListOf()
-//
-//        val now = Calendar.getInstance()
-//        val nowYear = now.get(Calendar.YEAR).toString()
-//        for (i in list) {
-//            if (TextUtils.equals(i.job, "우산의영혼")) {
-//                val characBirth = calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
-//                returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
-//            } else {
-//                returnList.add(i)
-//            }
-//        }
-//        _sortedSolarList.value = returnList.sortedBy(CharacInfo::birth)
-//    }
 
     fun writeAReview() {
         _reviewClicked.value = true

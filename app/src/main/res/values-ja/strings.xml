@@ -1,42 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">생알</string>
+    <string name="app_name">第5人格アラーム</string>
     <string name="app_channelId">com.jisoo.identityvalarmapp</string>
-    <string name="app_channelName">백그라운드 서비스(알림을 끄는 경우 알람이 울리지 않아요!)</string>
+    <string name="app_channelName">バックグラウンドサービス(通知をオフにするとアラームが鳴りません！)</string>
 
     <string name="identityv_Name">com.netease.idv.googleplay</string>
     <string name="identityv_MarketName">market://details?id=</string>
 
-    <string name="january_txt">1월</string>
-    <string name="february_txt">2월</string>
-    <string name="march_txt">3월</string>
-    <string name="april_txt">4월</string>
-    <string name="may_txt">5월</string>
-    <string name="june_txt">6월</string>
-    <string name="july_txt">7월</string>
-    <string name="august_txt">8월</string>
-    <string name="september_txt">9월</string>
-    <string name="october_txt">10월</string>
-    <string name="november_txt">11월</string>
-    <string name="december_txt">12월</string>
+    <string name="january_txt">1月</string>
+    <string name="february_txt">2月</string>
+    <string name="march_txt">3月</string>
+    <string name="april_txt">4月</string>
+    <string name="may_txt">5月</string>
+    <string name="june_txt">6月</string>
+    <string name="july_txt">7月</string>
+    <string name="august_txt">8月</string>
+    <string name="september_txt">9月</string>
+    <string name="october_txt">10月</string>
+    <string name="november_txt">11月</string>
+    <string name="december_txt">12月</string>
 
     <!-- =================================================================================================================-->
     <!--                                          common                                                                  -->
     <!-- =================================================================================================================-->
-    <string name="common_close">닫기</string>
-    <string name="common_confirm">확인</string>
+    <string name="common_close">閉じる</string>
+    <string name="common_confirm">確認</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Service                                                          -->
     <!-- =================================================================================================================-->
-    <string name="service_noti_title_txt">오늘은 \'%s\'의 생일이에요!</string>
-    <string name="service_noti_subtitle_txt">알람을 누르면 제5인격 앱으로 이동합니다 :)</string>
+    <string name="service_noti_title_txt">今日は \'%s\'の誕生日です!</string>
+
+    <string name="service_noti_subtitle_txt">アラームを押すと第5人格アプリに移動します :)</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Main Activity                                                           -->
     <!-- =================================================================================================================-->
-    <string name="main_activity_first_tab">생일</string>
-    <string name="main_activity_second_tab">설정</string>
-    <string name="main_activity_finish_txt">\'뒤로\'버튼을 한 번 더 누르시면 앱이 종료됩니다.</string>
+    <string name="main_activity_first_tab">誕生日</string>
+    <string name="main_activity_second_tab">設定</string>
+    <string name="main_activity_finish_txt">\'戻る\'ボタンをもう一度押すとアプリが終了します</string>
 
 
     <!-- =================================================================================================================-->
@@ -48,38 +50,38 @@
     <!-- =================================================================================================================-->
     <!--                                          Setting Fragment                                                        -->
     <!-- =================================================================================================================-->
-    <string name="fragment_setting_alarm_title_txt">알람</string>
-    <string name="fragment_setting_alarm_onoff_txt">알람ON/OFF</string>
-    <string name="fragment_setting_alarm_on_txt">(알람ON)</string>
-    <string name="fragment_setting_alarm_off_txt">(알람OFF)</string>
-    <string name="fragment_setting_alarm_time_edit_txt">알람 시간 변경</string>
-    <string name="fragment_setting_app_info_txt">앱 정보</string>
-    <string name="fragment_setting_verion_info_txt">버전 정보</string>
-    <string name="fragment_setting_open_source_txt">오픈 소스 라이선스</string>
-    <string name="fragment_setting_etc_txt">기타</string>
-    <string name="fragment_setting_review_txt">리뷰 남기기</string>
-    <string name="fragment_setting_feedback_mail_txt">피드백 메일 보내기</string>
+    <string name="fragment_setting_alarm_title_txt">アラーム</string>
+    <string name="fragment_setting_alarm_onoff_txt">アラームON/OFF</string>
+    <string name="fragment_setting_alarm_on_txt">(アラームON)</string>
+    <string name="fragment_setting_alarm_off_txt">(アラームOFF)</string>
+    <string name="fragment_setting_alarm_time_edit_txt">アラーム時間の変更</string>
+    <string name="fragment_setting_app_info_txt">アプリ情報</string>
+    <string name="fragment_setting_verion_info_txt">バージョン情報</string>
+    <string name="fragment_setting_open_source_txt">オープンソースライセンス</string>
+    <string name="fragment_setting_etc_txt">その他</string>
+    <string name="fragment_setting_review_txt">レビューを書く</string>
+    <string name="fragment_setting_feedback_mail_txt">フィードバックメールを送信</string>
     <string name="fragment_setting_email_add_txt">dkadnsk00@gmail.com</string>
-    <string name="fragment_setting_email_feedback_info_txt">[생알] 피드백 메일</string>
+    <string name="fragment_setting_email_feedback_info_txt">[誕生日アラーム] フィードバックメール</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog Alarm Time Edit                                                  -->
     <!-- =================================================================================================================-->
-    <string name="dialog_alarm_title_txt">알람 시간 변경</string>
-    <string name="dialog_alarm_edit_info_txt">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>
+    <string name="dialog_alarm_title_txt">アラーム時間の変更</string>
+    <string name="dialog_alarm_edit_info_txt">アラーム時間を選択して確認ボタンを押すと、\nアラームが鳴る時間が変わります :)</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog On Off Warning                                                   -->
     <!-- =================================================================================================================-->
-    <string name="dialog_onoff_title_txt">알람 시간 변경</string>
-    <string name="dialog_onoff_info_txt">알람이 켜진 상태에서만 시간을 변경할 수 있어요.\n알람을 켠 후 변경해주세요 :)</string>
+    <string name="dialog_onoff_title_txt">アラーム時間の変更</string>
+    <string name="dialog_onoff_info_txt">アラームがオンの状態でのみ時間を変更できます。\nアラームをオンにしてから変更してください :)</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog Need Update                                                      -->
     <!-- =================================================================================================================-->
-    <string name="dialog_need_update_title_txt">업데이트 안내</string>
-    <string name="dialog_need_update_info_txt">최신버전으로의 업데이트가 필요해요.\n보다 나은 서비스를 위해 앱을 업데이트 해주세요 :)</string>
-    <string name="dialog_need_update_go_update_txt">업데이트 하기</string>
+    <string name="dialog_need_update_title_txt">アップデートガイド</string>
+    <string name="dialog_need_update_info_txt">最新バージョンへのアップデートが必要です。\nより良いサービスのためにアプリを更新してください :)</string>
+    <string name="dialog_need_update_go_update_txt">更新する</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog License                                                          -->

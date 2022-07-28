@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:monthText="1월"/>
+                app:monthText="@string/january_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/feb_view"
@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/jan_view"
-                app:monthText="2월"/>
+                app:monthText="@string/february_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/march_view"
@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/feb_view"
-                app:monthText="3월"/>
+                app:monthText="@string/march_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/april_view"
@@ -80,7 +80,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/march_view"
-                app:monthText="4월"/>
+                app:monthText="@string/april_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/may_view"
@@ -89,7 +89,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/april_view"
-                app:monthText="5월"/>
+                app:monthText="@string/may_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/june_view"
@@ -98,7 +98,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/may_view"
-                app:monthText="6월"/>
+                app:monthText="@string/june_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/july_view"
@@ -107,7 +107,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/june_view"
-                app:monthText="7월"/>
+                app:monthText="@string/july_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/aug_view"
@@ -116,7 +116,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/july_view"
-                app:monthText="8월"/>
+                app:monthText="@string/august_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/sep_view"
@@ -125,7 +125,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/aug_view"
-                app:monthText="9월"/>
+                app:monthText="@string/september_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/oct_view"
@@ -134,7 +134,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sep_view"
-                app:monthText="10월"/>
+                app:monthText="@string/october_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/nov_view"
@@ -143,7 +143,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/oct_view"
-                app:monthText="11월"/>
+                app:monthText="@string/november_txt"/>
 
             <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
                 android:id="@+id/dec_view"
@@ -152,7 +152,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nov_view"
-                app:monthText="12월"/>
+                app:monthText="@string/december_txt"/>
 
 <!--            <TextView-->
 <!--                android:id="@+id/today_birth_tv"-->

@@ -196,7 +196,7 @@ data class AlarmRunFunction(val context: Context) {
         val now = Calendar.getInstance()
         val nowYear = now.get(Calendar.YEAR).toString()
         for (i in list) {
-            if (TextUtils.equals(i.job, "우산의영혼")) {
+            if (TextUtils.equals(i.uid.toString(), "106")) {
                 val characBirth = calendarHelper.lunar2Solar(nowYear + i.birth).substring(4 until 8)
                 returnList.add(CharacInfo(i.uid, i.category, i.img, i.job, characBirth))
             } else {

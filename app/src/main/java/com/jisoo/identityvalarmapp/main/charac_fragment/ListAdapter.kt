@@ -38,13 +38,12 @@ class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunVi
     }
 
     inner class HunViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root){
-
         @SuppressLint("ResourceAsColor", "SetTextI18n")
         fun bind(info: CharacInfo) {
 
             val bDay = info.birth.substring(2 until 4).toInt()
 
-            binding.birthDayTv.text = bDay.toString() +"일"
+            binding.birthDayTv.text = bDay.toString()
             binding.birthDayTv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
             Glide.with(context)
                 .load(info.img)

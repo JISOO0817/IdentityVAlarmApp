@@ -1,148 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.jisoo.identityvalarmapp.main.MainViewModel" />
 
-        <import type="com.jisoo.identityvalarmapp.model.CharacInfo"/>
+        <import type="com.jisoo.identityvalarmapp.model.CharacInfo" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/gray_93">
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
-            android:id="@+id/alarm_info"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="h,360:52"
-            app:titleName="@string/fragment_setting_alarm_title_txt"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomOnOffView
-            android:id="@+id/onoff_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:on_switch_clicked="@{()->viewModel.onSwitchClicked()}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alarm_info"
-            app:layout_constraintDimensionRatio="h,360:44"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
+                android:id="@+id/alarm_info"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,360:52"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleName="@string/fragment_setting_alarm_title_txt" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-            android:id="@+id/alarm_clock_edit_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onoff_view"
-            app:layout_constraintDimensionRatio="h,360:44"
-            app:subTitleName="@string/fragment_setting_alarm_time_edit_txt"
-            android:foreground="?attr/selectableItemBackground"
-            app:subExist="1"
-            android:onClick="@{()->viewModel.onAlarmTimeEditClicked()}"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomOnOffView
+                android:id="@+id/onoff_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:on_switch_clicked="@{()->viewModel.onSwitchClicked()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alarm_info" />
 
-        <View
-            android:id="@+id/first_empty_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alarm_clock_edit_view"
-            app:layout_constraintDimensionRatio="h,360:8"
-            android:background="@color/gray_93"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/alarm_clock_edit_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->viewModel.onAlarmTimeEditClicked()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/onoff_view"
+                app:subExist="1"
+                app:subTitleName="@string/fragment_setting_alarm_time_edit_txt" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
-            android:id="@+id/app_info_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/first_empty_view"
-            app:layout_constraintDimensionRatio="h,360:52"
-            app:titleName="@string/fragment_setting_app_info_txt"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/alarm_sound_set_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> viewModel.onNotiVolumeEditClicked()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alarm_clock_edit_view"
+                app:subTitleName="@string/fragment_setting_alarm_sound_txt" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-            android:id="@+id/version_info_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_info_view"
-            app:layout_constraintDimensionRatio="h,360:44"
-            app:subTitleName="@string/fragment_setting_verion_info_txt"
-            app:subExist="1"
-            app:subText="@{viewModel.appVer}"/>
+            <View
+                android:id="@+id/first_empty_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/gray_93"
+                app:layout_constraintDimensionRatio="h,360:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alarm_sound_set_view" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-            android:id="@+id/license_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/version_info_view"
-            app:layout_constraintDimensionRatio="h,360:44"
-            android:foreground="?attr/selectableItemBackground"
-            app:subTitleName="@string/fragment_setting_open_source_txt"
-            android:onClick="@{()->viewModel.onLicenseBtnClicked()}"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
+                android:id="@+id/app_info_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,360:52"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/first_empty_view"
+                app:titleName="@string/fragment_setting_app_info_txt" />
 
-        <View
-            android:id="@+id/second_empty_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/license_view"
-            app:layout_constraintDimensionRatio="h,360:8"
-            android:background="@color/gray_93"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/version_info_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_view"
+                app:subExist="1"
+                app:subText="@{viewModel.appVer}"
+                app:subTitleName="@string/fragment_setting_verion_info_txt" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
-            android:id="@+id/etc_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/second_empty_view"
-            app:layout_constraintDimensionRatio="h,360:52"
-            app:titleName="@string/fragment_setting_etc_txt"/>
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/license_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->viewModel.onLicenseBtnClicked()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/version_info_view"
+                app:subTitleName="@string/fragment_setting_open_source_txt" />
 
-<!--        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView-->
-<!--            android:id="@+id/develop_info"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/etc_view"-->
-<!--            app:layout_constraintDimensionRatio="h,360:44"-->
-<!--            app:subTitleName="개발자 정보"/>-->
+            <View
+                android:id="@+id/second_empty_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/gray_93"
+                app:layout_constraintDimensionRatio="h,360:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/license_view" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-            android:id="@+id/review_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etc_view"
-            app:layout_constraintDimensionRatio="h,360:44"
-            app:subTitleName="@string/fragment_setting_review_txt"
-            android:foreground="?attr/selectableItemBackground"
-            android:onClick="@{() -> viewModel.writeAReview()}" />
+            <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
+                android:id="@+id/etc_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,360:52"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/second_empty_view"
+                app:titleName="@string/fragment_setting_etc_txt" />
 
-        <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-            android:id="@+id/feedback_mail_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review_view"
-            app:layout_constraintDimensionRatio="h,360:44"
-            app:subTitleName="@string/fragment_setting_feedback_mail_txt"
-            android:foreground="?attr/selectableItemBackground"
-            android:onClick="@{() -> viewModel.feedbackView()}" />
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/review_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> viewModel.writeAReview()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etc_view"
+                app:subTitleName="@string/fragment_setting_review_txt" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
+                android:id="@+id/feedback_mail_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> viewModel.feedbackView()}"
+                app:layout_constraintDimensionRatio="h,360:44"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/review_view"
+                app:subTitleName="@string/fragment_setting_feedback_mail_txt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>

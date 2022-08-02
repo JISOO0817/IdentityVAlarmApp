@@ -27,7 +27,7 @@ class EmptyService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
-        Log.d("tttttt", "EmptyService onStartCommand 호출")
+//        Log.d("tttttt", "EmptyService onStartCommand 호출")
 
         /**
          * BroadcastReceiver 로 부터 받은 데이터
@@ -45,7 +45,7 @@ class EmptyService : Service() {
          * 채널생성
          * **/
         val channel =
-            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, checkAlarmImportance())
 
         val channelManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -62,6 +62,15 @@ class EmptyService : Service() {
         stopSelf()
 
         return START_NOT_STICKY
+    }
+
+    private fun checkAlarmImportance(): Int {
+        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+            0 or 50 -> NotificationManager.IMPORTANCE_LOW
+            100 -> NotificationManager.IMPORTANCE_DEFAULT
+            else -> NotificationManager.IMPORTANCE_LOW
+        }
+
     }
 
     override fun onBind(p0: Intent?): IBinder? {

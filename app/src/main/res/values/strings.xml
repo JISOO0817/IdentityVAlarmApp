@@ -53,6 +53,7 @@
     <string name="fragment_setting_alarm_on_txt">(알람ON)</string>
     <string name="fragment_setting_alarm_off_txt">(알람OFF)</string>
     <string name="fragment_setting_alarm_time_edit_txt">알람 시간 변경</string>
+    <string name="fragment_setting_alarm_sound_txt" translatable="false">알람 볼륨 변경</string>
     <string name="fragment_setting_app_info_txt">앱 정보</string>
     <string name="fragment_setting_verion_info_txt">버전 정보</string>
     <string name="fragment_setting_open_source_txt">오픈 소스 라이선스</string>
@@ -67,6 +68,12 @@
     <!-- =================================================================================================================-->
     <string name="dialog_alarm_title_txt">알람 시간 변경</string>
     <string name="dialog_alarm_edit_info_txt">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Alarm Volume Edit                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_alarm_volume_title_txt" translatable="false">알람 볼륨 변경</string>
+<!--    <string name="dialog_alarm_volume_edit_info_txt" translatable="false">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>-->
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog On Off Warning                                                   -->

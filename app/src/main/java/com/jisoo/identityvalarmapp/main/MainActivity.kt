@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -27,6 +28,9 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.DialogSize
 import com.jisoo.identityvalarmapp.util.dialog.Margin
 import com.jisoo.identityvalarmapp.util.dialog.NeedUpdateDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -131,26 +135,26 @@ class MainActivity : AppCompatActivity() {
         Log.d("version", "getFirebaseAppVersion 호출")
         val myAppVersion = packageManager.getPackageInfo(packageName, 0).versionName
 
-//        lifecycleScope.launch(Dispatchers.IO) {
-        val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(0)
-            .build()
-        firebaseRemoteConfig.setConfigSettingsAsync(configSettings)
-        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
-            .addOnCompleteListener { task ->
-                firebaseRemoteConfig.fetchAndActivate()
-
-                if (task.isSuccessful) {
-                    val firebase = firebaseRemoteConfig.getString(FIREBASE_VERSION)
-                    if (checkNeedUpdate(myAppVersion, firebase)) {
-                        showNeedUpdateDialog()
+        lifecycleScope.launch(Dispatchers.Default) {
+            val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+            val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build()
+            firebaseRemoteConfig.setConfigSettingsAsync(configSettings)
+            firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+                .addOnCompleteListener { task ->
+                    firebaseRemoteConfig.fetchAndActivate()
+                    if (task.isSuccessful) {
+                        val firebase = firebaseRemoteConfig.getString(FIREBASE_VERSION)
+                        if (checkNeedUpdate(myAppVersion, firebase)) {
+                            showNeedUpdateDialog()
+                        }
+                    } else {
+                        Log.d("version", "fail")
                     }
-                } else {
-                    Log.d("version", "fail")
                 }
-            }
-//        }
+        }
+
     }
 
     /**

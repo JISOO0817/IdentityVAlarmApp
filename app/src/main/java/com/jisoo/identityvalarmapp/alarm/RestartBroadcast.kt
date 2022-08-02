@@ -51,14 +51,14 @@ class RestartBroadcast : BroadcastReceiver() {
 
     private fun setAlarmmanager(context: Context) {
         runFunc = AlarmRunFunction(context)
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             val db = Room.databaseBuilder(
                 context.applicationContext,
                 AlarmDatabase::class.java,
                 context.packageName,
             ).build()
 
-            val list = db.alarmDao().getAllDataList()
+            val list = db.alarmDao().getAllData()
 
             withContext(Dispatchers.Main) {
                 runFunc.checkAlarm(list)

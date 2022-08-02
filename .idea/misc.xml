@@ -22,12 +22,16 @@
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/activity_main.xml" value="0.34791666666666665" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/custom_birthday_view.xml" value="0.34791666666666665" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/custom_onoff_view.xml" value="0.34791666666666665" />
+        <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/custom_seekbar_layout.xml" value="0.28177083333333336" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/custom_subtitle_view.xml" value="0.35208333333333336" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/custom_titleview.xml" value="0.35208333333333336" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_birthinfo.xml" value="0.35208333333333336" />
+        <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_license.xml" value="0.31145833333333334" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_need_update.xml" value="0.17291666666666666" />
+        <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_noti_volume.xml" value="0.35052083333333334" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_onoff_warning.xml" value="0.17291666666666666" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_popup.xml" value="0.35208333333333336" />
+        <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/dialog_timeedit.xml" value="0.31145833333333334" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/fragment_hunter.xml" value="0.35208333333333336" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/fragment_setting.xml" value="0.35052083333333334" />
         <entry key="..\:/Users/JJS/IdentityVAlarmApp/app/src/main/res/layout-port/item_list.xml" value="0.23802083333333332" />

@@ -22,10 +22,10 @@ interface AlarmDao {
     suspend fun delete(info: CharacInfo)
 
     @Query("SELECT * FROM CharacInfo ORDER BY BIRTH ASC")
-    fun getAllData() : LiveData<List<CharacInfo>>
+    fun getAllData() : List<CharacInfo>
 
-    @Query("SELECT * FROM CharacInfo ORDER BY BIRTH ASC")
-    fun getAllDataList() : List<CharacInfo>
+//    @Query("SELECT * FROM CharacInfo ORDER BY BIRTH ASC")
+//    fun getAllDataList() : List<CharacInfo>
 
 //    @Query("SELECT * FROM CharacInfo WHERE category == 0")
 //    fun getSurvivorDataList() : LiveData<List<CharacInfo>>

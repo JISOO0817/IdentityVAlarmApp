@@ -11,13 +11,7 @@ import com.jisoo.identityvalarmapp.databinding.ListItemLicenseBinding
 import com.jisoo.identityvalarmapp.util.BindingAdapter
 
 class LicenseAdapter(val context: Context) : RecyclerView.Adapter<LicenseAdapter.LicenseViewHolder>() {
-
     private lateinit var list: List<LicenseContent>
-
-
-//    fun LicenseAdapter(contents: List<LicenseContent?>) {
-//        this.list = contents = contents
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LicenseViewHolder {
         return LicenseViewHolder(ListItemLicenseBinding.inflate(

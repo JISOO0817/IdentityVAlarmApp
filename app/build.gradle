@@ -102,4 +102,6 @@ dependencies {
     //chinesecalendar lunar -> solar
     implementation files('libs/icu4j-4_8_2.jar')
 
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
 }

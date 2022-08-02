@@ -15,11 +15,11 @@ class AlarmBroadcast : BroadcastReceiver() {
      * 호출이되면 무엇을 할 것인지 onReceive 메서드 안에 정의함
      * */
     override fun onReceive(context: Context?, intent: Intent) {
-        Log.d("tttttt","alarmBroadcast onreceive")
+//        Log.d("tttttt","alarmBroadcast onreceive")
         val uid = intent.getStringExtra(UID_KEY)
         val job = intent.getStringExtra(JOB_KEY)
 
-        Log.d("info","onReceive uid:${uid},job:${job}")
+//        Log.d("info","onReceive uid:${uid},job:${job}")
 
         val serviceIntent = Intent(context, EmptyService::class.java)
 

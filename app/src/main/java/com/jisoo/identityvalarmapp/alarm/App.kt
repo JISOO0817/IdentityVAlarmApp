@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.util.Log
 import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
@@ -23,10 +24,18 @@ class App : Application() {
     }
 
     private fun createChannel() {
-        val channel = NotificationChannel(ID, "Alarm Service", NotificationManager.IMPORTANCE_LOW)
-
+        val channel = NotificationChannel(ID, "Alarm Service",checkAlarmImportance())
         val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
+
+    }
+
+    private fun checkAlarmImportance(): Int {
+        return when(prefs.getAlarmImportance("alarm",-1)) {
+            0 or 50 -> NotificationManager.IMPORTANCE_LOW
+            100 -> NotificationManager.IMPORTANCE_DEFAULT
+            else -> NotificationManager.IMPORTANCE_LOW
+        }
 
     }
 
@@ -34,6 +43,7 @@ class App : Application() {
         private val switchPrefs = context.getSharedPreferences(SWITCH_SP, Context.MODE_PRIVATE)
         private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
         private val characBirth = context.getSharedPreferences(BIRTH_SP, Context.MODE_PRIVATE)
+        private val alarmValuePrefs = context.getSharedPreferences("alarm", Context.MODE_PRIVATE)
 
         fun setBoolean(key: String, value: Boolean) {
             switchPrefs.edit().putBoolean(key, value).apply()
@@ -53,6 +63,14 @@ class App : Application() {
 
         fun getTime(key: String, defValue: String): String {
             return timePrefs.getString(key, defValue).toString()
+        }
+
+        fun setAlarmImportance(key: String, value: Int) {
+            alarmValuePrefs.edit().putInt(key, value).apply()
+        }
+
+        fun getAlarmImportance(key: String, defValue: Int): Int {
+            return alarmValuePrefs.getInt(key, defValue)
         }
 
         fun checkPreferencesStatus(): Boolean {

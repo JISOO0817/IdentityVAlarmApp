@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="seekbar_txt">
+        <item>무음</item>
+        <item>진동</item>
+        <item>소리</item>
+        <item></item>
+    </array>
+</resources>

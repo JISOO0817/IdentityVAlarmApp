@@ -16,14 +16,10 @@ import androidx.fragment.app.activityViewModels
 import com.jisoo.identityvalarmapp.BuildConfig
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
-import com.jisoo.identityvalarmapp.databinding.DialogLicenseBinding
-import com.jisoo.identityvalarmapp.databinding.DialogOnoffWarningBinding
-import com.jisoo.identityvalarmapp.databinding.DialogTimeeditBinding
-import com.jisoo.identityvalarmapp.databinding.FragmentSettingBinding
+import com.jisoo.identityvalarmapp.databinding.*
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
-import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.*
@@ -41,6 +37,9 @@ class SettingFragment : Fragment() {
     private lateinit var timeEditBinding: DialogTimeeditBinding
     private lateinit var timeEditDialog: TimeEditDialog
 
+    private lateinit var notiVolumeBinding: DialogNotiVolumeBinding
+    private lateinit var notiVolumeDialog: NotiVolumeDialog
+
     private lateinit var warningBinding: DialogOnoffWarningBinding
     private lateinit var warningDialog: OnOffWarningDialog
 
@@ -51,6 +50,8 @@ class SettingFragment : Fragment() {
 
     var hour: Int? = null
     var minute: Int? = null
+
+    private var seekBarStatus: Int? = null
 
     private lateinit var solarList: List<CharacInfo>
 
@@ -74,6 +75,12 @@ class SettingFragment : Fragment() {
             inflater,
             R.layout.dialog_license, container, false
         )
+
+        notiVolumeBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.dialog_noti_volume, container, false
+        )
+
 
         setUpBinding()
         setUpView()
@@ -100,12 +107,18 @@ class SettingFragment : Fragment() {
 
         licenseDialog = LicenseDialog(requireActivity(), licenseBinding)
         licenseBinding.lifecycleOwner = viewLifecycleOwner
+
+        notiVolumeDialog = NotiVolumeDialog(requireActivity(), notiVolumeBinding,model)
+        notiVolumeBinding.viewModel = model
+        notiVolumeBinding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun setUpView() {
         binding.onoffView.bind.onoffSwitch.isChecked = App.prefs.checkPreferencesStatus()
         binding.onoffView.bind.switchStatus.text = model.initSwitchStatusText().toString()
         binding.alarmClockEditView.bind.subTv.text = App.prefs.getTime("time", "")
+
+        notiVolumeDialog.setSeekbarViewState()
     }
 
     private fun setUpObserver() {
@@ -129,6 +142,28 @@ class SettingFragment : Fragment() {
         model.onTimeEditClicked.observe(viewLifecycleOwner, {
             if (it == true) {
                 checkOnOffStatus()
+            }
+        })
+
+        model.onSeekbarStatusListener.observe(viewLifecycleOwner, {
+            seekBarStatus = it
+        })
+
+        model.onVolumeEditClicked.observe(viewLifecycleOwner, {
+            if (it == true) {
+                showVolumeEditDialog()
+            }
+        })
+
+        model.onNotiCloseBtnClicked.observe(viewLifecycleOwner, {
+            if ( it == true) {
+                dismissNotiVolumeDialog()
+            }
+        })
+
+        model.onNotiConfirmBtnClicked.observe(viewLifecycleOwner, {
+            if (it  == true) {
+                storeValueInSP(seekBarStatus)
             }
         })
 
@@ -270,6 +305,46 @@ class SettingFragment : Fragment() {
                 resources.displayMetrics
             ).toInt()
         )
+    }
+
+    /**
+     * sharedpreference 에 int (알람중요도) 값을 저장함.
+     * 알람노티를 띄울 때 저장된 sharedpreference 값을 가져와 참고하여 울리게함
+     * **/
+    
+    private fun storeValueInSP(it: Int?) {
+        if (it != null) {
+            App.prefs.setAlarmImportance("alarm",it)
+        }
+        
+        if(notiVolumeDialog.isShowing) {
+            notiVolumeDialog.dismiss()
+        }
+    }
+
+    private fun showVolumeEditDialog() {
+        notiVolumeDialog.show()
+        DialogSize.initDialogLayout(notiVolumeDialog,requireActivity())
+
+        notiVolumeDialog.setFontSize(16f,14f,14f)
+        notiVolumeDialog.setMargin(
+            setTypedValue(16f,0f,16f,16f),
+            setTypedValue(12f,0f,0f,0f)
+        )
+        notiVolumeDialog.setBtnSize(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(44f).roundToInt().toFloat()
+                ,resources.displayMetrics
+            ).toInt()
+        )
+
+    }
+
+    private fun dismissNotiVolumeDialog() {
+        if (notiVolumeDialog.isShowing) {
+            notiVolumeDialog.dismiss()
+        }
     }
 
     private fun showCautionDialog() {

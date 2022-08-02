@@ -3,9 +3,13 @@ package com.jisoo.identityvalarmapp.util
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.jisoo.identityvalarmapp.util.customview.CustomOnOffView
+import com.warkiz.widget.IndicatorSeekBar
+import com.warkiz.widget.OnSeekChangeListener
+import com.warkiz.widget.SeekParams
 
 object BindingAdapter {
 
@@ -26,4 +30,10 @@ object BindingAdapter {
             context.startActivity(webIntent)
         }
     }
+
+//    @JvmStatic
+//    @BindingAdapter("android:seekbar_listener")
+//    fun setOnSeekbarListener(seekbar: IndicatorSeekBar, listener: SeekBar.OnSeekBarChangeListener) {
+//       listener.onStopTrackingTouch(seekbar.indicator.)
+//    }
 }

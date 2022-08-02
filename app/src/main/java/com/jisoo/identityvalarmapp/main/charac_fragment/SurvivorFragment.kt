@@ -69,7 +69,10 @@ class SurvivorFragment : Fragment(){
         runFunc = AlarmRunFunction(requireActivity())
 
         model.characList.observe(viewLifecycleOwner, {
-            sortedRvByMonth(runFunc.returnBySortingTheList(it))
+            Log.d("jjs","survivorFragment model.characList.observe")
+            if(it.isNotEmpty()) {
+                sortedRvByMonth(runFunc.returnBySortingTheList(it))
+            }
         })
 
     }

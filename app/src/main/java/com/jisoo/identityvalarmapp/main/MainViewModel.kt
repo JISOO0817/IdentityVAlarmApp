@@ -4,14 +4,19 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: AlarmRepository = AlarmRepository(application)
-    var characList: LiveData<List<CharacInfo>> = repository.characList
+
+    private val _characList = MutableLiveData<List<CharacInfo>>()
+    val characList: LiveData<List<CharacInfo>> = _characList
 
     private val _time = MutableLiveData<String>()
     val time: LiveData<String> = _time
@@ -37,6 +42,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _onTimeEditClicked = MutableLiveData<Boolean>()
     val onTimeEditClicked: LiveData<Boolean> = _onTimeEditClicked
 
+    private val _onVolumeEditClicked = MutableLiveData<Boolean>()
+    val onVolumeEditClicked: LiveData<Boolean> = _onVolumeEditClicked
+
+    private val _onNotiCloseBtnClicked = MutableLiveData<Boolean>()
+    val onNotiCloseBtnClicked: LiveData<Boolean> = _onNotiCloseBtnClicked
+
+    private val _onNotiConfirmBtnClicked = MutableLiveData<Boolean>()
+    val onNotiConfirmBtnClicked: LiveData<Boolean> = _onNotiConfirmBtnClicked
+
     private val _onCloseBtnClicked = MutableLiveData<Boolean>()
     val onCloseBtnClicked: LiveData<Boolean> = _onCloseBtnClicked
 
@@ -51,6 +65,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _onLicenseBtnClicked = MutableLiveData<Boolean>()
     val onLicenseBtnClicked: LiveData<Boolean> = _onLicenseBtnClicked
+
+    private val _onSeekbarStatusListener = MutableLiveData<Int>()
+    val onSeekbarStatusListener: LiveData<Int> = _onSeekbarStatusListener
 
     private val _timeSet = MutableLiveData<Boolean>()
     val timeSet: LiveData<Boolean> = _timeSet
@@ -67,9 +84,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var backPressedTime: Long = 0
 
     init {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _characList.postValue(repository.getAllData())
+        }
+
         _reviewClicked.value = false
         _feedbackClicked.value = false
         _onTimeEditClicked.value = false
+        _onVolumeEditClicked.value = false
+        _onNotiCloseBtnClicked.value = false
+        _onNotiConfirmBtnClicked.value = false
         _onCloseBtnClicked.value = false
         _onWarningCloseBtnClicked.value = false
         _onNeedUpdateConfirmBtnClicked.value = false
@@ -117,6 +142,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _onTimeEditClicked.value = true
     }
 
+    fun onNotiVolumeEditClicked() {
+        _onVolumeEditClicked.value = true
+    }
+
+    fun onNotiDialogCloseBtnClicked() {
+        _onNotiCloseBtnClicked.value = true
+    }
+
+    fun onNotiDialogConfirmBtnClicked() {
+        _onNotiConfirmBtnClicked.value = true
+    }
+
     fun onEditDialogCloseBtnClicked() {
         _onCloseBtnClicked.value = true
     }
@@ -141,6 +178,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _hour.value = hour!!
         _minute.value = minute!!
         _time.value = hour + minute
+    }
+
+    fun onSeekbarListener(status: Int) {
+        _onSeekbarStatusListener.value = status
     }
 
     fun onBackPressedMethod() {

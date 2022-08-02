@@ -29,7 +29,7 @@ class AlarmService : Service() {
      * (하지 않으면 bad notification for startforeground error 발생)
      * */
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.d("tttttt","AlarmService onStartCommand")
+//        Log.d("tttttt","AlarmService onStartCommand")
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
         val job = intent.getStringExtra(JOB_KEY)
         runFunc = AlarmRunFunction(this)
@@ -42,7 +42,7 @@ class AlarmService : Service() {
         checkSwitchStatus(uid)
 
 
-        Log.d("tttttt","checkSwitchStatus:${checkSwitchStatus(uid)}")
+//        Log.d("tttttt","checkSwitchStatus:${checkSwitchStatus(uid)}")
 
         /**
          * 알람 누르면
@@ -72,8 +72,10 @@ class AlarmService : Service() {
             NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                checkAlarmImportance()
             )
+
+        Log.d("seekbar","checkkAlarmImportance:${checkAlarmImportance()}")
 
         val channelManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -88,8 +90,11 @@ class AlarmService : Service() {
             .setContentText(resources.getString(R.string.service_noti_subtitle_txt))
             .setAutoCancel(true)
             .setSmallIcon(versionCheck())
+            .setDefaults(checkAlarmSound())
             .setContentIntent(pendingIntent)
             .build()
+
+//        Log.d("seekbar","getPriority:${getPriority()}")
 
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(uid, birthAlarm)
@@ -109,12 +114,46 @@ class AlarmService : Service() {
             }
 
             withContext(Dispatchers.Main) {
-//                managementAlarm(uid, list)
                 runFunc.checkAlarm(list)
                 runFunc.removeAlarmManager(uid)
             }
         }
         return START_STICKY
+    }
+
+    private fun checkAlarmSound(): Int {
+
+        //all = 0
+        //sound = 1
+        //vibrate = 2
+        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+            0 -> NotificationCompat.DEFAULT_ALL
+            50 -> NotificationCompat.DEFAULT_VIBRATE
+            100 -> NotificationCompat.DEFAULT_SOUND
+            else -> NotificationCompat.DEFAULT_ALL
+        }
+    }
+
+    private fun checkAlarmImportance(): Int {
+        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+            0 or 50 -> NotificationManager.IMPORTANCE_LOW
+            100 -> NotificationManager.IMPORTANCE_DEFAULT
+            else -> NotificationManager.IMPORTANCE_LOW
+        }
+    }
+
+    private fun getPriority(): Int {
+
+        // LOW => -1
+        // DEFAULT => 0
+        // HIGH => 1
+
+        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+            0 -> NotificationCompat.PRIORITY_LOW
+            50 -> NotificationCompat.PRIORITY_DEFAULT
+            100 -> NotificationCompat.PRIORITY_HIGH
+            else -> NotificationCompat.PRIORITY_LOW
+        }
     }
 
 

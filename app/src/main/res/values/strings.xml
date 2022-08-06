@@ -19,6 +19,56 @@
     <string name="november_txt">11월</string>
     <string name="december_txt">12월</string>
 
+
+    <string name="Enchantress_txt">주술사</string>
+    <string name="Lawyer_txt">변호사</string>
+    <string name="MindsEye_txt">맹인</string>
+    <string name="Priestess_txt">샤먼</string>
+    <string name="GraveKeeper_txt">묘지기</string>
+    <string name="Barmaid_txt">바텐더</string>
+    <string name="Explorer_txt">모험가</string>
+    <string name="Doctor_txt">의사</string>
+    <string name="Prospector_txt">탐사원</string>
+    <string name="Coordinator_txt">공군</string>
+    <string name="Wildling_txt">야만인</string>
+    <string name="Thief_txt">도둑</string>
+    <string name="Embalmer_txt">납관사</string>
+    <string name="Forward_txt">포워드</string>
+    <string name="Acrobat_txt">곡예사</string>
+    <string name="FemaleDancer_txt">무희</string>
+    <string name="Magician_txt">마술사</string>
+    <string name="Prisoner_txt">\'죄수\'</string>
+    <string name="Mercenary_txt">용병</string>
+    <string name="Perfumer_txt">조향사</string>
+    <string name="Mechanic_txt">마술사</string>
+    <string name="FirstOfficer_txt">항해사</string>
+    <string name="Seer_txt">선지자</string>
+    <string name="LuckyGuy_txt">행운아</string>
+    <string name="Gardener_txt">정원사</string>
+    <string name="Entomologist_txt">곤충학자</string>
+    <string name="Postman_txt">우편배달부</string>
+    <string name="Cowboy_txt">카우보이</string>
+    <string name="SoulWeaver_txt">거미</string>
+    <string name="Feaster_txt">하스터</string>
+    <string name="Geisha_txt">미치코</string>
+    <string name="Photographer_txt">사진사</string>
+    <string name="AxeBoy_txt">울보</string>
+    <string name="Gamekeeper_txt">사냥터지기</string>
+    <string name="WuChang_txt">우산의영혼</string>
+    <string name="SmileyFace_txt">광대</string>
+    <string name="Ripper_txt">리퍼</string>
+    <string name="Guard26_txt">수위 26호</string>
+    <string name="Disciple_txt">\'사도\'</string>
+    <string name="DreamWitch_txt">꿈의 마녀</string>
+    <string name="Violinist_txt">바이올리니스트</string>
+    <string name="BloodyQueen_txt">블러디 퀸</string>
+    <string name="EvilReptilian_txt">재앙의 도마뱀</string>
+    <string name="Sculptor_txt">조각가</string>
+    <string name="MadEyes_txt">광기의 눈</string>
+    <string name="HellEmber_txt">공장장</string>
+
+
+
     <!-- =================================================================================================================-->
     <!--                                          common                                                                  -->
     <!-- =================================================================================================================-->

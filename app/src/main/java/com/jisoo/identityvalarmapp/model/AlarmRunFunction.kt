@@ -24,7 +24,7 @@ data class AlarmRunFunction(val context: Context) {
         return returnList
     }
 
-    fun executionAlarm(uid: Int, job: String, birth: String) {
+    fun executionAlarm(uid: Int, job: Int, birth: String) {
 
 //        Log.d("tttttt","execdutuionAlarm 호출 uid:${uid},job:${job}")
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

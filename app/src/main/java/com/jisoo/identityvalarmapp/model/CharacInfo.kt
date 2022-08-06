@@ -29,9 +29,9 @@ import java.util.*
 @Entity
 @Parcelize
 data class CharacInfo(
-    @PrimaryKey val uid: Long,
+    @PrimaryKey val uid: Int,
     @ColumnInfo var category: Int,
     @ColumnInfo var img: Int,
-    @ColumnInfo var job: String,
+    @ColumnInfo var job: Int,
     @ColumnInfo var birth: String
 ) : Parcelable

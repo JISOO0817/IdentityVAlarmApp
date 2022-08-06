@@ -19,6 +19,53 @@
     <string name="november_txt">November</string>
     <string name="december_txt">December</string>
 
+    <string name="Enchantress_txt">Enchantress</string>
+    <string name="Lawyer_txt">Lawyer</string>
+    <string name="MindsEye_txt">Mind\'s Eye</string>
+    <string name="Priestess_txt">Priestess</string>
+    <string name="GraveKeeper_txt">GraveKeeper</string>
+    <string name="Barmaid_txt">Barmaid</string>
+    <string name="Explorer_txt">Explorer</string>
+    <string name="Doctor_txt">Doctor</string>
+    <string name="Prospector_txt">Prospector</string>
+    <string name="Coordinator_txt">Coordinator</string>
+    <string name="Wildling_txt">Wildling</string>
+    <string name="Thief_txt">Thief</string>
+    <string name="Embalmer_txt">Embalmer</string>
+    <string name="Forward_txt">Forward</string>
+    <string name="Acrobat_txt">Acrobat</string>
+    <string name="FemaleDancer_txt">Female Dancer</string>
+    <string name="Magician_txt">Magician</string>
+    <string name="Prisoner_txt">\'Prisoner\'</string>
+    <string name="Mercenary_txt">Mercenary</string>
+    <string name="Perfumer_txt">Perfumer</string>
+    <string name="Mechanic_txt">Mechanic</string>
+    <string name="FirstOfficer_txt">First Officer</string>
+    <string name="Seer_txt">Seer</string>
+    <string name="LuckyGuy_txt">Lucky Guy</string>
+    <string name="Gardener_txt">Gardener</string>
+    <string name="Entomologist_txt">Entomologist</string>
+    <string name="Postman_txt">Postman</string>
+    <string name="Cowboy_txt">Cowboy</string>
+    <string name="SoulWeaver_txt">Soul Weaver</string>
+    <string name="Feaster_txt">Feaster</string>
+    <string name="Geisha_txt">Geisha</string>
+    <string name="Photographer_txt">Photographer</string>
+    <string name="AxeBoy_txt">Axe Boy</string>
+    <string name="Gamekeeper_txt">Gamekeeper</string>
+    <string name="WuChang_txt">Wu Chang</string>
+    <string name="SmileyFace_txt">Smiley Face</string>
+    <string name="Ripper_txt">Ripper</string>
+    <string name="Guard26_txt">Guard 26</string>
+    <string name="Disciple_txt">\'Disciple\'</string>
+    <string name="DreamWitch_txt">Dream Witch</string>
+    <string name="Violinist_txt">Violinist</string>
+    <string name="BloodyQueen_txt">Bloody Queen</string>
+    <string name="EvilReptilian_txt">Evil Reptilian</string>
+    <string name="Sculptor_txt">Sculptor</string>
+    <string name="MadEyes_txt">Mad Eyes</string>
+    <string name="HellEmber_txt">HellEmber</string>
+
     <!-- =================================================================================================================-->
     <!--                                          common                                                                  -->
     <!-- =================================================================================================================-->

@@ -1,6 +1,7 @@
 package com.jisoo.identityvalarmapp.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,13 +11,13 @@ import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: AlarmRepository = AlarmRepository(application)
 
-    private val _characList = MutableLiveData<List<CharacInfo>>()
-    val characList: LiveData<List<CharacInfo>> = _characList
+    val characList: LiveData<List<CharacInfo>> = repository.getAllData()
 
     private val _time = MutableLiveData<String>()
     val time: LiveData<String> = _time
@@ -85,10 +86,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
 
-        viewModelScope.launch(Dispatchers.IO) {
-            _characList.postValue(repository.getAllData())
-        }
-
+//        getAllList()
         _reviewClicked.value = false
         _feedbackClicked.value = false
         _onTimeEditClicked.value = false
@@ -108,6 +106,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         initSwitchStatusText()
     }
+
+
+//    fun getAllList() = viewModelScope.launch(Dispatchers.IO) {
+//        var charInfos = listOf<CharacInfo>()
+//
+//        do {
+////            delay(500L)
+//            repository.getCharacList {
+//                charInfos = it
+//            }
+//
+//        } while(charInfos.isEmpty())
+//
+//        _characList.postValue(charInfos)
+//    }
 
     fun onSwitchClicked() {
         _switchClicked.value = !(App.prefs.checkPreferencesStatus())

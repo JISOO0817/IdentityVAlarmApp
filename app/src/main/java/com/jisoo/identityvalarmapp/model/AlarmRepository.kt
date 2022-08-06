@@ -11,14 +11,13 @@ class AlarmRepository(application: Application) {
     private var alarmDao: AlarmDao = AlarmDatabase.getInstance(application).alarmDao()
 //    var characList: LiveData<List<CharacInfo>> = alarmDao.getAllData()
 
-    suspend fun getAllData(): List<CharacInfo> {
-        return withContext(Dispatchers.IO) {
-            alarmDao.getAllData()
-        }
+    fun getAllData(): LiveData<List<CharacInfo>> {
+        return alarmDao.getAllDataList()
     }
 
-    fun getCharacList(callback: (List<CharacInfo>) -> Unit): Unit {
+    suspend fun getCharacList(callback: (List<CharacInfo>) -> Unit) {
         callback(alarmDao.getAllData())
     }
+
 
 }

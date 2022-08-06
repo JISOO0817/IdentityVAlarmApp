@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.jisoo.identityvalarmapp.BuildConfig
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.databinding.*
@@ -123,7 +122,9 @@ class SettingFragment : Fragment() {
 
     private fun setUpObserver() {
         model.characList.observe(viewLifecycleOwner, {
-            solarList = it
+            if(it.isNotEmpty()) {
+                solarList = it
+            }
         })
 
         model.time.observe(viewLifecycleOwner, {
@@ -215,7 +216,7 @@ class SettingFragment : Fragment() {
     //TODO: 테스트 필요
     private fun sendEmail() {
         val address = R.string.fragment_setting_email_add_txt
-        val app_version = BuildConfig.VERSION_NAME
+        val app_version = com.warkiz.widget.BuildConfig.VERSION_NAME
         val device = Build.MODEL
         val sdk = Build.VERSION.RELEASE
 

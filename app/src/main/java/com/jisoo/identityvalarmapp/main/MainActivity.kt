@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpObserver() {
         viewModel.characList.observe(this, {
+            Log.d("tett","main activity list size:${it.size}")
             if (it.isNotEmpty()) {
                 runFunc.checkAlarm(it)
             }
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             App.prefs.setTime(TIME_SP, DEFAULT_TIME)
             viewModel.setTime("13", "0")
         }
+
     }
 
     /**

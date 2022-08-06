@@ -106,7 +106,7 @@ class AlarmService : Service() {
         val resultValue = runFunc.getTodayValue()
         App.prefs.setCharacBirth(BIRTH_SP, resultValue.toString())
 
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             val repository = AlarmRepository(application)
             var list: List<CharacInfo> = emptyList()
             repository.getCharacList {
@@ -122,7 +122,6 @@ class AlarmService : Service() {
     }
 
     private fun checkAlarmSound(): Int {
-
         //all = 0
         //sound = 1
         //vibrate = 2

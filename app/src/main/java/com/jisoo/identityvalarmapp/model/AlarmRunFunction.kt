@@ -51,10 +51,15 @@ data class AlarmRunFunction(val context: Context) {
         }
 
         val prefsTime = App.prefs.getTime(Const.TIME_SP, "")
-        val arr = prefsTime.split(" : ")
+        val arr: List<String> = prefsTime.split(" : ")
 
         val hour = arr[0].toInt()
         val minute = arr[1].toInt()
+
+        Log.d("tett","arr size:${arr.size}")
+        Log.d("tett","arr[0]:${arr[0]},arr[1]:${arr[1]}")
+
+        Log.d("tett","hour:${hour},minute:${minute}")
 
         if (nowMonth == 12 && month == 1) {
             calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)

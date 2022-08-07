@@ -19,6 +19,7 @@ import com.jisoo.identityvalarmapp.databinding.*
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import com.jisoo.identityvalarmapp.util.Const
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.*
@@ -315,7 +316,7 @@ class SettingFragment : Fragment() {
     
     private fun storeValueInSP(it: Int?) {
         if (it != null) {
-            App.prefs.setAlarmImportance("alarm",it)
+            App.prefs.setAlarmImportance(Const.ALARM_SP,it)
         }
         
         if(notiVolumeDialog.isShowing) {

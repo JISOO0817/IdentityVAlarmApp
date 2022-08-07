@@ -14,6 +14,7 @@ import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import com.jisoo.identityvalarmapp.util.Const.Companion.ALARM_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_NAME
@@ -29,20 +30,20 @@ class AlarmService : Service() {
      * (하지 않으면 bad notification for startforeground error 발생)
      * */
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-//        Log.d("tttttt","AlarmService onStartCommand")
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
-        val job = intent.getStringExtra(JOB_KEY)
+        val job = intent.getStringExtra(JOB_KEY)!!.toInt()
         runFunc = AlarmRunFunction(this)
         val pendingIntent: PendingIntent
 
-        val res = resources
-        val jobText = String.format(res.getString(R.string.service_noti_title_txt), "$job")
+        val stringJob = resources.getString(job)
+
+        val jobText = String.format(resources.getString(R.string.service_noti_title_txt), stringJob)
 
         checkIsInstalled()
         checkSwitchStatus(uid)
 
 
-//        Log.d("tttttt","checkSwitchStatus:${checkSwitchStatus(uid)}")
+        Log.d("tett","job:$job,stringJob:${stringJob},jobText:${jobText}")
 
         /**
          * 알람 누르면
@@ -72,10 +73,10 @@ class AlarmService : Service() {
             NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                checkAlarmImportance()
+                NotificationManager.IMPORTANCE_LOW
             )
 
-        Log.d("seekbar","checkkAlarmImportance:${checkAlarmImportance()}")
+//        Log.d("seekbar","checkkAlarmImportance:${checkAlarmImportance()}")
 
         val channelManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -90,7 +91,6 @@ class AlarmService : Service() {
             .setContentText(resources.getString(R.string.service_noti_subtitle_txt))
             .setAutoCancel(true)
             .setSmallIcon(versionCheck())
-            .setDefaults(checkAlarmSound())
             .setContentIntent(pendingIntent)
             .build()
 
@@ -125,7 +125,7 @@ class AlarmService : Service() {
         //all = 0
         //sound = 1
         //vibrate = 2
-        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+        return when(App.prefs.getAlarmImportance(ALARM_SP,-1)) {
             0 -> NotificationCompat.DEFAULT_ALL
             50 -> NotificationCompat.DEFAULT_VIBRATE
             100 -> NotificationCompat.DEFAULT_SOUND
@@ -134,7 +134,7 @@ class AlarmService : Service() {
     }
 
     private fun checkAlarmImportance(): Int {
-        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+        return when(App.prefs.getAlarmImportance(ALARM_SP,-1)) {
             0 or 50 -> NotificationManager.IMPORTANCE_LOW
             100 -> NotificationManager.IMPORTANCE_DEFAULT
             else -> NotificationManager.IMPORTANCE_LOW
@@ -147,7 +147,7 @@ class AlarmService : Service() {
         // DEFAULT => 0
         // HIGH => 1
 
-        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+        return when(App.prefs.getAlarmImportance(ALARM_SP,-1)) {
             0 -> NotificationCompat.PRIORITY_LOW
             50 -> NotificationCompat.PRIORITY_DEFAULT
             100 -> NotificationCompat.PRIORITY_HIGH

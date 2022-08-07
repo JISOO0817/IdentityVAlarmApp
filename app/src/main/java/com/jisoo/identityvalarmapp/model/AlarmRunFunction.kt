@@ -20,18 +20,18 @@ data class AlarmRunFunction(val context: Context) {
 
     fun returnBySortingTheList(list: List<CharacInfo>): List<CharacInfo> {
         val returnList = lunaList2SolarList(list)
-//        Log.d("tttttt","returnList:${returnList}")
         return returnList
     }
 
     fun executionAlarm(uid: Int, job: Int, birth: String) {
-
-//        Log.d("tttttt","execdutuionAlarm 호출 uid:${uid},job:${job}")
+        Log.d("tett","execdutuionAlarm 호출 uid:${uid},job:${job}")
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmBroadcast::class.java)
 
         intent.putExtra(Const.UID_KEY, uid.toString())
-        intent.putExtra(Const.JOB_KEY, job)
+        intent.putExtra("job", job.toString())
+
+        Log.d("tett","executionAlarm uid:${uid},job:${job}")
 
         val pendingIntent = PendingIntent.getBroadcast(context, uid, intent, checkVersionFlags())
 
@@ -92,21 +92,20 @@ data class AlarmRunFunction(val context: Context) {
         }
         val temList: List<CharacInfo> = lunaList2SolarList(list)
         val closestCharacter: List<CharacInfo> = getClossetCharacList(temList)
-//        Log.d("jsjs", "checkAlarm closestCharacterList:${closestCharacter}")
 
         for (i in closestCharacter.indices) {
             executionAlarm(
-                closestCharacter[i].uid.toInt(),
+                closestCharacter[i].uid,
                 closestCharacter[i].job,
                 closestCharacter[i].birth
             )
+
+            Log.d("tett","alarmRunFunction checkAlarm uid: ${closestCharacter[i].uid},job: ${closestCharacter[i].job}")
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     fun getClossetCharacList(sortedlist: List<CharacInfo>): List<CharacInfo> {
-//        Log.d("tttttt", "getClossetCharacList 호출")
-//        val sortedResultList = lunaList2SolarList(sortedlist)
         val now = Calendar.getInstance()
         val nowMonth = now.get(Calendar.MONTH) + 1
         val nowDay = now.get(Calendar.DAY_OF_MONTH)
@@ -133,7 +132,6 @@ data class AlarmRunFunction(val context: Context) {
 
             for(data in futureList) {
                 if(birthString == data.birth) {
-//                    Log.d("tttttt","if - for - if문 data:${data}")
                     nearList.add(data)
                 } else {
                     break
@@ -143,8 +141,6 @@ data class AlarmRunFunction(val context: Context) {
             if(nearList.isEmpty()) {
                 nearList.add(futureList[0])
             }
-
-//            Log.d("tttttt", "nearList:${nearList}")
 
             return nearList
 
@@ -156,7 +152,6 @@ data class AlarmRunFunction(val context: Context) {
                 }
             }
 
-//            Log.d("tttttt", "1차 futureList:${futureList}")
             val temList: ArrayList<CharacInfo> = arrayListOf()
             for (i in futureList) {
                 if (TextUtils.equals(birthSP.toInt().toString(), i.birth.toInt().toString())) {
@@ -171,7 +166,6 @@ data class AlarmRunFunction(val context: Context) {
 
             for(data in futureList) {
               if(birthString == data.birth) {
-//                  Log.d("tttttt","else - for - if문 data:${data}")
                   nearList.add(data)
               } else {
                   break
@@ -181,8 +175,6 @@ data class AlarmRunFunction(val context: Context) {
             if(nearList.isEmpty()) {
                 nearList.add(futureList[0])
             }
-
-//            Log.d("tttttt", "nearList:${nearList}")
 
             return nearList
 

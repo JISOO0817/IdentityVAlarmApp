@@ -55,17 +55,17 @@
                 app:subExist="1"
                 app:subTitleName="@string/fragment_setting_alarm_time_edit_txt" />
 
-            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView
-                android:id="@+id/alarm_sound_set_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{() -> viewModel.onNotiVolumeEditClicked()}"
-                app:layout_constraintDimensionRatio="h,360:44"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alarm_clock_edit_view"
-                app:subTitleName="@string/fragment_setting_alarm_sound_txt" />
+<!--            <com.jisoo.identityvalarmapp.util.customview.CustomSubTitleView-->
+<!--                android:id="@+id/alarm_sound_set_view"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:foreground="?attr/selectableItemBackground"-->
+<!--                android:onClick="@{() -> viewModel.onNotiVolumeEditClicked()}"-->
+<!--                app:layout_constraintDimensionRatio="h,360:44"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/alarm_clock_edit_view"-->
+<!--                app:subTitleName="@string/fragment_setting_alarm_sound_txt" />-->
 
             <View
                 android:id="@+id/first_empty_view"
@@ -75,7 +75,7 @@
                 app:layout_constraintDimensionRatio="h,360:8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alarm_sound_set_view" />
+                app:layout_constraintTop_toBottomOf="@+id/alarm_clock_edit_view" />
 
             <com.jisoo.identityvalarmapp.util.customview.CustomTitleView
                 android:id="@+id/app_info_view"

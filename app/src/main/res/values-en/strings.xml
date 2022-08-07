@@ -75,7 +75,7 @@
     <!-- =================================================================================================================-->
     <!--                                          Service                                                          -->
     <!-- =================================================================================================================-->
-    <string name="service_noti_title_txt">Today is \'%s\'s birthday!</string>
+    <string name="service_noti_title_txt">Today is %s\'s birthday!</string>
     <string name="service_noti_subtitle_txt">When you press the alarm, the identityV app turns on. :)</string>
 
     <!-- =================================================================================================================-->

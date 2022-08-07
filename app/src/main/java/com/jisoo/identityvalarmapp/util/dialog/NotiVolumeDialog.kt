@@ -13,6 +13,7 @@ import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.databinding.DialogNotiVolumeBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.setting.SeekbarInterface
+import com.jisoo.identityvalarmapp.util.Const.Companion.ALARM_SP
 import com.warkiz.widget.IndicatorSeekBar
 
 import com.warkiz.widget.SeekParams
@@ -65,7 +66,7 @@ class NotiVolumeDialog(context: Context, binding: DialogNotiVolumeBinding, model
          * 50 -> 진동
          * 100 -> 소리
          * **/
-        when(App.prefs.getAlarmImportance("alarm",-1)) {
+        when(App.prefs.getAlarmImportance(ALARM_SP,-1)) {
             0 -> notiVolumeBinding.seekbar.setProgress(0f)
             50 -> notiVolumeBinding.seekbar.setProgress(50f)
             100 -> notiVolumeBinding.seekbar.setProgress(100f)

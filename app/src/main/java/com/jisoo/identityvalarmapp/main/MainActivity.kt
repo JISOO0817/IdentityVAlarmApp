@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var needUpdateBinding: DialogNeedUpdateBinding
     private lateinit var needUpdateDialog: NeedUpdateDialog
-    private val runFunc = AlarmRunFunction(this)
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.characList.observe(this, {
             Log.d("tett","main activity list size:${it.size}")
             if (it.isNotEmpty()) {
+                val runFunc = AlarmRunFunction(this)
                 runFunc.checkAlarm(it)
             }
         })

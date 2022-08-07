@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.main.MainActivity
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import com.jisoo.identityvalarmapp.util.Const
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_NAME
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
@@ -27,13 +28,14 @@ class EmptyService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
-//        Log.d("tttttt", "EmptyService onStartCommand 호출")
-
         /**
          * BroadcastReceiver 로 부터 받은 데이터
          * **/
         val characUid = intent.getStringExtra(UID_KEY)
         val characJob = intent.getStringExtra(JOB_KEY)
+
+        Log.d("tett","empty service")
+        Log.d("tett","onstartcommand job:${characJob}")
 
         /**
          * 시스템 알람창 (기본)
@@ -45,7 +47,7 @@ class EmptyService : Service() {
          * 채널생성
          * **/
         val channel =
-            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, checkAlarmImportance())
+            NotificationChannel(CHANNEL_ID, CHANNEL_NAME,  NotificationManager.IMPORTANCE_LOW)
 
         val channelManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -65,7 +67,7 @@ class EmptyService : Service() {
     }
 
     private fun checkAlarmImportance(): Int {
-        return when(App.prefs.getAlarmImportance("alarm",-1)) {
+        return when(App.prefs.getAlarmImportance(Const.ALARM_SP,-1)) {
             0 or 50 -> NotificationManager.IMPORTANCE_LOW
             100 -> NotificationManager.IMPORTANCE_DEFAULT
             else -> NotificationManager.IMPORTANCE_LOW

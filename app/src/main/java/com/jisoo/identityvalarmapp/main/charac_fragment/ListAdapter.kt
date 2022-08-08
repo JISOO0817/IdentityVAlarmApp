@@ -20,7 +20,7 @@ class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunVi
             LayoutInflater.from(parent.context),
             parent,
             false
-        ))
+        ),this.context)
     }
 
     override fun onBindViewHolder(holder: HunViewHolder, position: Int) {
@@ -37,7 +37,7 @@ class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunVi
         notifyDataSetChanged()
     }
 
-    inner class HunViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root){
+    class HunViewHolder(val binding: ItemListBinding,val context: Context) : RecyclerView.ViewHolder(binding.root){
         @SuppressLint("ResourceAsColor", "SetTextI18n")
         fun bind(info: CharacInfo) {
 
@@ -48,10 +48,6 @@ class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunVi
             Glide.with(context)
                 .load(info.img)
                 .into(binding.img)
-//
-//            binding.testlayout.setOnClickListener {
-//                onClickListener?.onViewClick(list[adapterPosition])
-//            }
         }
 
     }

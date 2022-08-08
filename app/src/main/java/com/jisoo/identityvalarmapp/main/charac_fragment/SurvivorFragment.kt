@@ -1,5 +1,6 @@
 package com.jisoo.identityvalarmapp.main.charac_fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -62,20 +63,38 @@ class SurvivorFragment : Fragment(){
     private fun setUpView() {
         initAdapter()
         initManager()
-
     }
 
     private fun setUpObserver() {
         runFunc = AlarmRunFunction(requireActivity())
 
         model.characList.observe(viewLifecycleOwner, {
-            Log.d("tett","survivorFragment model.characList.observe")
-            Log.d("tett","survivorFragment characList.size:${it.size}")
             if(it.isNotEmpty()) {
                 sortedRvByMonth(runFunc.returnBySortingTheList(it))
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun notifyDataSetChanged() {
+        janAdapter.notifyDataSetChanged()
+        febAdapter.notifyDataSetChanged()
+        marchAdapter.notifyDataSetChanged()
+        aprilAdapter.notifyDataSetChanged()
+        mayAdapter.notifyDataSetChanged()
+        juneAdapter.notifyDataSetChanged()
+        julyAdapter.notifyDataSetChanged()
+        augAdapter.notifyDataSetChanged()
+        sepAdapter.notifyDataSetChanged()
+        octAdapter.notifyDataSetChanged()
+        novAdapter.notifyDataSetChanged()
+        decAdapter.notifyDataSetChanged()
     }
 
     private fun initAdapter() {

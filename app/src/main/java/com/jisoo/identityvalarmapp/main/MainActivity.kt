@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToUpdate() {
-        val url = "market://details?id=" + "com.netease.idv.googleplay"
+        val url = "market://details?id=" + "com.jisoo.identityvalarmapp"
         val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(playIntent)

@@ -47,6 +47,12 @@
     <string name="Entomologist_txt">Entomologist</string>
     <string name="Postman_txt">Postman</string>
     <string name="Cowboy_txt">Cowboy</string>
+    <string name="WeepingClown_txt">Weeping Clown</string>
+    <string name="Painter_txt">Painter</string>
+    <string name="Batter_txt">Batter</string>
+    <string name="ToyMerchant_txt">Toy Merchant</string>
+    <string name="Psychologist_txt">Psychologist</string>
+    <string name="Patient_txt">Patient</string>
     <string name="SoulWeaver_txt">Soul Weaver</string>
     <string name="Feaster_txt">Feaster</string>
     <string name="Geisha_txt">Geisha</string>

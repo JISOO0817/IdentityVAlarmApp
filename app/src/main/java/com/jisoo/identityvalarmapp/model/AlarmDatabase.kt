@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 import kotlin.coroutines.coroutineContext
 
 
-@Database(entities = [CharacInfo::class], version = 2, exportSchema = false)
+@Database(entities = [CharacInfo::class], version = 3, exportSchema = false)
 
 /**
  *
@@ -92,6 +92,14 @@ abstract class AlarmDatabase : RoomDatabase() {
             }
         }
 
+        val Migration2_3 = object: Migration(2,3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("INSERT INTO CharacInfo(uid,category,img,job,birth) VALUES (29,0,${R.drawable.painter}, ${R.string.Painter_txt},0423)")
+                database.execSQL("INSERT INTO CharacInfo(uid,category,img,job,birth) VALUES (30,0,${R.drawable.batter},${R.string.Batter_txt},0529)")
+                database.execSQL("INSERT INTO CharacInfo(uid,category,img,job,birth) VALUES (31,0,${R.drawable.weepingclown},${R.string.WeepingClown_txt},0804)")
+            }
+        }
+
 
         fun getInstance(context: Context): AlarmDatabase {
             if (INSTANCE == null) {
@@ -102,15 +110,12 @@ abstract class AlarmDatabase : RoomDatabase() {
                         super.onCreate(db)
                         initInfo(context)
                     }
-                }).addMigrations(MIGRATION_1_2)
+                }).addMigrations(MIGRATION_1_2,Migration2_3)
                     .build()
             }
 
             return INSTANCE as AlarmDatabase
         }
-
-//        @SuppressLint("ConstantLocale")
-//        val language = Locale.getDefault().language
 
         fun initInfo(context: Context) {
             CoroutineScope(Dispatchers.IO).launch {
@@ -119,16 +124,6 @@ abstract class AlarmDatabase : RoomDatabase() {
                 }
             }
         }
-
-//        private fun checkLanguage():ArrayList<CharacInfo> {
-//            return when (language) {
-//                "ko" -> CHARACTER_DATA_ko
-//                "en" -> CHARACTER_DATA_en
-//                "ja" -> CHARACTER_DATA_ja
-//                else -> CHARACTER_DATA_en
-//            }
-//        }
-
 
         private val CHARACTER_DATA = arrayListOf(
             CharacInfo(1, 0, R.drawable.enchantress, R.string.Enchantress_txt, "0103"),
@@ -159,6 +154,9 @@ abstract class AlarmDatabase : RoomDatabase() {
             CharacInfo(26, 0, R.drawable.entomologis, R.string.Entomologist_txt, "1222"),
             CharacInfo(27, 0, R.drawable.postman, R.string.Postman_txt, "1225"),
             CharacInfo(28, 0, R.drawable.cowboy, R.string.Cowboy_txt, "1227"),
+            CharacInfo(29,0,R.drawable.painter, R.string.Painter_txt, "0423"),
+            CharacInfo(30,0,R.drawable.batter,R.string.Batter_txt, "0529"),
+            CharacInfo(31,0,R.drawable.weepingclown,R.string.WeepingClown_txt,"0804"),
 
             CharacInfo(100, 1, R.drawable.spider, R.string.SoulWeaver_txt, "0102"),
             CharacInfo(101, 1, R.drawable.haster, R.string.Feaster_txt, "0124"),

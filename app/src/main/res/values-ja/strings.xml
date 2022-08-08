@@ -48,6 +48,12 @@
     <string name="Entomologist_txt">昆虫学者</string>
     <string name="Postman_txt">ポストマン</string>
     <string name="Cowboy_txt">カウボーイ</string>
+    <string name="WeepingClown_txt">泣きピエロ</string>
+    <string name="Painter_txt">画家</string>
+    <string name="Batter_txt">バッツマン</string>
+    <string name="ToyMerchant_txt">玩具職人</string>
+    <string name="Psychologist_txt">\'心理学者\'</string>
+    <string name="Patient_txt">患者</string>
     <string name="SoulWeaver_txt">結魂者</string>
     <string name="Feaster_txt">黄衣の王</string>
     <string name="Geisha_txt">芸者</string>

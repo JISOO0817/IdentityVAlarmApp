@@ -261,7 +261,7 @@ class SettingFragment : Fragment() {
         hour = TimePickerUtil.getHour(timeEditBinding.timePicker)
         minute = TimePickerUtil.getMinute(timeEditBinding.timePicker)
 
-        App.prefs.setTime(TIME_SP, setTimeValue(hour!!, minute!!))
+        App.prefs.setTime(TIME_SP, setTimeValue(hour!!,minute!!))
         model.setTime(hour.toString(), minute.toString())
 
         timeEditDialog.dismiss()
@@ -269,12 +269,12 @@ class SettingFragment : Fragment() {
 
     private fun setTimeValue(hour: Int, minute: Int): String {
         if (minute.toString() == "0") {
-            return  hour.toString() + " : " + minute.toString() + "0"
+            return  hour.toString() +":" +minute.toString() +"0"
         } else if (minute < 10) {
-            return "$hour: 0$minute"
+            return "$hour:0$minute"
         }
 
-        return "$hour : $minute"
+        return "$hour:$minute"
     }
 
     private fun dismissTimeEditDialog() {

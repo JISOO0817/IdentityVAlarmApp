@@ -104,4 +104,7 @@ dependencies {
 
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
+    //fcm
+    implementation 'com.google.firebase:firebase-messaging:23.0.7'
+
 }

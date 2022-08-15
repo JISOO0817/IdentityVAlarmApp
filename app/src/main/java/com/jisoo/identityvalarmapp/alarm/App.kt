@@ -25,7 +25,7 @@ class App : Application() {
     }
 
     private fun createChannel() {
-        val channel = NotificationChannel(ID, "Alarm Service",NotificationManager.IMPORTANCE_LOW)
+        val channel = NotificationChannel(ID, "Alarm Service",NotificationManager.IMPORTANCE_DEFAULT)
         val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
 
@@ -47,31 +47,31 @@ class App : Application() {
         private val alarmValuePrefs = context.getSharedPreferences(Const.ALARM_SP, Context.MODE_PRIVATE)
 
         fun setBoolean(key: String, value: Boolean) {
-            switchPrefs.edit().putBoolean(key, value).apply()
+            switchPrefs.edit().putBoolean(key,value).apply()
         }
 
         fun setCharacBirth(key: String, value: String) {
-            characBirth.edit().putString(key, value).apply()
+            characBirth.edit().putString(key,value).apply()
         }
 
         fun getCharacBirth(key: String, defValue: String): String {
-            return characBirth.getString(key, defValue).toString()
+            return characBirth.getString(key,defValue).toString()
         }
 
         fun setTime(key: String, value: String) {
-            timePrefs.edit().putString(key, value).apply()
+            timePrefs.edit().putString(key,value).apply()
         }
 
         fun getTime(key: String, defValue: String): String {
-            return timePrefs.getString(key, defValue).toString()
+            return timePrefs.getString(key,defValue).toString()
         }
 
         fun setAlarmImportance(key: String, value: Int) {
-            alarmValuePrefs.edit().putInt(key, value).apply()
+            alarmValuePrefs.edit().putInt(key,value).apply()
         }
 
         fun getAlarmImportance(key: String, defValue: Int): Int {
-            return alarmValuePrefs.getInt(key, defValue)
+            return alarmValuePrefs.getInt(key,defValue)
         }
 
         fun checkPreferencesStatus(): Boolean {

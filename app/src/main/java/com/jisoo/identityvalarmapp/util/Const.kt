@@ -13,7 +13,7 @@ class Const {
         const val SWITCH_SP = "switch"
         const val BIRTH_SP = "birth"
         const val ALARM_SP = "alarm"
-        const val DEFAULT_TIME = "13 : 00"
+        const val DEFAULT_TIME = "13:00"
 
         const val FIREBASE_VERSION = "latest_version"
     }

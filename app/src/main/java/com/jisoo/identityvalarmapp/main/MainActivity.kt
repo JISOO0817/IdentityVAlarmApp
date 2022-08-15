@@ -14,11 +14,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
+import com.jisoo.identityvalarmapp.alarm.FCMService
 import com.jisoo.identityvalarmapp.databinding.ActivityMainBinding
 import com.jisoo.identityvalarmapp.databinding.DialogNeedUpdateBinding
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
@@ -45,11 +48,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_IdentityVAlarmApp)
 
+        val fcm = Intent(applicationContext, FCMService::class.java)
+        startService(fcm)
+
         setUpBinding()
         setUpView()
         setUpObserver()
+        setUpTokenOnServer()
         checkPreferencesTime()
         getFirebaseAppVersion()
+
     }
 
 
@@ -116,6 +124,24 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun setUpTokenOnServer() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+
+            // Log and toast
+//            val msg = getString(R.string.msg_token_fmt, token)
+//            Log.d(TAG, msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
+    }
+
     override fun onResume() {
         super.onResume()
         getFirebaseAppVersion()
@@ -124,7 +150,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkPreferencesTime() {
         if (TextUtils.equals("", App.prefs.getTime(TIME_SP, ""))) {
             App.prefs.setTime(TIME_SP, DEFAULT_TIME)
-            viewModel.setTime("13", "0")
+            viewModel.setTime("13","00")
         }
 
     }

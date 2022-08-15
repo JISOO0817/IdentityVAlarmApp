@@ -11,6 +11,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jisoo.identityvalarmapp.R
+import com.jisoo.identityvalarmapp.main.MainActivity
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
@@ -33,7 +34,7 @@ class AlarmService : Service() {
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
         val job = intent.getStringExtra(JOB_KEY)!!.toInt()
         runFunc = AlarmRunFunction(this)
-        val pendingIntent: PendingIntent
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,uid,intent,checkVersionFlags())
 
         val stringJob = resources.getString(job)
 
@@ -48,23 +49,23 @@ class AlarmService : Service() {
         /**
          * 알람 누르면
          * **/
-        if (!checkIsInstalled()) {
-            //마켓
-            val playIntent: Intent
-            val url =
-                resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
-            playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, checkVersionFlags())
-
-        } else {
-            //앱열기
-            val goIntent =
-                packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
-            goIntent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(goIntent)
-            pendingIntent = PendingIntent.getActivity(this, uid, goIntent, checkVersionFlags())
-        }
+//        if (!checkIsInstalled()) {
+//            //마켓
+//            val playIntent: Intent
+//            val url =
+//                resources.getString(R.string.identityv_MarketName) + resources.getString(R.string.identityv_Name)
+//            playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//            playIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            pendingIntent = PendingIntent.getActivity(this, uid, playIntent, checkVersionFlags())
+//
+//        } else {
+//            //앱열기
+//            val goIntent =
+//                packageManager.getLaunchIntentForPackage(resources.getString(R.string.identityv_Name))
+//            goIntent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            startActivity(goIntent)
+//            pendingIntent = PendingIntent.getActivity(this, uid, goIntent, checkVersionFlags())
+//        }
 
         /**
          * 채널생성
@@ -73,25 +74,24 @@ class AlarmService : Service() {
             NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             )
-
-//        Log.d("seekbar","checkkAlarmImportance:${checkAlarmImportance()}")
 
         val channelManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         channelManager.createNotificationChannel(channel)
 
-
         /**
          * 생일알람
          * **/
-        val birthAlarm = NotificationCompat.Builder(this, App.ID)
+
+        val contentText = String.format(resources.getString(R.string.service_noti_subtitle_txt), stringJob)
+        val birthAlarm = NotificationCompat.Builder(applicationContext, App.ID)
             .setContentTitle(jobText)
-            .setContentText(resources.getString(R.string.service_noti_subtitle_txt))
+            .setContentText(contentText)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setSmallIcon(versionCheck())
-            .setContentIntent(pendingIntent)
             .build()
 
 //        Log.d("seekbar","getPriority:${getPriority()}")

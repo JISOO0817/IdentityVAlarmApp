@@ -53,17 +53,33 @@ data class AlarmRunFunction(val context: Context) {
         val prefsTime = App.prefs.getTime(Const.TIME_SP, "")
         val arr: List<String> = prefsTime.split(":")
 
-        val hour = arr[0].toInt()
-        val minute = arr[1].toInt()
+        // sharedpreference 저장된 값에 띄어쓰기(  )공백 포함된 경우 삭제하는 로직 추가
+        var hourStr = arr[0]
+        var minuteStr = arr[1]
+
+        val hourIdx:Int = arr[0].indexOf(" ")
+        val minuteIdx:Int = arr[1].indexOf(" ")
+
+        if(hourStr.contains(" ")) {
+            hourStr = hourStr.substring(0,hourIdx)
+        }
+
+        if(minuteStr.contains(" ")) {
+            minuteStr = minuteStr.substring(minuteIdx+1)
+        }
+
+        val hourInt = hourStr.toInt()
+        val minuteInt = minuteStr.toInt()
 
         if (nowMonth == 12 && month == 1) {
             calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
         } else {
             calendar.set(Calendar.YEAR, calendar[Calendar.YEAR])
         }
+
         calendar.set(Calendar.DAY_OF_MONTH, day)
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.HOUR_OF_DAY, hourInt)
+        calendar.set(Calendar.MINUTE, minuteInt)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
 

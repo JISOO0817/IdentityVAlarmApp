@@ -106,14 +106,15 @@
     <!-- =================================================================================================================-->
     <string name="fragment_setting_alarm_title_txt">알람</string>
     <string name="fragment_setting_alarm_onoff_txt">알람ON/OFF</string>
-    <string name="fragment_setting_alarm_on_txt">(알람ON)</string>
-    <string name="fragment_setting_alarm_off_txt">(알람OFF)</string>
+    <string name="fragment_setting_alarm_on_txt">(ON)</string>
+    <string name="fragment_setting_alarm_off_txt">(OFF)</string>
     <string name="fragment_setting_alarm_time_edit_txt">알람 시간 변경</string>
     <string name="fragment_setting_alarm_sound_txt" translatable="false">알람 볼륨 변경</string>
     <string name="fragment_setting_app_info_txt">앱 정보</string>
     <string name="fragment_setting_verion_info_txt">버전 정보</string>
     <string name="fragment_setting_open_source_txt">오픈 소스 라이선스</string>
     <string name="fragment_setting_etc_txt">기타</string>
+    <string name="fragment_setting_language_change_txt">언어 변경</string>
     <string name="fragment_setting_review_txt">리뷰 남기기</string>
     <string name="fragment_setting_feedback_mail_txt">피드백 메일 보내기</string>
     <string name="fragment_setting_email_add_txt">dkadnsk00@gmail.com</string>
@@ -159,6 +160,13 @@
     <string name="dialog_license_glide_link">https://github.com/bumptech/glide/blob/master/LICENSE</string>
     <string name="dialog_license_chinesecalendar_txt">chinese calendar</string>
     <string name="dialog_license_chinesecalendar_link">https://github.com/unicode-org/icu/blob/main/icu4c/LICENSE</string>
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Language Edit                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_language_korean_txt">한국어</string>
+    <string name="dialog_language_english_txt">영어</string>
+    <string name="dialog_language_japanese_txt">일본어</string>
 
 
 </resources>

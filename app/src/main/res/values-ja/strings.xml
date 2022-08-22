@@ -105,13 +105,14 @@
     <!-- =================================================================================================================-->
     <string name="fragment_setting_alarm_title_txt">アラーム</string>
     <string name="fragment_setting_alarm_onoff_txt">アラームON/OFF</string>
-    <string name="fragment_setting_alarm_on_txt">(アラームON)</string>
-    <string name="fragment_setting_alarm_off_txt">(アラームOFF)</string>
+    <string name="fragment_setting_alarm_on_txt">(ON)</string>
+    <string name="fragment_setting_alarm_off_txt">(OFF)</string>
     <string name="fragment_setting_alarm_time_edit_txt">アラーム時間の変更</string>
     <string name="fragment_setting_app_info_txt">アプリ情報</string>
     <string name="fragment_setting_verion_info_txt">バージョン情報</string>
     <string name="fragment_setting_open_source_txt">オープンソースライセンス</string>
     <string name="fragment_setting_etc_txt">その他</string>
+    <string name="fragment_setting_language_change_txt">言語変更</string>
     <string name="fragment_setting_review_txt">レビューを書く</string>
     <string name="fragment_setting_feedback_mail_txt">フィードバックメールを送信</string>
     <string name="fragment_setting_email_add_txt">dkadnsk00@gmail.com</string>
@@ -152,5 +153,12 @@
     <string name="dialog_license_chinesecalendar_txt">chinese calendar</string>
     <string name="dialog_license_chinesecalendar_link">https://github.com/unicode-org/icu/blob/main/icu4c/LICENSE</string>
 
+
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Language Edit                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_language_korean_txt">韓国語</string>
+    <string name="dialog_language_english_txt">英語</string>
+    <string name="dialog_language_japanese_txt">日本語</string>
 
 </resources>

@@ -45,6 +45,7 @@ class App : Application() {
         private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
         private val characBirth = context.getSharedPreferences(BIRTH_SP, Context.MODE_PRIVATE)
         private val alarmValuePrefs = context.getSharedPreferences(Const.ALARM_SP, Context.MODE_PRIVATE)
+        private val languagePrefs = context.getSharedPreferences("language",Context.MODE_PRIVATE)
 
         fun setBoolean(key: String, value: Boolean) {
             switchPrefs.edit().putBoolean(key,value).apply()
@@ -72,6 +73,14 @@ class App : Application() {
 
         fun getAlarmImportance(key: String, defValue: Int): Int {
             return alarmValuePrefs.getInt(key,defValue)
+        }
+
+        fun setLanguage(key: String, value: String) {
+            languagePrefs.edit().putString(key,value).apply()
+        }
+
+        fun getLanguage(key: String, defValue: String): String {
+            return languagePrefs.getString(key,defValue).toString()
         }
 
         fun checkPreferencesStatus(): Boolean {

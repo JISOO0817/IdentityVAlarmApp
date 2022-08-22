@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 
@@ -20,23 +21,42 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_NAME
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
+import com.jisoo.identityvalarmapp.util.Const.Companion.LANGUAGE_SP
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_EN
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_JA
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_KO
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
 import kotlinx.coroutines.*
+import java.util.*
 
 class AlarmService : Service() {
     private val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
     private lateinit var runFunc: AlarmRunFunction
+    private lateinit var configuration: Configuration
     /**
      * 안드로이드 버전 O부터 noti를 등록할 때 channel id를 등록해야함.
      * (하지 않으면 bad notification for startforeground error 발생)
      * */
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        runFunc = AlarmRunFunction(this)
+        configuration = Configuration(this.resources.configuration)
+
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
         val job = intent.getStringExtra(JOB_KEY)!!.toInt()
-        runFunc = AlarmRunFunction(this)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this,uid,intent,checkVersionFlags())
 
+        when(App.prefs.getLanguage(LANGUAGE_SP, "")) {
+            MODE_KO -> configuration.setLocale(Locale.KOREAN)
+            MODE_EN -> configuration.setLocale(Locale.ENGLISH)
+            MODE_JA -> configuration.setLocale(Locale.JAPANESE)
+        }
+        resources.updateConfiguration(configuration, resources.displayMetrics)
         val stringJob = resources.getString(job)
+
+        Log.d("lantest","stringJob:$stringJob")
+
+        Log.d("lantest","App language:${App.prefs.getLanguage(LANGUAGE_SP,"")}")
+        Log.d("lantest","ko:${MODE_KO},en:${MODE_EN},ja:${MODE_JA}")
 
         val jobText = String.format(resources.getString(R.string.service_noti_title_txt), stringJob)
 
@@ -119,6 +139,10 @@ class AlarmService : Service() {
             }
         }
         return START_STICKY
+    }
+
+    private fun setAlarmLanguage() {
+
     }
 
     private fun checkAlarmSound(): Int {

@@ -179,7 +179,6 @@ data class AlarmRunFunction(val context: Context) {
 
             val birthString = futureList[0].birth
 
-
             for(data in futureList) {
               if(birthString == data.birth) {
                   nearList.add(data)

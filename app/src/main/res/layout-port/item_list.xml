@@ -46,10 +46,25 @@
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/img"
+                   android:fontFamily="@font/noto_sans_cjk_kr_bold"
+                   android:includeFontPadding="false"
+                   android:textColor="@color/black"
+                   tools:text="3월5일"
+                   android:gravity="center"/>
+
+               <TextView
+                   android:id="@+id/name_tv"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/birth_day_tv"
                    android:fontFamily="@font/noto_sans_cjk_kr_regular"
                    android:includeFontPadding="false"
                    android:textColor="@color/gray_45"
-                   tools:text="3월5일"
+                   android:ellipsize="marquee"
+                   android:marqueeRepeatLimit="marquee_forever"
+                   android:singleLine="true"
                    android:gravity="center"/>
 
            </androidx.constraintlayout.widget.ConstraintLayout>

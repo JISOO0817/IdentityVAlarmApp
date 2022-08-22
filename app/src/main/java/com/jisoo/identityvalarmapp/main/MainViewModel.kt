@@ -1,18 +1,14 @@
 package com.jisoo.identityvalarmapp.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.jisoo.identityvalarmapp.util.LanguageMode
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: AlarmRepository = AlarmRepository(application)
@@ -43,6 +39,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _onTimeEditClicked = MutableLiveData<Boolean>()
     val onTimeEditClicked: LiveData<Boolean> = _onTimeEditClicked
 
+    private val _onLanguageEditClicked = MutableLiveData<Boolean>()
+    val onLanguageEditClick: LiveData<Boolean> = _onLanguageEditClicked
+
     private val _onVolumeEditClicked = MutableLiveData<Boolean>()
     val onVolumeEditClicked: LiveData<Boolean> = _onVolumeEditClicked
 
@@ -67,6 +66,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _onLicenseBtnClicked = MutableLiveData<Boolean>()
     val onLicenseBtnClicked: LiveData<Boolean> = _onLicenseBtnClicked
 
+    private val _onLanguageCloseBtnClicked = MutableLiveData<Boolean>()
+    val onLanguageCloseBtnClicked: LiveData<Boolean> = _onLanguageCloseBtnClicked
+
+    private val _onLanguageConfirmBtnClicked = MutableLiveData<Boolean>()
+    val onLanguageConfirmBtnClicked: LiveData<Boolean> = _onLanguageConfirmBtnClicked
+
     private val _onSeekbarStatusListener = MutableLiveData<Int>()
     val onSeekbarStatusListener: LiveData<Int> = _onSeekbarStatusListener
 
@@ -86,10 +91,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
 
-//        getAllList()
         _reviewClicked.value = false
         _feedbackClicked.value = false
         _onTimeEditClicked.value = false
+        _onLanguageEditClicked.value = false
         _onVolumeEditClicked.value = false
         _onNotiCloseBtnClicked.value = false
         _onNotiConfirmBtnClicked.value = false
@@ -98,6 +103,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _onNeedUpdateConfirmBtnClicked.value = false
         _onConfirmBtnClicked.value = false
         _onLicenseBtnClicked.value = false
+        _onLanguageCloseBtnClicked.value = false
+        _onLanguageConfirmBtnClicked.value = false
         _timeSet.value = false
         _finishFlag.value = false
         _toastFlag.value = false
@@ -106,21 +113,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         initSwitchStatusText()
     }
-
-
-//    fun getAllList() = viewModelScope.launch(Dispatchers.IO) {
-//        var charInfos = listOf<CharacInfo>()
-//
-//        do {
-////            delay(500L)
-//            repository.getCharacList {
-//                charInfos = it
-//            }
-//
-//        } while(charInfos.isEmpty())
-//
-//        _characList.postValue(charInfos)
-//    }
 
     fun onSwitchClicked() {
         _switchClicked.value = !(App.prefs.checkPreferencesStatus())
@@ -155,6 +147,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _onTimeEditClicked.value = true
     }
 
+    fun onLanguageEditClicked() {
+        _onLanguageEditClicked.value = true
+    }
+
     fun onNotiVolumeEditClicked() {
         _onVolumeEditClicked.value = true
     }
@@ -185,6 +181,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onLicenseBtnClicked() {
         _onLicenseBtnClicked.value = true
+    }
+
+    fun onLanguageEditDialogCloseBtnClicked() {
+        _onLanguageCloseBtnClicked.value = true
+    }
+
+    fun onLanguageEditDialogConfirmBtnClicked() {
+        _onLanguageConfirmBtnClicked.value = true
     }
 
     fun setTime(hour: String?, minute: String?) {

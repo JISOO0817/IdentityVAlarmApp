@@ -24,6 +24,7 @@
         android:theme="@style/Theme.IdentityVAlarmApp">
         <activity
             android:name=".main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/loadingTheme"
             android:exported="true">
             <intent-filter>

@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.databinding.FragmentSurvivorBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
@@ -80,6 +82,7 @@ class SurvivorFragment : Fragment(){
         super.onResume()
         notifyDataSetChanged()
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     private fun notifyDataSetChanged() {

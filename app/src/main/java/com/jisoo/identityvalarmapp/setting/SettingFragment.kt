@@ -1,9 +1,11 @@
 package com.jisoo.identityvalarmapp.setting
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -20,11 +22,18 @@ import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
 import com.jisoo.identityvalarmapp.util.Const
+import com.jisoo.identityvalarmapp.util.Const.Companion.LANGUAGE_SP
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_EN
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_JA
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_KO
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
+import com.jisoo.identityvalarmapp.util.LanguageMode
 import com.jisoo.identityvalarmapp.util.dialog.*
 import java.lang.Exception
+import java.util.*
 import kotlin.math.roundToInt
+
 
 class SettingFragment : Fragment() {
 
@@ -46,7 +55,12 @@ class SettingFragment : Fragment() {
     private lateinit var licenseBinding: DialogLicenseBinding
     private lateinit var licenseDialog: LicenseDialog
 
+    private lateinit var languageEditBinding: DialogLanguageEditBinding
+    private lateinit var languageEditDialog: LanguageEditDialog
+
     private lateinit var runFunc: AlarmRunFunction
+
+    private lateinit var configuration: Configuration
 
     var hour: Int? = null
     var minute: Int? = null
@@ -81,10 +95,15 @@ class SettingFragment : Fragment() {
             R.layout.dialog_noti_volume, container, false
         )
 
+        languageEditBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.dialog_language_edit, container, false
+        )
 
         setUpBinding()
         setUpView()
         setUpObserver()
+        checkLanguageStatus()
         runFunc = AlarmRunFunction(requireActivity())
 
         return binding.root
@@ -111,14 +130,19 @@ class SettingFragment : Fragment() {
         notiVolumeDialog = NotiVolumeDialog(requireActivity(), notiVolumeBinding,model)
         notiVolumeBinding.viewModel = model
         notiVolumeBinding.lifecycleOwner = viewLifecycleOwner
+
+        languageEditDialog = LanguageEditDialog(requireActivity(), languageEditBinding,model)
+        languageEditBinding.viewModel = model
+        languageEditBinding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun setUpView() {
         binding.onoffView.bind.onoffSwitch.isChecked = App.prefs.checkPreferencesStatus()
         binding.onoffView.bind.switchStatus.text = model.initSwitchStatusText().toString()
-        binding.alarmClockEditView.bind.subTv.text = App.prefs.getTime("time", "")
+        binding.alarmClockEditView.bind.subTv.text = App.prefs.getTime(TIME_SP, "")
 
         notiVolumeDialog.setSeekbarViewState()
+
     }
 
     private fun setUpObserver() {
@@ -144,6 +168,12 @@ class SettingFragment : Fragment() {
         model.onTimeEditClicked.observe(viewLifecycleOwner, {
             if (it == true) {
                 checkOnOffStatus()
+            }
+        })
+
+        model.onLanguageEditClick.observe(viewLifecycleOwner, {
+            if( it == true) {
+                showLanguageEditDialog()
             }
         })
 
@@ -212,7 +242,78 @@ class SettingFragment : Fragment() {
                 showLicenseDialog()
             }
         })
+
+        model.onLanguageCloseBtnClicked.observe(viewLifecycleOwner, {
+            if(languageEditDialog.isShowing) {
+                languageEditDialog.dismiss()
+            }
+        })
+
+        model.onLanguageConfirmBtnClicked.observe(viewLifecycleOwner, {
+            if ( it  == true) {
+                saveLanguageStatus()
+            }
+        })
     }
+
+    private fun checkLanguageStatus() {
+        if (TextUtils.equals("", App.prefs.getLanguage(LANGUAGE_SP, ""))) {
+            val defaultLanguage = Locale.getDefault().language
+            App.prefs.setLanguage(LANGUAGE_SP,defaultLanguage)
+        } else {
+            when(App.prefs.getLanguage(LANGUAGE_SP,"")) {
+                MODE_KO -> languageEditBinding.koreanRb.isChecked = true
+                MODE_EN -> languageEditBinding.englishRb.isChecked = true
+                MODE_JA -> languageEditBinding.japaneseRb.isChecked = true
+            }
+        }
+    }
+
+    /**
+     * 설정한 언어 sharedPreference에 저장..
+     * 언어 설정을 위하여 앱 다시 시작...
+     * */
+
+    private fun saveLanguageStatus() {
+        Log.d("mode","saveLanguageStatus 호출")
+
+        configuration = Configuration(requireActivity().resources.configuration)
+        Log.d("mode","radio check status: ${languageEditBinding.radioGr.checkedRadioButtonId}")
+        if(languageEditBinding.radioGr.checkedRadioButtonId == 2131362070) {
+            App.prefs.setLanguage(LANGUAGE_SP, MODE_KO)
+            configuration.setLocale(Locale.KOREAN)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        } else if(languageEditBinding.radioGr.checkedRadioButtonId == 2131361995) {
+            App.prefs.setLanguage(LANGUAGE_SP, MODE_EN)
+            configuration.setLocale(Locale.ENGLISH)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        } else {
+            App.prefs.setLanguage(LANGUAGE_SP, MODE_JA)
+            configuration.setLocale(Locale.JAPANESE)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        }
+        languageEditDialog.dismiss()
+        refreshApp()
+
+    }
+
+    private fun refreshApp() {
+        val intent = Intent(requireActivity().packageManager.getLaunchIntentForPackage(requireActivity().packageName))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        requireActivity().finish()
+        startActivity(intent)
+    }
+
+//    private fun changeLanguage(mode: LanguageMode) {
+//        configuration = Configuration(requireActivity().resources.configuration)
+//        when(mode) {
+//            LanguageMode.MODE_KO -> configuration.setLocale(Locale.KOREA)
+//            LanguageMode.MODE_EN -> configuration.setLocale(Locale.ENGLISH)
+//            LanguageMode.MODE_JA -> configuration.setLocale(Locale.JAPAN)
+//        }
+//
+//    }
 
     //TODO: 테스트 필요
     private fun sendEmail() {
@@ -313,12 +414,12 @@ class SettingFragment : Fragment() {
      * sharedpreference 에 int (알람중요도) 값을 저장함.
      * 알람노티를 띄울 때 저장된 sharedpreference 값을 가져와 참고하여 울리게함
      * **/
-    
+
     private fun storeValueInSP(it: Int?) {
         if (it != null) {
             App.prefs.setAlarmImportance(Const.ALARM_SP,it)
         }
-        
+
         if(notiVolumeDialog.isShowing) {
             notiVolumeDialog.dismiss()
         }
@@ -387,6 +488,24 @@ class SettingFragment : Fragment() {
     private fun showLicenseDialog() {
         licenseDialog.show()
         DialogSize.initDialogLayout(licenseDialog, requireActivity())
+    }
+
+    private fun showLanguageEditDialog() {
+        languageEditDialog.show()
+        DialogSize.initDialogLayout(languageEditDialog, requireActivity())
+        languageEditDialog.setFontSize(16f, 14f, 14f, 14f)
+
+        languageEditDialog.setMargin(
+            setTypedValue(16f, 0f, 16f, 16f),
+        )
+
+        languageEditDialog.setBtnSize(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getConvertDpByRes(44f).roundToInt().toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        )
     }
 
     private fun setTypedValue(

@@ -103,13 +103,14 @@
     <!-- =================================================================================================================-->
     <string name="fragment_setting_alarm_title_txt">Alarm</string>
     <string name="fragment_setting_alarm_onoff_txt">Alarm ON/OFF</string>
-    <string name="fragment_setting_alarm_on_txt">(Alarm ON)</string>
-    <string name="fragment_setting_alarm_off_txt">(Alarm OFF)</string>
+    <string name="fragment_setting_alarm_on_txt">(ON)</string>
+    <string name="fragment_setting_alarm_off_txt">(OFF)</string>
     <string name="fragment_setting_alarm_time_edit_txt">Change alarm time</string>
     <string name="fragment_setting_app_info_txt">App Info</string>
     <string name="fragment_setting_verion_info_txt">Version info</string>
     <string name="fragment_setting_open_source_txt">Open source license</string>
     <string name="fragment_setting_etc_txt">Etc</string>
+    <string name="fragment_setting_language_change_txt">Change language</string>
     <string name="fragment_setting_review_txt">Write a review</string>
     <string name="fragment_setting_feedback_mail_txt">Send feedback mail</string>
     <string name="fragment_setting_email_add_txt">dkadnsk00@gmail.com</string>
@@ -150,5 +151,11 @@
     <string name="dialog_license_chinesecalendar_txt">chinese calendar</string>
     <string name="dialog_license_chinesecalendar_link">https://github.com/unicode-org/icu/blob/main/icu4c/LICENSE</string>
 
+    <!-- =================================================================================================================-->
+    <!--                                          Dialog Language Edit                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="dialog_language_korean_txt">Korean</string>
+    <string name="dialog_language_english_txt">English</string>
+    <string name="dialog_language_japanese_txt">Japanese</string>
 
 </resources>

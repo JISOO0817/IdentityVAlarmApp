@@ -1,6 +1,7 @@
 package com.jisoo.identityvalarmapp.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,15 +26,21 @@ import com.jisoo.identityvalarmapp.alarm.FCMService
 import com.jisoo.identityvalarmapp.databinding.ActivityMainBinding
 import com.jisoo.identityvalarmapp.databinding.DialogNeedUpdateBinding
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
+import com.jisoo.identityvalarmapp.util.Const
 import com.jisoo.identityvalarmapp.util.Const.Companion.DEFAULT_TIME
 import com.jisoo.identityvalarmapp.util.Const.Companion.FIREBASE_VERSION
+import com.jisoo.identityvalarmapp.util.Const.Companion.LANGUAGE_SP
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_EN
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_JA
+import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_KO
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.DialogSize
 import com.jisoo.identityvalarmapp.util.dialog.Margin
 import com.jisoo.identityvalarmapp.util.dialog.NeedUpdateDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
+import java.util.*
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var needUpdateBinding: DialogNeedUpdateBinding
     private lateinit var needUpdateDialog: NeedUpdateDialog
     private val viewModel: MainViewModel by viewModels()
-
+    private lateinit var configuration: Configuration
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.loadingTheme)
         super.onCreate(savedInstanceState)
@@ -54,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         setUpBinding()
         setUpView()
         setUpObserver()
+        checkLanguageStatus()
         setUpTokenOnServer()
         checkPreferencesTime()
         getFirebaseAppVersion()
@@ -97,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpObserver() {
         viewModel.characList.observe(this, {
-            Log.d("tett","main activity list size:${it.size}")
+            Log.d("tett", "main activity list size:${it.size}")
             if (it.isNotEmpty()) {
                 val runFunc = AlarmRunFunction(this)
                 runFunc.checkAlarm(it)
@@ -124,6 +132,50 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if(!hasFocus) {
+            Log.d("screen","true")
+
+        } else {
+
+        }
+    }
+
+    private fun checkLanguageStatus() {
+        Log.d("language", "checkLanguageStatus 호출")
+        configuration = Configuration(this.resources.configuration)
+        if (TextUtils.equals(App.prefs.getLanguage(LANGUAGE_SP, ""), MODE_KO)) {
+            configuration.setLocale(Locale.KOREAN)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        } else if (TextUtils.equals(App.prefs.getLanguage(LANGUAGE_SP, ""), MODE_EN)) {
+            configuration.setLocale(Locale.ENGLISH)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        } else if (TextUtils.equals(App.prefs.getLanguage(LANGUAGE_SP, ""), MODE_JA)) {
+            configuration.setLocale(Locale.JAPANESE)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        } else {
+            val defaultLanguage = Locale.getDefault().language
+            App.prefs.setLanguage(LANGUAGE_SP, defaultLanguage)
+        }
+
+        val refreshFlag = intent.extras?.get("refresh")
+        if (refreshFlag != null && refreshFlag as Boolean) {
+            return
+        }
+        refreshApp()
+    }
+
+    private fun refreshApp() {
+        Log.d("refresh", "refreshApp 호출")
+        val intent = Intent(this.packageManager.getLaunchIntentForPackage(this.packageName))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.putExtra("refresh", true)
+        this.finish()
+        startActivity(intent)
+    }
+
     private fun setUpTokenOnServer() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -134,11 +186,6 @@ class MainActivity : AppCompatActivity() {
             // Get new FCM registration token
             val token = task.result
 
-
-            // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-//            Log.d(TAG, msg)
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -147,12 +194,22 @@ class MainActivity : AppCompatActivity() {
         getFirebaseAppVersion()
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("eeeeee", "onPause")
+        setTheme(R.style.loadingTheme)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("eeeeee", "onStop")
+    }
+
     private fun checkPreferencesTime() {
         if (TextUtils.equals("", App.prefs.getTime(TIME_SP, ""))) {
             App.prefs.setTime(TIME_SP, DEFAULT_TIME)
-            viewModel.setTime("13","00")
+            viewModel.setTime("13", "00")
         }
-
     }
 
     /**

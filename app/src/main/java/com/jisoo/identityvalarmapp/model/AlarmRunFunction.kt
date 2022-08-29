@@ -14,6 +14,7 @@ import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.util.CalendarHelper
 import com.jisoo.identityvalarmapp.util.Const
 import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
+import java.text.SimpleDateFormat
 import java.util.*
 
 data class AlarmRunFunction(val context: Context) {
@@ -194,6 +195,84 @@ data class AlarmRunFunction(val context: Context) {
             return nearList
 
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getbirthdayPastCharacter(list: List<CharacInfo>): List<CharacInfo> {
+        val systemDate = System.currentTimeMillis()
+        val mDate = Date(systemDate)
+        val simpleDate = SimpleDateFormat("MM-dd")
+        val getDate = simpleDate.format(mDate)
+
+        val sysMonth = getDate.substring(0 until 2).toInt()
+        val sysDay = getDate.substring(3 until 5).toInt()
+
+        Log.d("rrrrrr","passed month:$sysMonth,passedday:$sysDay")
+        val defaultList = lunaList2SolarList(list)
+
+        val returnList: ArrayList<CharacInfo> = arrayListOf()
+
+        for (charac in defaultList) {
+            val birthMonth = charac.birth.substring(0 until 2).toInt()
+            val bDay = charac.birth.substring(2 until 4).toInt()
+
+            when {
+                birthMonth < sysMonth -> {
+                    returnList.add(charac)
+                    Log.d("rrrrrr","passed birthMonth<sysMonth:${returnList}")
+                }
+                birthMonth == sysMonth -> {
+                    when {
+                        bDay < sysDay -> {
+                            returnList.add(charac)
+                        }
+                    }
+                }
+            }
+        }
+
+        Log.d("returnList","passedList:${returnList}")
+
+        return returnList
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getNotYetPassedCharacList(list: List<CharacInfo>): List<CharacInfo> {
+        Log.d("qrqrqr","first:${list}")
+        val systemDate = System.currentTimeMillis()
+        val mDate = Date(systemDate)
+        val simpleDate = SimpleDateFormat("MM-dd")
+        val getDate = simpleDate.format(mDate)
+
+        val sysMonth = getDate.substring(0 until 2).toInt()
+        val sysDay = getDate.substring(3 until 5).toInt()
+
+        Log.d("qrqrqr","sysMonth:${sysMonth},sysDay:${sysDay}")
+        val defaultList = lunaList2SolarList(list)
+
+        val returnList: ArrayList<CharacInfo> = arrayListOf()
+
+        for (charac in defaultList) {
+            val birthMonth = charac.birth.substring(0 until 2).toInt()
+            val bDay = charac.birth.substring(2 until 4).toInt()
+
+            when {
+                birthMonth == sysMonth -> {
+                    when {
+                        bDay >= sysDay -> {
+                            returnList.add(charac)
+                        }
+                    }
+                }
+                birthMonth > sysMonth -> {
+                    returnList.add(charac)
+                }
+            }
+        }
+
+        Log.d("qrqrqr","notYeT:${returnList}")
+
+        return returnList
     }
 
     fun lunaList2SolarList(list: List<CharacInfo>): List<CharacInfo> {

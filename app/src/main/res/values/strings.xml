@@ -19,7 +19,6 @@
     <string name="november_txt">11월</string>
     <string name="december_txt">12월</string>
 
-
     <string name="Enchantress_txt">주술사</string>
     <string name="Lawyer_txt">변호사</string>
     <string name="MindsEye_txt">맹인</string>
@@ -40,7 +39,7 @@
     <string name="Prisoner_txt">\'죄수\'</string>
     <string name="Mercenary_txt">용병</string>
     <string name="Perfumer_txt">조향사</string>
-    <string name="Mechanic_txt">마술사</string>
+    <string name="Mechanic_txt">기계공</string>
     <string name="FirstOfficer_txt">항해사</string>
     <string name="Seer_txt">선지자</string>
     <string name="LuckyGuy_txt">행운아</string>
@@ -56,7 +55,7 @@
     <string name="Patient_txt">환자</string>
     <string name="SoulWeaver_txt">거미</string>
     <string name="Feaster_txt">하스터</string>
-    <string name="Geisha_txt">미치코</string>
+    <string name="Geisha_txt">붉은 나비</string>
     <string name="Photographer_txt">사진사</string>
     <string name="AxeBoy_txt">울보</string>
     <string name="Gamekeeper_txt">사냥터지기</string>
@@ -73,6 +72,12 @@
     <string name="MadEyes_txt">광기의 눈</string>
     <string name="HellEmber_txt">공장장</string>
 
+
+    <!-- =================================================================================================================-->
+    <!--                                          fragment_survivor                                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="fragment_survivor_mode1_txt">모드1</string>
+    <string name="fragment_servivor_mode2_txt">모드2</string>
 
 
     <!-- =================================================================================================================-->
@@ -99,6 +104,12 @@
     <!--                                          Birth Fragment                                                          -->
     <!-- =================================================================================================================-->
 
+    <!-- =================================================================================================================-->
+    <!--                                          Birth ViewTwo Fragment                                                       -->
+    <!-- =================================================================================================================-->
+    <string name="fragment_birth_viewtwo_birth_alarm_ring_txt">다음 알람 캐릭터</string>
+    <string name="fragment_birth_viewtwo_birth_not_yet_txt">생일이 지나지 않은 캐릭터</string>
+    <string name="fragment_birth_viewtwo_birth_passed_txt">생일이 지난 캐릭터</string>
 
 
     <!-- =================================================================================================================-->
@@ -130,7 +141,7 @@
     <!--                                          Dialog Alarm Volume Edit                                                  -->
     <!-- =================================================================================================================-->
     <string name="dialog_alarm_volume_title_txt" translatable="false">알람 볼륨 변경</string>
-<!--    <string name="dialog_alarm_volume_edit_info_txt" translatable="false">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>-->
+    <!--    <string name="dialog_alarm_volume_edit_info_txt" translatable="false">알람 시간을 선택한 후 확인버튼을 누르면 \n알람 울리는 시간이 변경돼요 :)</string>-->
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog On Off Warning                                                   -->
@@ -167,6 +178,8 @@
     <string name="dialog_language_korean_txt">한국어</string>
     <string name="dialog_language_english_txt">영어</string>
     <string name="dialog_language_japanese_txt">일본어</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

@@ -87,10 +87,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _toastFlag = MutableLiveData<Boolean>()
     val toastFlag: LiveData<Boolean> = _toastFlag
 
+    private val _onUIMode0 = MutableLiveData<Boolean>()
+    val onUIMode0: LiveData<Boolean> = _onUIMode0
+
+    private val _onUIMode1 = MutableLiveData<Boolean>()
+    val onUIMode1: LiveData<Boolean> = _onUIMode1
+
     private var backPressedTime: Long = 0
 
     init {
-
         _reviewClicked.value = false
         _feedbackClicked.value = false
         _onTimeEditClicked.value = false
@@ -113,6 +118,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         initSwitchStatusText()
     }
+
+    fun onUIMode(mode: Int) {
+        when(mode) {
+            0 -> {
+                _onUIMode0.value = true
+                _onUIMode1.value = false
+            }
+            1 -> {
+                _onUIMode0.value = false
+                _onUIMode1.value = true
+            }
+        }
+    }
+
 
     fun onSwitchClicked() {
         _switchClicked.value = !(App.prefs.checkPreferencesStatus())

@@ -14,6 +14,7 @@ class Const {
         const val BIRTH_SP = "birth"
         const val ALARM_SP = "alarm"
         const val LANGUAGE_SP = "language"
+        const val VIEW_TYPE_SP = "view"
         const val DEFAULT_TIME = "13:00"
 
         const val MODE_KO = "ko"

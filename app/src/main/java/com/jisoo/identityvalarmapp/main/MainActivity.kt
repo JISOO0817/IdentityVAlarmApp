@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.roundToInt
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -55,19 +56,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_IdentityVAlarmApp)
 
-        val fcm = Intent(applicationContext, FCMService::class.java)
-        startService(fcm)
+//        val fcm = Intent(applicationContext, FCMService::class.java)
+//        startService(fcm)
 
         setUpBinding()
         setUpView()
         setUpObserver()
         checkLanguageStatus()
-        setUpTokenOnServer()
+//        setUpTokenOnServer()
         checkPreferencesTime()
         getFirebaseAppVersion()
 
     }
-
 
     fun setUpBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -169,25 +169,27 @@ class MainActivity : AppCompatActivity() {
     private fun refreshApp() {
         Log.d("refresh", "refreshApp 호출")
         val intent = Intent(this.packageManager.getLaunchIntentForPackage(this.packageName))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.flags.apply {
+            Intent.FLAG_ACTIVITY_NEW_TASK
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
         intent.putExtra("refresh", true)
         this.finish()
         startActivity(intent)
     }
 
-    private fun setUpTokenOnServer() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-        })
-    }
+//    private fun setUpTokenOnServer() {
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+////                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//
+//            // Get new FCM registration token
+//            val token = task.result
+//
+//        })
+//    }
 
     override fun onResume() {
         super.onResume()
@@ -196,8 +198,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("eeeeee", "onPause")
-        setTheme(R.style.loadingTheme)
+//        Log.d("eeeeee", "onPause")
+//        setTheme(R.style.loadingTheme)
     }
 
     override fun onStop() {

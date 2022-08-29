@@ -2,41 +2,29 @@ package com.jisoo.identityvalarmapp.main.charac_fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil.setContentView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.databinding.FragmentSurvivorBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
-import com.jisoo.identityvalarmapp.model.AlarmRunFunction
-import com.jisoo.identityvalarmapp.model.CharacInfo
+import androidx.fragment.app.FragmentTransaction
+import com.jisoo.identityvalarmapp.R
+import com.jisoo.identityvalarmapp.alarm.App
+import com.jisoo.identityvalarmapp.util.Const.Companion.VIEW_TYPE_SP
+
 
 class SurvivorFragment : Fragment(){
 
     private lateinit var binding: FragmentSurvivorBinding
-
-    private lateinit var runFunc: AlarmRunFunction
-
-    private lateinit var janAdapter: ListAdapter
-    private lateinit var febAdapter: ListAdapter
-    private lateinit var marchAdapter: ListAdapter
-    private lateinit var aprilAdapter: ListAdapter
-    private lateinit var mayAdapter: ListAdapter
-    private lateinit var juneAdapter: ListAdapter
-    private lateinit var julyAdapter: ListAdapter
-    private lateinit var augAdapter: ListAdapter
-    private lateinit var sepAdapter: ListAdapter
-    private lateinit var octAdapter: ListAdapter
-    private lateinit var novAdapter: ListAdapter
-    private lateinit var decAdapter: ListAdapter
-
+    private var birthOneFragment: BirthOneFragment = BirthOneFragment()
+    private var birthTwoFragment: BirthTwoFragment = BirthTwoFragment()
+    private lateinit var fg: Fragment
     /**
      * 액티비티와 뷰모델을 공유
      * */
@@ -63,152 +51,64 @@ class SurvivorFragment : Fragment(){
     }
 
     private fun setUpView() {
-        initAdapter()
-        initManager()
+        // 저장된 뷰타입 가져와서 초기에 보여주기....
+
+        binding.viewChangeBtn1.textSize = getConvertDpByRes(13f)
+        binding.viewChangeBtn2.textSize = getConvertDpByRes(13f)
+
+        when(App.prefs.getViewType(VIEW_TYPE_SP,"")) {
+            "0" -> {
+                binding.viewChangeBtn1.isChecked = true
+                fg = birthOneFragment.newInstance()
+                setChildFragment(fg)
+            }
+            "1" -> {
+                binding.viewChangeBtn2.isChecked = true
+                fg = birthTwoFragment.newInstance()
+                setChildFragment(fg)
+            }
+            else -> {
+                binding.viewChangeBtn1.isChecked = true
+                fg = birthOneFragment.newInstance()
+                setChildFragment(fg)
+            }
+        }
     }
 
     private fun setUpObserver() {
-        runFunc = AlarmRunFunction(requireActivity())
-
-        model.characList.observe(viewLifecycleOwner, {
-            if(it.isNotEmpty()) {
-                sortedRvByMonth(runFunc.returnBySortingTheList(it))
+        model.onUIMode0.observe(viewLifecycleOwner) {
+            if (it == true) {
+                birthOneFragment = BirthOneFragment()
+                fg = birthOneFragment.newInstance();
+                setChildFragment(fg)
+                App.prefs.setViewType(VIEW_TYPE_SP, "0")
             }
-        })
+        }
 
+        model.onUIMode1.observe(viewLifecycleOwner) {
+            if (it == true) {
+                birthTwoFragment = BirthTwoFragment()
+                fg = birthTwoFragment.newInstance()
+                setChildFragment(fg)
+                App.prefs.setViewType(VIEW_TYPE_SP, "1")
+            }
+        }
+
+    }
+
+    private fun setChildFragment(child: Fragment) {
+        val childFt: FragmentTransaction = childFragmentManager.beginTransaction()
+
+        if (!child.isAdded) {
+            Log.d("fragTest","!child.isAdded")
+            childFt.replace(R.id.child_fragment_container, child)
+            childFt.addToBackStack(null)
+            childFt.commit()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        notifyDataSetChanged()
-    }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun notifyDataSetChanged() {
-        janAdapter.notifyDataSetChanged()
-        febAdapter.notifyDataSetChanged()
-        marchAdapter.notifyDataSetChanged()
-        aprilAdapter.notifyDataSetChanged()
-        mayAdapter.notifyDataSetChanged()
-        juneAdapter.notifyDataSetChanged()
-        julyAdapter.notifyDataSetChanged()
-        augAdapter.notifyDataSetChanged()
-        sepAdapter.notifyDataSetChanged()
-        octAdapter.notifyDataSetChanged()
-        novAdapter.notifyDataSetChanged()
-        decAdapter.notifyDataSetChanged()
-    }
-
-    private fun initAdapter() {
-        janAdapter = ListAdapter(requireActivity())
-        febAdapter = ListAdapter(requireActivity())
-        marchAdapter = ListAdapter(requireActivity())
-        aprilAdapter = ListAdapter(requireActivity())
-        mayAdapter = ListAdapter(requireActivity())
-        juneAdapter = ListAdapter(requireActivity())
-        julyAdapter = ListAdapter(requireActivity())
-        augAdapter = ListAdapter(requireActivity())
-        sepAdapter = ListAdapter(requireActivity())
-        octAdapter = ListAdapter(requireActivity())
-        novAdapter = ListAdapter(requireActivity())
-        decAdapter = ListAdapter(requireActivity())
-    }
-
-    private fun initManager() {
-        val janManager = GridLayoutManager(requireActivity(), 4)
-        binding.janView.bind.birthRv.layoutManager = janManager
-        binding.janView.bind.birthRv.adapter = janAdapter
-
-        val febManager = GridLayoutManager(requireActivity(), 4)
-        binding.febView.bind.birthRv.layoutManager = febManager
-        binding.febView.bind.birthRv.adapter = febAdapter
-
-        val marchManager = GridLayoutManager(requireActivity(), 4)
-        binding.marchView.bind.birthRv.layoutManager = marchManager
-        binding.marchView.bind.birthRv.adapter = marchAdapter
-
-        val aprilManager = GridLayoutManager(requireActivity(), 4)
-        binding.aprilView.bind.birthRv.layoutManager = aprilManager
-        binding.aprilView.bind.birthRv.adapter = aprilAdapter
-
-        val mayManager = GridLayoutManager(requireActivity(), 4)
-        binding.mayView.bind.birthRv.layoutManager = mayManager
-        binding.mayView.bind.birthRv.adapter = mayAdapter
-
-        val juneManager = GridLayoutManager(requireActivity(), 4)
-        binding.juneView.bind.birthRv.layoutManager = juneManager
-        binding.juneView.bind.birthRv.adapter = juneAdapter
-
-        val julyManager = GridLayoutManager(requireActivity(), 4)
-        binding.julyView.bind.birthRv.layoutManager = julyManager
-        binding.julyView.bind.birthRv.adapter = julyAdapter
-
-        val augManager = GridLayoutManager(requireActivity(), 4)
-        binding.augView.bind.birthRv.layoutManager = augManager
-        binding.augView.bind.birthRv.adapter = augAdapter
-
-        val sepManager = GridLayoutManager(requireActivity(), 4)
-        binding.sepView.bind.birthRv.layoutManager = sepManager
-        binding.sepView.bind.birthRv.adapter = sepAdapter
-
-        val octManager = GridLayoutManager(requireActivity(), 4)
-        binding.octView.bind.birthRv.layoutManager = octManager
-        binding.octView.bind.birthRv.adapter = octAdapter
-
-        val novManager = GridLayoutManager(requireActivity(), 4)
-        binding.novView.bind.birthRv.layoutManager = novManager
-        binding.novView.bind.birthRv.adapter = novAdapter
-
-        val decManager = GridLayoutManager(requireActivity(), 4)
-        binding.decView.bind.birthRv.layoutManager = decManager
-        binding.decView.bind.birthRv.adapter = decAdapter
-    }
-
-    private fun sortedRvByMonth(list: List<CharacInfo>) {
-        val janSurList: ArrayList<CharacInfo> = ArrayList()
-        val febSurList: ArrayList<CharacInfo> = ArrayList()
-        val marchSurList: ArrayList<CharacInfo> = ArrayList()
-        val aprilSurList: ArrayList<CharacInfo> = ArrayList()
-        val maySurList: ArrayList<CharacInfo> = ArrayList()
-        val juneSurList: ArrayList<CharacInfo> = ArrayList()
-        val julySurList: ArrayList<CharacInfo> = ArrayList()
-        val augSurList: ArrayList<CharacInfo> = ArrayList()
-        val sepSurList: ArrayList<CharacInfo> = ArrayList()
-        val octSurList: ArrayList<CharacInfo> = ArrayList()
-        val novSurList: ArrayList<CharacInfo> = ArrayList()
-        val decSurList: ArrayList<CharacInfo> = ArrayList()
-
-        for (c_list in list) {
-            when (c_list.birth.substring(0 until 2).toInt()) {
-                1 -> janSurList.add(c_list)
-                2 -> febSurList.add(c_list)
-                3 -> marchSurList.add(c_list)
-                4 -> aprilSurList.add(c_list)
-                5 -> maySurList.add(c_list)
-                6 -> juneSurList.add(c_list)
-                7 -> julySurList.add(c_list)
-                8 -> augSurList.add(c_list)
-                9 -> sepSurList.add(c_list)
-                10 -> octSurList.add(c_list)
-                11 -> novSurList.add(c_list)
-                12 -> decSurList.add(c_list)
-            }
-
-            janAdapter.setData(janSurList)
-            febAdapter.setData(febSurList)
-            marchAdapter.setData(marchSurList)
-            aprilAdapter.setData(aprilSurList)
-            mayAdapter.setData(maySurList)
-            juneAdapter.setData(juneSurList)
-            julyAdapter.setData(julySurList)
-            augAdapter.setData(augSurList)
-            sepAdapter.setData(sepSurList)
-            octAdapter.setData(octSurList)
-            novAdapter.setData(novSurList)
-            decAdapter.setData(decSurList)
-        }
-
     }
 
     private fun getConvertDpByRes(dpSize: Float): Float {
@@ -225,6 +125,8 @@ class SurvivorFragment : Fragment(){
         super.onDestroyView()
         binding.unbind()
     }
+
+
 
 
 }

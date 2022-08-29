@@ -42,8 +42,7 @@
             android:fontFamily="@font/noto_sans_cjk_kr_bold"
             android:includeFontPadding="false"
             android:gravity="left"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:textColor="@color/black" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/birth_rv"

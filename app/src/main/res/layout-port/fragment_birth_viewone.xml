@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.jisoo.identityvalarmapp.main.MainViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ver_0.05_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ver_0.2_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ver_0.8_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ver_0.95_guideline"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/jan_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:monthText="@string/january_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/feb_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/jan_view"
+                app:monthText="@string/february_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/march_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/feb_view"
+                app:monthText="@string/march_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/april_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/march_view"
+                app:monthText="@string/april_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/may_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/april_view"
+                app:monthText="@string/may_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/june_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/may_view"
+                app:monthText="@string/june_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/july_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/june_view"
+                app:monthText="@string/july_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/aug_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/july_view"
+                app:monthText="@string/august_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/sep_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aug_view"
+                app:monthText="@string/september_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/oct_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sep_view"
+                app:monthText="@string/october_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/nov_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/oct_view"
+                app:monthText="@string/november_txt" />
+
+            <com.jisoo.identityvalarmapp.util.customview.CustomBirthDayView
+                android:id="@+id/dec_view"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nov_view"
+                app:monthText="@string/december_txt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

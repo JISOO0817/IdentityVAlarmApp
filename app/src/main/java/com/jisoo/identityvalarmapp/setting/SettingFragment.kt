@@ -146,114 +146,114 @@ class SettingFragment : Fragment() {
     }
 
     private fun setUpObserver() {
-        model.characList.observe(viewLifecycleOwner, {
-            if(it.isNotEmpty()) {
+        model.characList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
                 solarList = it
             }
-        })
+        }
 
-        model.time.observe(viewLifecycleOwner, {
-            binding.alarmClockEditView.bind.subTv.text = setTimeValue(model.hour.value!!.toInt(),model.minute.value!!.toInt())
-        })
+        model.time.observe(viewLifecycleOwner) {
+            binding.alarmClockEditView.bind.subTv.text =
+                setTimeValue(model.hour.value!!.toInt(), model.minute.value!!.toInt())
+        }
 
-        model.switchClicked.observe(viewLifecycleOwner, {
+        model.switchClicked.observe(viewLifecycleOwner) {
             App.prefs.setBoolean(SWITCH_SP, binding.onoffView.bind.onoffSwitch.isChecked)
             if (it == true) {
                 turnOnTheAlarm()
             } else {
                 turnOffTheAlarm()
             }
-        })
+        }
 
-        model.onTimeEditClicked.observe(viewLifecycleOwner, {
+        model.onTimeEditClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 checkOnOffStatus()
             }
-        })
+        }
 
-        model.onLanguageEditClick.observe(viewLifecycleOwner, {
-            if( it == true) {
+        model.onLanguageEditClick.observe(viewLifecycleOwner) {
+            if (it == true) {
                 showLanguageEditDialog()
             }
-        })
+        }
 
-        model.onSeekbarStatusListener.observe(viewLifecycleOwner, {
+        model.onSeekbarStatusListener.observe(viewLifecycleOwner) {
             seekBarStatus = it
-        })
+        }
 
-        model.onVolumeEditClicked.observe(viewLifecycleOwner, {
+        model.onVolumeEditClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 showVolumeEditDialog()
             }
-        })
+        }
 
-        model.onNotiCloseBtnClicked.observe(viewLifecycleOwner, {
-            if ( it == true) {
+        model.onNotiCloseBtnClicked.observe(viewLifecycleOwner) {
+            if (it == true) {
                 dismissNotiVolumeDialog()
             }
-        })
+        }
 
-        model.onNotiConfirmBtnClicked.observe(viewLifecycleOwner, {
-            if (it  == true) {
+        model.onNotiConfirmBtnClicked.observe(viewLifecycleOwner) {
+            if (it == true) {
                 storeValueInSP(seekBarStatus)
             }
-        })
+        }
 
-        model.reviewClicked.observe(viewLifecycleOwner, {
-            Log.d("review","review 옵저버 호출")
+        model.reviewClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 goPlayStore()
             }
-        })
+        }
 
-        model.feedbackClicked.observe(viewLifecycleOwner, {
+        model.feedbackClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 sendEmail()
             }
-        })
+        }
 
-        model.onCloseBtnClicked.observe(viewLifecycleOwner, {
+        model.onCloseBtnClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 dismissTimeEditDialog()
             }
-        })
+        }
 
-        model.onConfirmBtnClicked.observe(viewLifecycleOwner, {
+        model.onConfirmBtnClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 updateDBTimeInfo()
                 updateAlarmManager()
             }
-        })
+        }
 
-        model.timeSet.observe(viewLifecycleOwner, {
+        model.timeSet.observe(viewLifecycleOwner) {
             if (it == true) {
                 binding.alarmClockEditView.bind.subTv.text = model.hour.value
             }
-        })
+        }
 
-        model.onWarningClostBtnCLicked.observe(viewLifecycleOwner, {
+        model.onWarningClostBtnCLicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 dismissWarningDialog()
             }
-        })
+        }
 
-        model.onLicenseBtnClicked.observe(viewLifecycleOwner, {
+        model.onLicenseBtnClicked.observe(viewLifecycleOwner) {
             if (it == true) {
                 showLicenseDialog()
             }
-        })
+        }
 
-        model.onLanguageCloseBtnClicked.observe(viewLifecycleOwner, {
-            if(languageEditDialog.isShowing) {
+        model.onLanguageCloseBtnClicked.observe(viewLifecycleOwner) {
+            if (languageEditDialog.isShowing) {
                 languageEditDialog.dismiss()
             }
-        })
+        }
 
-        model.onLanguageConfirmBtnClicked.observe(viewLifecycleOwner, {
-            if ( it  == true) {
+        model.onLanguageConfirmBtnClicked.observe(viewLifecycleOwner) {
+            if (it == true) {
                 saveLanguageStatus()
             }
-        })
+        }
     }
 
     private fun checkLanguageStatus() {
@@ -277,43 +277,34 @@ class SettingFragment : Fragment() {
     private fun saveLanguageStatus() {
         Log.d("mode","saveLanguageStatus 호출")
 
-        configuration = Configuration(requireActivity().resources.configuration)
-        Log.d("mode","radio check status: ${languageEditBinding.radioGr.checkedRadioButtonId}")
-        if(languageEditBinding.radioGr.checkedRadioButtonId == 2131362070) {
-            App.prefs.setLanguage(LANGUAGE_SP, MODE_KO)
-            configuration.setLocale(Locale.KOREAN)
-            resources.updateConfiguration(configuration, resources.displayMetrics)
-        } else if(languageEditBinding.radioGr.checkedRadioButtonId == 2131361995) {
-            App.prefs.setLanguage(LANGUAGE_SP, MODE_EN)
-            configuration.setLocale(Locale.ENGLISH)
-            resources.updateConfiguration(configuration, resources.displayMetrics)
-        } else {
-            App.prefs.setLanguage(LANGUAGE_SP, MODE_JA)
-            configuration.setLocale(Locale.JAPANESE)
-            resources.updateConfiguration(configuration, resources.displayMetrics)
+        when(languageEditBinding.radioGr.checkedRadioButtonId) {
+            R.id.korean_rb -> setLanguage(MODE_KO,Locale.KOREAN)
+            R.id.english_rb -> setLanguage(MODE_EN,Locale.ENGLISH)
+            R.id.japanese_rb -> setLanguage(MODE_JA,Locale.JAPANESE)
         }
+
         languageEditDialog.dismiss()
         refreshApp()
+    }
 
+
+    private fun setLanguage(mode: String,locale: Locale) {
+        Log.d("refresh","setLanguage mode: ${mode}")
+        configuration = Configuration(requireActivity().resources.configuration)
+        App.prefs.setLanguage(LANGUAGE_SP, mode)
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     private fun refreshApp() {
         val intent = Intent(requireActivity().packageManager.getLaunchIntentForPackage(requireActivity().packageName))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.flags.apply {
+            Intent.FLAG_ACTIVITY_NEW_TASK
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
         requireActivity().finish()
         startActivity(intent)
     }
-
-//    private fun changeLanguage(mode: LanguageMode) {
-//        configuration = Configuration(requireActivity().resources.configuration)
-//        when(mode) {
-//            LanguageMode.MODE_KO -> configuration.setLocale(Locale.KOREA)
-//            LanguageMode.MODE_EN -> configuration.setLocale(Locale.ENGLISH)
-//            LanguageMode.MODE_JA -> configuration.setLocale(Locale.JAPAN)
-//        }
-//
-//    }
 
     //TODO: 테스트 필요
     private fun sendEmail() {
@@ -335,10 +326,9 @@ class SettingFragment : Fragment() {
         val nearList = runFunc.getClossetCharacList(solarList)
 
         for(i in nearList.indices) {
-            runFunc.removeAlarmManager(nearList[i].uid.toInt())
+            runFunc.removeAlarmManager(nearList[i].uid)
             Log.d("tttttt","꺼진알람 :${nearList[i].job}")
         }
-
     }
 
     private fun turnOnTheAlarm() {

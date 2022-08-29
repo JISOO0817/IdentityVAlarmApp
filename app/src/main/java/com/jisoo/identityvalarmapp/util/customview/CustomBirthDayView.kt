@@ -1,5 +1,6 @@
 package com.jisoo.identityvalarmapp.util.customview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.DisplayMetrics
@@ -21,6 +22,7 @@ class CustomBirthDayView @JvmOverloads constructor(
         init(context, attrs)
     }
 
+    @SuppressLint("Recycle")
     fun init(context: Context, attrs: AttributeSet) {
         bind = DataBindingUtil.inflate(
             LayoutInflater.from(context),

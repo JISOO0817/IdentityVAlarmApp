@@ -8,8 +8,10 @@ import android.util.Log
 import com.jisoo.identityvalarmapp.util.Const
 import com.jisoo.identityvalarmapp.util.Const.Companion.BIRTH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.CHANNEL_ID
+import com.jisoo.identityvalarmapp.util.Const.Companion.LANGUAGE_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
+import com.jisoo.identityvalarmapp.util.Const.Companion.VIEW_TYPE_SP
 
 class App : Application() {
 
@@ -45,7 +47,8 @@ class App : Application() {
         private val timePrefs = context.getSharedPreferences(TIME_SP, Context.MODE_PRIVATE)
         private val characBirth = context.getSharedPreferences(BIRTH_SP, Context.MODE_PRIVATE)
         private val alarmValuePrefs = context.getSharedPreferences(Const.ALARM_SP, Context.MODE_PRIVATE)
-        private val languagePrefs = context.getSharedPreferences("language",Context.MODE_PRIVATE)
+        private val languagePrefs = context.getSharedPreferences(LANGUAGE_SP,Context.MODE_PRIVATE)
+        private val viewTypePrefs = context.getSharedPreferences(VIEW_TYPE_SP,Context.MODE_PRIVATE)
 
         fun setBoolean(key: String, value: Boolean) {
             switchPrefs.edit().putBoolean(key,value).apply()
@@ -81,6 +84,14 @@ class App : Application() {
 
         fun getLanguage(key: String, defValue: String): String {
             return languagePrefs.getString(key,defValue).toString()
+        }
+
+        fun setViewType(key: String, value: String) {
+            viewTypePrefs.edit().putString(key,value).apply()
+        }
+
+        fun getViewType(key: String, defValue: String): String {
+            return viewTypePrefs.getString(key,defValue).toString()
         }
 
         fun checkPreferencesStatus(): Boolean {

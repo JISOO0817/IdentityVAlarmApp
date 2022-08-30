@@ -2,6 +2,7 @@ package com.jisoo.identityvalarmapp.main.charac_fragment
 
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,11 +56,13 @@ class BirthTwoFragment: Fragment() {
         initAdapter()
         initManager()
 
-        if(birthdayPastAdapter.itemCount == 0) {
-            binding.alreadyBirthTv.visibility = View.GONE
-        } else {
-            binding.alreadyBirthTv.visibility = View.VISIBLE
-        }
+//        if(birthdayPastAdapter.itemCount == 0) {
+//            Log.d("adapter","unvisible")
+//            binding.alreadyBirthTv.visibility = View.GONE
+//        } else {
+//            Log.d("adapter","visible")
+//            binding.alreadyBirthTv.visibility = View.VISIBLE
+//        }
     }
 
     private fun setUpObserver() {

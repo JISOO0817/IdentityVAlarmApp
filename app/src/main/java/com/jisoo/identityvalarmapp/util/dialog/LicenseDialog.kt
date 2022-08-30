@@ -48,6 +48,7 @@ class LicenseDialog(context: Context, binding: DialogLicenseBinding) : Dialog(co
         list.add(LicenseContent(context.getString(R.string.dialog_license_circleimageview_txt),context.getString(R.string.dialog_license_circleimageview_link)))
         list.add(LicenseContent(context.getString(R.string.dialog_license_glide_txt),context.getString(R.string.dialog_license_glide_link)))
         list.add(LicenseContent(context.getString(R.string.dialog_license_chinesecalendar_txt),context.getString(R.string.dialog_license_chinesecalendar_link)))
+        list.add(LicenseContent(context.getString(R.string.dialog_license_hilt_txt),context.getString(R.string.dialog_license_hilt_link)))
 
         adapter.setData(list)
     }

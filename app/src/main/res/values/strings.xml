@@ -171,6 +171,8 @@
     <string name="dialog_license_glide_link">https://github.com/bumptech/glide/blob/master/LICENSE</string>
     <string name="dialog_license_chinesecalendar_txt">chinese calendar</string>
     <string name="dialog_license_chinesecalendar_link">https://github.com/unicode-org/icu/blob/main/icu4c/LICENSE</string>
+    <string name="dialog_license_hilt_txt">hilt</string>
+    <string name="dialog_license_hilt_link">https://github.com/googlecodelabs/android-hilt/blob/main/LICENSE</string>
 
     <!-- =================================================================================================================-->
     <!--                                          Dialog Language Edit                                                  -->

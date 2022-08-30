@@ -38,9 +38,7 @@ class LicenseAdapter(val context: Context) : RecyclerView.Adapter<LicenseAdapter
     class LicenseViewHolder(val binding: ListItemLicenseBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: LicenseContent) {
             binding.titleTv.text = content.title
-            Log.d("license","title:${content.title}")
             binding.linkTv.text = content.link
-            Log.d("license","link:${content.link}")
             binding.linkTv.paintFlags = binding.linkTv.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
             BindingAdapter.setOnLicenseClicked(binding.linkTv,content.link)

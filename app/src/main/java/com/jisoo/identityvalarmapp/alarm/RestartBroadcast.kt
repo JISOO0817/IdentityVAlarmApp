@@ -6,16 +6,20 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
 import androidx.room.Room
+import com.jisoo.identityvalarmapp.model.AlarmDao
 import com.jisoo.identityvalarmapp.model.AlarmDatabase
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * 알람매니저에 알람이 등록되어있어도,
  * 기기가 재부팅이 되면 등록된 알람이 삭제되므로, 재설정해줌
  * **/
+@AndroidEntryPoint
 class RestartBroadcast : BroadcastReceiver() {
-
+    @Inject lateinit var dao: AlarmDao
     private val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
     private lateinit var runFunc: AlarmRunFunction
 
@@ -52,13 +56,12 @@ class RestartBroadcast : BroadcastReceiver() {
     private fun setAlarmmanager(context: Context) {
         runFunc = AlarmRunFunction(context)
         coroutineScope.launch(Dispatchers.IO) {
-            val db = Room.databaseBuilder(
-                context.applicationContext,
-                AlarmDatabase::class.java,
-                context.packageName,
-            ).build()
-
-            val list = db.alarmDao().getAllData()
+//            val db = Room.databaseBuilder(
+//                context.applicationContext,
+//                AlarmDatabase::class.java,
+//                context.packageName,
+//            ).build() )
+            val list = dao.getAllData()
 
             withContext(Dispatchers.Main) {
                 runFunc.checkAlarm(list)

@@ -7,7 +7,9 @@ import android.os.Build
 import android.util.Log
 import com.jisoo.identityvalarmapp.util.Const.Companion.JOB_KEY
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AlarmBroadcast : BroadcastReceiver() {
 
     /**
@@ -19,14 +21,15 @@ class AlarmBroadcast : BroadcastReceiver() {
         val job = intent.getStringExtra(JOB_KEY)
 
 
-        Log.d("tett","broadcast receiver onreceive")
-        Log.d("tett","broadcast receiver job:${job},uid:${uid}")
+        Log.d("abcdeTest","AlarmBroadcast: uid:$uid,job:$job")
 
 
         val serviceIntent = Intent(context, EmptyService::class.java)
 
         serviceIntent.putExtra(UID_KEY,uid)
         serviceIntent.putExtra(JOB_KEY,job)
+
+
 
         context?.startForegroundService(serviceIntent)
     }

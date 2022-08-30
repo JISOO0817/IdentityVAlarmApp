@@ -6,6 +6,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdk 31
@@ -109,6 +110,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.0.7'
 
     implementation 'info.hoang8f:android-segmented:1.0.6'
+
+    //hilt
+    implementation 'com.google.dagger:hilt-android:2.37'
+    kapt 'com.google.dagger:hilt-android-compiler:2.37'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
 
 }

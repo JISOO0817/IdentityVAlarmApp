@@ -17,8 +17,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.util.Const.Companion.VIEW_TYPE_SP
+import dagger.hilt.android.scopes.FragmentScoped
 
-
+@FragmentScoped
 class SurvivorFragment : Fragment(){
 
     private lateinit var binding: FragmentSurvivorBinding

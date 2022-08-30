@@ -9,9 +9,12 @@ import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.model.AlarmRepository
 import com.jisoo.identityvalarmapp.model.CharacInfo
 import com.jisoo.identityvalarmapp.util.LanguageMode
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private var repository: AlarmRepository = AlarmRepository(application)
+@HiltViewModel
+class MainViewModel @Inject constructor(application: Application, private val repository: AlarmRepository)
+    : AndroidViewModel(application) {
 
     val characList: LiveData<List<CharacInfo>> = repository.getAllData()
 

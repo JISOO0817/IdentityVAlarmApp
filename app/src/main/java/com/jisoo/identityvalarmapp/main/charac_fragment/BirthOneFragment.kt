@@ -13,7 +13,9 @@ import com.jisoo.identityvalarmapp.databinding.FragmentBirthViewoneBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
 import com.jisoo.identityvalarmapp.model.CharacInfo
+import dagger.hilt.android.scopes.FragmentScoped
 
+@FragmentScoped
 class BirthOneFragment: Fragment() {
 
     private lateinit var binding: FragmentBirthViewoneBinding

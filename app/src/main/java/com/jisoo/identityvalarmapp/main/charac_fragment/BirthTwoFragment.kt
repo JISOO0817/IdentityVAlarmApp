@@ -1,21 +1,19 @@
 package com.jisoo.identityvalarmapp.main.charac_fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat.canScrollVertically
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.jisoo.identityvalarmapp.databinding.FragmentBirthViewtwoBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
 import com.jisoo.identityvalarmapp.model.AlarmRunFunction
+import dagger.hilt.android.scopes.FragmentScoped
 
+@FragmentScoped
 class BirthTwoFragment: Fragment() {
 
     private lateinit var binding: FragmentBirthViewtwoBinding

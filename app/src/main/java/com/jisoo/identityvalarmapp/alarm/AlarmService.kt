@@ -26,10 +26,15 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_EN
 import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_JA
 import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_KO
 import com.jisoo.identityvalarmapp.util.Const.Companion.UID_KEY
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.*
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AlarmService : Service() {
+    @Inject lateinit var repository: AlarmRepository
     private val coroutineScope by lazy { CoroutineScope(Dispatchers.IO) }
     private lateinit var runFunc: AlarmRunFunction
     private lateinit var configuration: Configuration
@@ -44,6 +49,8 @@ class AlarmService : Service() {
         val uid = intent.getStringExtra(UID_KEY)!!.toInt()
         val job = intent.getStringExtra(JOB_KEY)!!.toInt()
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this,uid,intent,checkVersionFlags())
+
+        Log.d("abcdeTest","AlarmService : uid:$uid,job:$job")
 
         when(App.prefs.getLanguage(LANGUAGE_SP, "")) {
             MODE_KO -> configuration.setLocale(Locale.KOREAN)
@@ -127,7 +134,8 @@ class AlarmService : Service() {
         App.prefs.setCharacBirth(BIRTH_SP, resultValue.toString())
 
         coroutineScope.launch(Dispatchers.IO) {
-            val repository = AlarmRepository(application)
+//            repository
+//            val repository = AlarmRepository(application)
             var list: List<CharacInfo> = emptyList()
             repository.getCharacList {
                 list = it

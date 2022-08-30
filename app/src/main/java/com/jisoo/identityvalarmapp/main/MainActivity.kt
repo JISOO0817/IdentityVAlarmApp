@@ -37,13 +37,14 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.dialog.DialogSize
 import com.jisoo.identityvalarmapp.util.dialog.Margin
 import com.jisoo.identityvalarmapp.util.dialog.NeedUpdateDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 import java.util.*
 import kotlin.math.roundToInt
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -104,32 +105,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpObserver() {
-        viewModel.characList.observe(this, {
+        viewModel.characList.observe(this) {
             Log.d("tett", "main activity list size:${it.size}")
             if (it.isNotEmpty()) {
                 val runFunc = AlarmRunFunction(this)
                 runFunc.checkAlarm(it)
             }
-        })
+        }
 
-        viewModel.onNeedUpdateConfirmBtnClicked.observe(this, {
+        viewModel.onNeedUpdateConfirmBtnClicked.observe(this) {
             if (it == true) {
                 goToUpdate()
                 dismissUpdateDialog()
             }
-        })
+        }
 
-        viewModel.toastFlag.observe(this, {
+        viewModel.toastFlag.observe(this) {
             if (it == true) {
                 showFinishToast()
             }
-        })
+        }
 
-        viewModel.finishFlag.observe(this, {
+        viewModel.finishFlag.observe(this) {
             if (it == true) {
                 finish()
             }
-        })
+        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

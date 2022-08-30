@@ -12,7 +12,9 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.LANGUAGE_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.VIEW_TYPE_SP
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {

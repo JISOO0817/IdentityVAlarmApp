@@ -2,7 +2,7 @@ package com.jisoo.identityvalarmapp.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-
+import javax.inject.Singleton
 
 @Dao
 interface AlarmDao {

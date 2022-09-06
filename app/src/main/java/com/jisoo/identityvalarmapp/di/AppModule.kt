@@ -3,7 +3,7 @@ package com.jisoo.identityvalarmapp.di
 import android.content.Context
 import com.jisoo.identityvalarmapp.model.AlarmDao
 import com.jisoo.identityvalarmapp.model.AlarmDatabase
-import com.jisoo.identityvalarmapp.model.AlarmRepository
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,10 +27,5 @@ class AppModule {
         return database.alarmDao()
     }
 
-//    @Singleton
-//    @Provides
-//    fun getRepository(repository: AlarmRepository): AlarmRepository {
-//        return repository
-//    }
 
 }

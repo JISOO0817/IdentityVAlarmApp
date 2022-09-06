@@ -56,19 +56,12 @@ class BirthTwoFragment: Fragment() {
         initAdapter()
         initManager()
 
-//        if(birthdayPastAdapter.itemCount == 0) {
-//            Log.d("adapter","unvisible")
-//            binding.alreadyBirthTv.visibility = View.GONE
-//        } else {
-//            Log.d("adapter","visible")
-//            binding.alreadyBirthTv.visibility = View.VISIBLE
-//        }
     }
 
     private fun setUpObserver() {
         model.characList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                alarmRegAdapter.setData(runFunc.getClossetCharacList(runFunc.lunaList2SolarList(it)))
+                alarmRegAdapter.setData(runFunc.getAlarmRegCharacter(it))
                 birthdayPastAdapter.setData(runFunc.getbirthdayPastCharacter(it))
                 notYetPassedAdapter.setData(runFunc.getNotYetPassedCharacList(it))
             }

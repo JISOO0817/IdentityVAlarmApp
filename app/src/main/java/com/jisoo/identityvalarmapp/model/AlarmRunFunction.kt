@@ -158,7 +158,7 @@ data class AlarmRunFunction(val context: Context) {
             if(nearList.isEmpty()) {
                 nearList.add(futureList[0])
             }
-
+            Log.d("closet","if문 nearList:${nearList}")
             return nearList
 
         } else {
@@ -167,6 +167,8 @@ data class AlarmRunFunction(val context: Context) {
                 if (data.birth.toInt() >= nowValue) {
                     futureList.add(data)
                 }
+
+                Log.d("closet","futureList:${futureList}")
             }
 
             val temList: ArrayList<CharacInfo> = arrayListOf()
@@ -175,6 +177,8 @@ data class AlarmRunFunction(val context: Context) {
                     temList.add(i)
                 }
             }
+
+            Log.d("closet","temList:${temList}")
 
             futureList.removeAll(temList.toSet())
 
@@ -191,10 +195,15 @@ data class AlarmRunFunction(val context: Context) {
             if(nearList.isEmpty()) {
                 nearList.add(futureList[0])
             }
-
+            Log.d("closet","else문 nearList:${nearList}")
             return nearList
 
         }
+    }
+
+    fun getAlarmRegCharacter(list: List<CharacInfo>): List<CharacInfo> {
+        val closetlist: List<CharacInfo> = getClossetCharacList(list)
+        return lunaList2SolarList(closetlist)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -215,11 +224,12 @@ data class AlarmRunFunction(val context: Context) {
         for (charac in defaultList) {
             val birthMonth = charac.birth.substring(0 until 2).toInt()
             val bDay = charac.birth.substring(2 until 4).toInt()
+            Log.d("rrrrrr","bDay string:${charac.birth.substring(2 until 4)}")
+            Log.d("rrrrrr","birthMonth:${birthMonth},bDay:${bDay}")
 
             when {
                 birthMonth < sysMonth -> {
                     returnList.add(charac)
-                    Log.d("rrrrrr","passed birthMonth<sysMonth:${returnList}")
                 }
                 birthMonth == sysMonth -> {
                     when {

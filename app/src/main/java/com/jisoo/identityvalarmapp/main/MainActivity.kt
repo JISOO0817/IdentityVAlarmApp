@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var needUpdateDialog: NeedUpdateDialog
     private val viewModel: MainViewModel by viewModels()
     private lateinit var configuration: Configuration
+    private lateinit var runFunc: AlarmRunFunction
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.loadingTheme)
         super.onCreate(savedInstanceState)
@@ -73,6 +74,8 @@ class MainActivity : AppCompatActivity() {
     fun setUpBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewPager.adapter = FragmentPagerAdapter(this)
+
+        runFunc = AlarmRunFunction(this)
 
         needUpdateBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this),
@@ -108,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.characList.observe(this) {
             Log.d("tett", "main activity list size:${it.size}")
             if (it.isNotEmpty()) {
-                val runFunc = AlarmRunFunction(this)
                 runFunc.checkAlarm(it)
             }
         }
@@ -344,6 +346,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showFinishToast() {
         Toast.makeText(this, R.string.main_activity_finish_txt, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }

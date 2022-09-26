@@ -31,7 +31,7 @@ import java.util.*
 data class CharacInfo(
     @PrimaryKey val uid: Int,
     @ColumnInfo var category: Int,
-    @ColumnInfo var img: Int,
+    @ColumnInfo var img: String,
     @ColumnInfo var job: Int,
     @ColumnInfo var birth: String
 ) : Parcelable

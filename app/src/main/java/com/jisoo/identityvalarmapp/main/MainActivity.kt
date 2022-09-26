@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             configuration.setLocale(Locale.KOREAN)
             resources.updateConfiguration(configuration, resources.displayMetrics)
         } else if (TextUtils.equals(App.prefs.getLanguage(LANGUAGE_SP, ""), MODE_EN)) {
-            configuration.setLocale(Locale.ENGLISH)
+            configuration.setLocale(Locale.US)
             resources.updateConfiguration(configuration, resources.displayMetrics)
         } else if (TextUtils.equals(App.prefs.getLanguage(LANGUAGE_SP, ""), MODE_JA)) {
             configuration.setLocale(Locale.JAPANESE)

@@ -137,13 +137,18 @@ data class AlarmRunFunction(val context: Context) {
             nowValue = 0
         }
 
-        if (birthSP.isEmpty()) {
+        Log.d("isroot","sortedList:"+sortedlist)
 
+        if (birthSP.isEmpty()) {
             for (data in sortedlist) {
                 if (data.birth.toInt() >= nowValue) {
                     futureList.add(data)
                 }
             }
+
+            //TODO: error
+
+            Log.d("isroot","futureList:"+futureList)
 
             val birthString = futureList[0].birth
 

@@ -295,7 +295,7 @@ class SettingFragment : Fragment() {
             R.id.korean_rb -> Locale.KOREAN
             R.id.english_rb -> Locale.US
             R.id.japanese_rb -> Locale.JAPANESE
-            else -> MODE_JA
+            else -> MODE_KO
         }
 
         if(TextUtils.equals(spLanguage,selectLanguage)) {

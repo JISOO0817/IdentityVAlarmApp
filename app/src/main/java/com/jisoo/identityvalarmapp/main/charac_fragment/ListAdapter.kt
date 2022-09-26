@@ -44,10 +44,13 @@ class ListAdapter(val context: Context) : RecyclerView.Adapter<ListAdapter.HunVi
             val bDay = info.birth.substring(2 until 4).toInt()
             val name = context.resources.getString(info.job)
 
+
+            val filterImg = context.resources.getIdentifier(info.img,"drawable",context.packageName)
+
             binding.birthDayTv.text = bDay.toString()
             binding.birthDayTv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
             Glide.with(context)
-                .load(info.img)
+                .load(filterImg)
                 .into(binding.img)
 
             binding.nameTv.text = name

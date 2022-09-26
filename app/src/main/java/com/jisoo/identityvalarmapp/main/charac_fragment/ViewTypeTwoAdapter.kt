@@ -55,8 +55,10 @@ class ViewTypeTwoAdapter(val context: Context) : RecyclerView.Adapter<ViewTypeTw
 
             binding.birthDayTv.text = "$bMonth / $bDay"
             binding.birthDayTv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
+            val filterImg = context.resources.getIdentifier(info.img,"drawable",context.packageName)
+
             Glide.with(context)
-                .load(info.img)
+                .load(filterImg)
                 .into(binding.img)
 
             binding.nameTv.text = name

@@ -54,7 +54,7 @@ class AlarmService : Service() {
 
         when(App.prefs.getLanguage(LANGUAGE_SP, "")) {
             MODE_KO -> configuration.setLocale(Locale.KOREAN)
-            MODE_EN -> configuration.setLocale(Locale.ENGLISH)
+            MODE_EN -> configuration.setLocale(Locale.US)
             MODE_JA -> configuration.setLocale(Locale.JAPANESE)
         }
         resources.updateConfiguration(configuration, resources.displayMetrics)

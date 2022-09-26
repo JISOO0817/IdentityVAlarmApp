@@ -174,4 +174,9 @@
     <string name="dialog_language_english_txt">English</string>
     <string name="dialog_language_japanese_txt">Japanese</string>
 
+    <!-- =================================================================================================================-->
+    <!--                                          Toast                                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="toast_language_same_txt">It matches the current language.\nAfter making changes, press the OK button.</string>
+
 </resources>

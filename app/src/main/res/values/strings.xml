@@ -180,8 +180,11 @@
     <string name="dialog_language_korean_txt">한국어</string>
     <string name="dialog_language_english_txt">영어</string>
     <string name="dialog_language_japanese_txt">일본어</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <!-- =================================================================================================================-->
+    <!--                                          Toast                                                                  -->
+    <!-- =================================================================================================================-->
+    <string name="toast_language_same_txt">현재 언어와 일치해요.\n변경 후 \'확인\'버튼을 눌러주세요.</string>
 
 </resources>

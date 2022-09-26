@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.jisoo.identityvalarmapp.databinding.DialogLanguageEditBinding
 import com.jisoo.identityvalarmapp.main.MainViewModel
-import java.lang.reflect.Type
 
 class LanguageEditDialog(context: Context, binding: DialogLanguageEditBinding,viewModel: MainViewModel) : Dialog(context) {
 

@@ -12,9 +12,11 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.jisoo.identityvalarmapp.BuildConfig
 import com.jisoo.identityvalarmapp.R
 import com.jisoo.identityvalarmapp.alarm.App
 import com.jisoo.identityvalarmapp.databinding.*
@@ -28,7 +30,6 @@ import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_JA
 import com.jisoo.identityvalarmapp.util.Const.Companion.MODE_KO
 import com.jisoo.identityvalarmapp.util.Const.Companion.SWITCH_SP
 import com.jisoo.identityvalarmapp.util.Const.Companion.TIME_SP
-import com.jisoo.identityvalarmapp.util.LanguageMode
 import com.jisoo.identityvalarmapp.util.dialog.*
 import java.lang.Exception
 import java.util.*
@@ -277,19 +278,41 @@ class SettingFragment : Fragment() {
     private fun saveLanguageStatus() {
         Log.d("mode","saveLanguageStatus 호출")
 
-        when(languageEditBinding.radioGr.checkedRadioButtonId) {
-            R.id.korean_rb -> setLanguage(MODE_KO,Locale.KOREAN)
-            R.id.english_rb -> setLanguage(MODE_EN,Locale.ENGLISH)
-            R.id.japanese_rb -> setLanguage(MODE_JA,Locale.JAPANESE)
+        checkLanguage(languageEditBinding.radioGr.checkedRadioButtonId)
+    }
+
+    private fun checkLanguage(checkedRadioButtonId: Int) {
+        val spLanguage = App.prefs.getLanguage(LANGUAGE_SP,"")
+
+        val selectLanguage = when(checkedRadioButtonId) {
+            R.id.korean_rb -> MODE_KO
+            R.id.english_rb -> MODE_EN
+            R.id.japanese_rb -> MODE_JA
+            else -> MODE_KO
         }
 
-        languageEditDialog.dismiss()
-        refreshApp()
+        val locale = when(checkedRadioButtonId) {
+            R.id.korean_rb -> Locale.KOREAN
+            R.id.english_rb -> Locale.US
+            R.id.japanese_rb -> Locale.JAPANESE
+            else -> MODE_JA
+        }
+
+        if(TextUtils.equals(spLanguage,selectLanguage)) {
+            showToast()
+        } else {
+            setLanguage(selectLanguage, locale as Locale)
+            languageEditDialog.dismiss()
+            refreshApp()
+        }
+    }
+
+    private fun showToast() {
+        Toast.makeText(requireActivity(),resources.getString(R.string.toast_language_same_txt),Toast.LENGTH_SHORT).show()
     }
 
 
     private fun setLanguage(mode: String,locale: Locale) {
-        Log.d("refresh","setLanguage mode: ${mode}")
         configuration = Configuration(requireActivity().resources.configuration)
         App.prefs.setLanguage(LANGUAGE_SP, mode)
         configuration.setLocale(locale)
@@ -309,7 +332,7 @@ class SettingFragment : Fragment() {
     //TODO: 테스트 필요
     private fun sendEmail() {
         val address = R.string.fragment_setting_email_add_txt
-        val app_version = com.warkiz.widget.BuildConfig.VERSION_NAME
+        val app_version = BuildConfig.VERSION_NAME
         val device = Build.MODEL
         val sdk = Build.VERSION.RELEASE
 
@@ -327,7 +350,6 @@ class SettingFragment : Fragment() {
 
         for(i in nearList.indices) {
             runFunc.removeAlarmManager(nearList[i].uid)
-            Log.d("tttttt","꺼진알람 :${nearList[i].job}")
         }
     }
 
